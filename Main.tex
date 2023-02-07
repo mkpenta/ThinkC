@@ -21,7 +21,7 @@
 \usepackage[tagged, highstructure]{accessibility}
 % conditional compilation of the document for different languages
 
-\tracingmacros=1 
+
 %\newboolean{German}
 %\setboolean{German}{false}
 
@@ -163,7 +163,7 @@
 \setlength{\oddsidemargin}{1.0in}
 \setlength{\evensidemargin}{.95in}
 \makeindex
-\tracingmacros=0
+
 
 %%-----------------------------------------------------------
 % beginning of the document
@@ -213,10 +213,10 @@ work, please contact the author(s).
 
 The \LaTeX\ source and code for this book is available from: \\
 \url{https://github.com/tscheffl/ThinkC}
-
+\tracingmacros=1 
 \frontmatter
 \tableofcontents
-
+\tracingmacros=0
 \mainmatter
 \include{Chapter1}
 \include{Chapter2}
@@ -235,7 +235,7 @@ The \LaTeX\ source and code for this book is available from: \\
 \include{Formats}
 \printindex
 
-
+\tracingmacros=0
 \end{document}
 
 
