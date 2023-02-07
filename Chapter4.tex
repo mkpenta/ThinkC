@@ -1,44 +1,50 @@
 % LaTeX source for textbook ``How to think like a computer scientist''
 % Copyright (C) 1999  Allen B. Downey
 % Copyright (C) 2009  Thomas Scheffler
+% Copyright (C) 2023  Michael Penta
 
+\chapter{Selection structures and recursion}
 
-\chapter{Conditionals and recursion}
 \label{condrecursion}
 
 
-\section{Conditional execution}
-\index{conditional}
-\index{statement!conditional}
+\section{Conditional expressions}
+\index{control structures}
+\index{conditional expression}
+\index{condition}
 
 In order to write useful programs, we almost always need the ability
 to check certain conditions and change the behavior of the program
-accordingly.  {\bf Conditional statements} give us this ability.  The
-simplest form is the {\tt if} statement:
-
-\begin{verbatim}
-  if (x > 0) 
-  {
-      printf ("x is positive\n");
-  }
-\end{verbatim}
-%
-The expression in parentheses is called the condition.
-If it is true, then the statements in brackets get executed.
-If the condition is not true, nothing happens.
+accordingly.  In C we can use {\bf control structures} to change the flow of our program.
+Control structures utilize {\bf conditional expressions} to execute statements conditionally.
 
 \index{operator!comparison}
 \index{comparison!operator}
 
-The condition can contain any of the {\bf comparison operators}:
+Conditional expressions are expressions that yield a true or false value. 
+In C, any non-zero expression is true. Zero is false. The following are some example expressions and how they would evaluate in C
 
 \begin{verbatim}
-    x == y               /* x equals y */
-    x != y               /* x is not equal to y */
-    x > y                /* x is greater than y */
-    x < y                /* x is less than y */
-    x >= y               /* x is greater than or equal to y */
-    x <= y               /* x is less than or equal to y */
+	'd'      /* true */
+	1         /* true */
+	-1       /* true */
+	4.1     /* true */
+	1 + 2  /* true*/
+	0        /* false */
+	-1 +1  /*false*/
+	
+\end{verbatim}
+%
+
+Most conditional expressions use {\bf comparison operators} 
+
+\begin{verbatim}
+	x == y               /* x equals y */
+	x != y               /* x is not equal to y */
+	x > y                /* x is greater than y */
+	x < y                /* x is less than y */
+	x >= y               /* x is greater than or equal to y */
+	x <= y               /* x is less than or equal to y */
 \end{verbatim}
 %
 Although these operations are probably familiar to you, the
@@ -49,12 +55,45 @@ that {\tt =} is the assignment operator, and {\tt ==} is
 a comparison operator.  Also, there is no such thing as
 {\tt =<} or {\tt =>}.
 
-The two sides of a condition operator have to be the same
-type.  You can only compare {\tt ints} to {\tt ints} and
-{\tt doubles} to {\tt doubles}.  Unfortunately, at this
+It is generally a good idea to make the two sides of a condition operator be the same
+type so its best to compare {\tt int}s to {\tt int}s and {\tt double}s to {\tt double}s. With some implicit or explicit casting
+you can also compare {\tt int}s with {\tt char}s and {\tt int}s with {\tt double}s of course you can always type cast if need.  
+ Unfortunately, at this
 point you can't compare strings at all!  There is
 a way to compare strings, but we won't get to it for a couple
 of chapters.
+
+{\bf It is also important to note that you should only test floating point values using {\tt >} and {\tt <}.}
+
+Due to the limitations of the floating point representation, these numbers cannot be compared for equality. 
+If we need to test these for equality we have to determine if the numbers are close enough to each other. 
+To calculate this, we first must decided on a tolerance (like .00001) and then compare  this to the difference of the two numbers.
+
+
+\section{Selection structures: one-way} 
+\index{statement!conditional}
+\index{structures!selection}
+\index{control structures!selection}
+\index{one-way selcection}
+\index{selection!one-way}
+
+One category of control structures are the selection structures. The simplest selection structure is the {\tt if} statement:
+
+\begin{verbatim}
+  if (x > 0) 
+  {
+      printf ("x is positive\n");
+  }
+\end{verbatim}
+%
+
+The expression in parentheses must be a conditional expression.
+If the expression is true, then the statements in brackets get executed.
+If the condition is not true, the statements are not executed. 
+
+
+This is considered one - way selection -- either you perform the task or you skip over it. 
+There is only one choice and you select it or you do not.
 
 \section{The modulus operator}
 \index{modulus}
@@ -83,13 +122,212 @@ digit or digits from a number.  For example, {\tt x \% 10} yields
 the rightmost digit of {\tt x} (in base 10).  Similarly
 {\tt x \% 100} yields the last two digits.
 
-\section {Alternative execution}
+
+\section{Random numbers}
+\label{Random numbers}
+\label{random}
+\label{pseudorandom}
+\index{random number}
+\index{deterministic}
+\index{nondeterministic}
+Most computer programs do the same thing every time they are executed,
+so they are said to be {\bf deterministic}.  Usually, determinism is a
+good thing, since we expect the same calculation to yield the same
+result.  For some applications, though, we would like the
+computer to be unpredictable.  Games are an obvious example.
+
+Making a program truly {\bf nondeterministic} turns out to be not
+so easy, but there are ways to make it at least seem
+nondeterministic.  One of them is to generate {pseudorandom} numbers and
+use them to determine the outcome of the program.
+Pseudorandom numbers
+are not truly random in the mathematical sense, but 
+for our purposes, they will do.
+
+\index{header file!stdlib.h}
+\index{<stdlib.h>}
+
+C provides a function called {\tt rand()} that generates
+pseudorandom numbers.  It is declared in the
+header file {\tt stdlib.h}, which contains a variety of ``standard
+library'' functions, hence the name.
+
+The return value from {\tt rand()} is an integer between 0 and {\tt
+	RAND\_MAX}, where {\tt RAND\_MAX} is a large number (about 2 billion
+on my computer) also defined in the header file.  Each time you call
+{\tt rand()} you get a different randomly-generated number.  To see a
+sample, run this:
+
+\begin{verbatim}
+ 	int x = rand();
+ 	printf("%i\n", x);
+ 	x = rand();
+ 	printf("%i\n", x);
+ 	x = rand();
+ 	printf("%i\n", x);
+ 	x = rand();
+ 	printf("%i\n", x);
+\end{verbatim}
+%
+On my machine I got the following output:
+
+\begin{verbatim}
+	1804289383
+	846930886
+	1681692777
+	1714636915
+\end{verbatim}
+%
+You will probably get something similar, but different, on yours.
+
+Of course, we don't always want to work with gigantic integers.
+More often we want to generate integers between 0 and some
+upper bound.  A simple way to do that is with the modulus
+operator.  For example:
+
+\begin{verbatim}
+ 	int x = rand ();
+ 	int y = x % range + start
+\end{verbatim}
+%
+Range here is the number of possible consecutive random values we would like. 
+Start is the lowest random value we want.  Since {\tt y} is the remainder when {\tt x} is divided by
+{\tt range}, the only possible values for {\tt y}
+are between 0 and {\tt range - 1}, including both
+end points.   Keep in mind, though, that {\tt y} will never
+be equal to {\tt range}. The lower bound here is always 0 so if we add a start value we can shift the range to start at a new lower bound.
+
+For example if we want a random number between 1 and 6, inclusively, our range is 6  [1, 2, 3, 4, 5, 6]. 
+\begin{verbatim}
+ 	int range = 6;
+ 	int x = rand ();
+ 	int y = x % range;
+\end{verbatim}
+%
+However, this code will generate a number between 0 and 5,  inclusively. To start this sequence at 1, we have to add a start value.
+
+\begin{verbatim}
+ 	int range = 6;
+ 	int start = 1;
+ 	int x = rand ();
+ 	int y = x % range + start;
+\end{verbatim}
+%
+It is also frequently useful to generate random floating-point values.
+A common way to do that is by dividing by {\tt RAND\_MAX}.  For
+example:
+
+\begin{verbatim}
+ 	int x = rand ();
+ 	double y = (double) x / RAND_MAX;
+\end{verbatim}
+%
+This code sets {\tt y} to a random value between 0.0 and 1.0,
+including both end points.  As an exercise, you might want to
+think about how to generate a random floating-point value in
+a given range; for example, between 100.0 and 200.0.
+
+
+\section{Random seeds}
+\label{Random seeds}
+\index{seed}
+\index{random}
+
+If you have run the code in this chapter a few times, you might
+have noticed that you are getting the same ``random'' values
+every time.  That's not very random!
+
+One of the properties of pseudorandom number generators is that
+if they start from the same place they will generate
+the same sequence of values.  The starting place is called
+a {\bf seed}; by default, C uses
+the same seed every time you run the program.
+
+While you are debugging, it is often helpful to
+see the same sequence over and over.  That way, when you make
+a change to the program you can compare the output before and
+after the change.
+
+If you want to choose a different seed for the random number
+generator, you can use the {\tt srand()} function.  It takes
+a single argument, which is an integer between 0 and {\tt RAND\_MAX}.
+
+For many applications, like games, you want to see a different
+random sequence every time the program runs.  A common way to
+do that is to use a library function like {\tt time()}
+to generate something reasonably unpredictable
+and unrepeatable, like the number of seconds since January
+1970, and use that number as a seed.  The details
+of how to do that depend on your development environment but one example is shown here.
+
+\begin{verbatim}
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <time.h>
+	
+	int main (void)
+	{
+	 	// use the number of milliseconds from 1970 to seed rand
+	 	 srand(time(0)); 
+		
+	 	//random number from 1 and 6 
+	  	int x = rand() % 6 + 1;
+	  	printf ("%i", x);
+		
+	  	//random number from -5 to positive 4
+	  	x = rand() % 10 - 5;
+	  	printf ("%i", x);
+		
+	  	return EXIT_SUCCESS;
+	}
+	
+\end{verbatim}
+
+
+Let's look at program that combines selection, modulus, and randomness. The following program generates a random number, either 1 for heads or 2 for tails. The result is printed.
+
+\begin{verbatim}
+ 	#include <stdio.h>
+ 	#include <stdlib.h>
+ 	#include <time.h>
+	
+ 	int main (void)
+ 	{
+ 		// use the number of milliseconds from 1970 to seed rand
+	 	srand(time(0)); 
+		
+	 	//random number 1 2r 2
+	 	int flip = rand() % 2 + 1;
+ 	
+		if(flip == 1 )
+		{
+			puts("heads")
+		}
+		if(flip == 2 )
+		{
+	 	    puts("tails")
+		}
+		
+	 	return EXIT_SUCCESS;
+ 	}
+	
+\end{verbatim}
+
+
+
+\section {Selection structures: two-way}
 \label{alternative}
 \index{conditional!alternative}
+\index{structures!selection}
+\index{control structures!selection}
+\index{two-way selcection}
+\index{selection!two-way}
 
-A second form of conditional execution is alternative execution,
+A second form of the selection structures is two-way selection, 
 in which there are two possibilities, and the condition determines
-which one gets executed.  The syntax looks like:
+which one gets executed.  We do one thing or we do another thing, 
+unlike one-way selection where we did the thing or we didn't do the thing
+ The syntax looks like:
 
 \begin{verbatim}
   if (x%2 == 0)
@@ -114,7 +352,7 @@ As an aside, if you think you might want to check the parity
 ``wrap'' this code up in a function, as follows:
 
 \begin{verbatim}
-  void PrintParity (int x) 
+  void printParity (int x) 
   {
       if (x%2 == 0) 
       {
@@ -127,26 +365,27 @@ As an aside, if you think you might want to check the parity
   }
 \end{verbatim}
 %
-Now you have a function named {\tt PrintParity()} that will display
+Now you have a function named {\tt printParity()} that will display
 an appropriate message for any integer you care to provide.
 In {\tt main()} you would call this function as follows:
 
 \begin{verbatim}
-   PrintParity (17);
+   printParity (17);
 \end{verbatim}
 %
 Always remember that when you {\em call} a function, you do
 not have to declare the types of the arguments you provide.
-C can figure out what type they are.  You should resist the
-temptation to write things like:
+C can figure out what type they are based on the definition and the prototype.
+You should resist the temptation to write things like:
 
 \begin{verbatim}
    int number = 17;
-   PrintParity (int number);         /* WRONG!!! */
+   printParity (int number);         /* WRONG!!! */
 \end{verbatim}
 
-\section {Chained conditionals}
-\index{conditional!chained}
+\section {Chaining}
+\index{chain}
+\index{selection!chaining}
 
 Sometimes you want to check for a number of related conditions
 and choose one of several actions.  One way to do this is by
@@ -178,7 +417,7 @@ quickly if you do.
 \section{Nested conditionals}
 \index{conditional!nested}
 
-In addition to chaining, you can also nest one conditional
+In addition to chaining, you can also nest one control structures
 within another.  We could have written the previous example
 as:
 
@@ -217,23 +456,90 @@ can.
 On the other hand, this kind of {\bf nested structure} is common, and
 we will see it again, so you better get used to it.
 
-\section{The {\tt return} statement}
+
+\section{Selection structures: switch}
+\index{switch}
+\index{selection!switch}
+\index{control structure!switch}
+
+A switch is sort of short hand to replace some long chained structures. 
+You can use a switch when you are testing a single {\tt int} or {\tt char}, you
+are testing for equality, and you would otherwise have a long chain. For example we can take this chained structure that is testing the 
+int value and printing a message based on the value.
+
+\begin{verbatim}
+	
+	//x is an int
+	
+	if (x == 1) 
+	{
+		puts("message1");
+	} 
+	else if (x == 2) 
+	{
+		puts("message2");
+	} 
+	else if (x == 3) 
+	{
+		puts("message3");
+	} 
+	else 
+	{
+		puts("default message");
+	}
+\end{verbatim}
+%
+
+We can rewrite this as a switch because we are testing an int value for equality in a chained structure. Each block of code in the chained structure 
+becomes a case in the switch. Each case in the switch must have a label and a break. Most labels start with {\tt case|} and then have the value we are testing for equality --
+like {\tt case 2:} or {\tt case 'c':}. One case has a unique label -- {\tt default}. The default case has no value to test because it is the catchall -- it only runs if all other cases fail. All cases end with the word {\tt break}. A break forces control to leave the switch structure. Breaks are an important part of the switch structure.
+Write a program that prompts the user for an integer. Use the switch to print various messages. Try removing some of the breaks and  check out how the changes behave.
+Omitting breaks between cases can cause fall through - this can be a bug or a feature depending on how you use it (look into stacking cases in switches).
+
+
+\begin{verbatim}
+	
+	//x is an int
+	
+	switch(x):
+	{
+		case 1:
+		puts("message1");
+		break;
+		
+		case 2:
+		puts("message1");
+		break;
+		
+		case 3:
+		puts("message1");
+		break;
+		
+		default:
+		puts("message1");
+		break;
+		
+	\end{verbatim}
+	%
+
+\section{The {\tt return} statement and early termination}
 \index{return}
 \index{statement!return}
 
 The {\tt return} statement allows you to terminate the execution
-of a function before you reach the end.  One reason to use it
-is if you detect an error condition:
+of a function. You can place a return statement in any part of the function. Once the program hits the return it will leave the function and go back to the caller. 
+If you put a return statement before you before you reach the end of a function this is called an early return or early termination. This can be useful to guard the function from doing unnecessary action. For example, if the parameter of the function must greater than zero, then we can put an if statement to act as a gaurd and stop the 
+execution of the function right off the top.
 
 \begin{verbatim}
   #include <math.h>
 
-  void PrintLogarithm (double x) 
+  void printLogarithm (double x) 
   {
-      if (x <= 0.0) 
+      if (x > 0.0) 			 /*'guard' for early return if x >0 */
       {
           printf ("Positive numbers only, please.\n");
-          return;
+          return;  
       }
 
      double result = log (x);
@@ -241,19 +547,17 @@ is if you detect an error condition:
   }
 \end{verbatim}
 %
-This defines a function named {\tt PrintLogarithm()} that takes
+This defines a function named {\tt printLogarithm()} that takes
 a {\tt double} named {\tt x} as a parameter.  The first thing
-it does is check whether {\tt x} is less than or equal to
+it does is check whether {\tt x} is greater than
 zero, in which case it displays an error message and then uses
 {\tt return} to exit the function.  The flow of execution
 immediately returns to the caller and the remaining lines of
 the function are not executed.
 
-I used a floating-point value on the right side of the condition
-because there is a floating-point variable on the left.
-
 Remember that any time you want to use one a function from the math
-library, you have to include the header file {\tt math.h}.
+library, you have to include the header file {\tt math.h} and 
+you may be required to link the math library at compile time with -lm (dash L M)
 
 \section{Recursion}
 \label{recursion}
@@ -268,7 +572,7 @@ one of the most magical and interesting things a program can do.
 For example, look at the following function:
 
 \begin{verbatim}
-  void Countdown (int n) 
+  void countdown (int n) 
   {
       if (n == 0) 
       {
@@ -277,15 +581,15 @@ For example, look at the following function:
       else
       {
           printf ("%i", n);
-          Countdown (n-1);
+          countdown (n-1);
       }
   }
 \end{verbatim}
 %
-The name of the function is {\tt Countdown()} and it takes a single
+The name of the function is {\tt countdown()} and it takes a single
 integer as a parameter.  If the parameter is zero, it outputs
 the word ``Blastoff.''  Otherwise, it outputs the parameter and
-then calls a function named {\tt Countdown()}---itself---passing
+then calls a function named {\tt countdown()}---itself---passing
 {\tt n-1} as an argument.
 
 What happens if we call this function like this:
@@ -293,40 +597,40 @@ What happens if we call this function like this:
 \begin{verbatim}
   int main (void)
   {
-       Countdown (3);
+       countdown (3);
        return EXIT_SUCCESS;
   }
 \end{verbatim}
 %
-The execution of {\tt Countdown()} begins with {\tt n=3}, and
+The execution of {\tt countdown()} begins with {\tt n=3}, and
 since {\tt n} is not zero, it outputs the value 3, and then
 calls itself...
 
 \begin{quote}
-The execution of {\tt Countdown()} begins with {\tt n=2}, and
+The execution of {\tt countdown()} begins with {\tt n=2}, and
 since {\tt n} is not zero, it outputs the value 2, and then
 calls itself...
 
 \begin{quote}
-The execution of {\tt Countdown()} begins with {\tt n=1}, and
+The execution of {\tt countdown()} begins with {\tt n=1}, and
 since {\tt n} is not zero, it outputs the value 1, and then
 calls itself...
 
 \begin{quote}
-The execution of {\tt Countdown()} begins with {\tt n=0}, and
+The execution of {\tt countdown()} begins with {\tt n=0}, and
 since {\tt n} is zero, it outputs the word ``Blastoff!''
 and then returns.
 \end{quote}
 
-The Countdown that got {\tt n=1} returns.
+The countdown that got {\tt n=1} returns.
 
 \end{quote}
 
-The Countdown that got {\tt n=2} returns.
+The countdown that got {\tt n=2} returns.
 
 \end{quote}
 
-The Countdown that got {\tt n=3} returns.
+The countdown that got {\tt n=3} returns.
 
 \noindent And then you're back in {\tt main()} (what a trip).  So the
 total output looks like:
@@ -339,17 +643,17 @@ total output looks like:
 \end{verbatim}
 %
 As a second example, let's look again at the functions
-{\tt PrintNewLine()} and {\tt PrintThreeLines()}.
+{\tt printNewLine()} and {\tt printThreeLines()}.
 
 \begin{verbatim}
-  void PrintNewLine () 
+  void printNewLine () 
     {
         printf ("\n");
     }
 
-  void PrintThreeLines () 
+  void printThreeLines () 
     {
-        PrintNewLine ();  PrintNewLine ();  PrintNewLine ();
+        printNewLine ();  printNewLine ();  printNewLine ();
     }
 \end{verbatim}
 %
@@ -357,17 +661,17 @@ Although these work, they would not be much help if I wanted
 to output 2 newlines, or 106.  A better alternative would be
 
 \begin{verbatim}
-    void PrintLines (int n) 
+    void printLines (int n) 
     {
         if (n > 0) 
         {
             printf ("\n");
-            PrintLines (n-1);
+            printLines (n-1);
         }
     }
 \end{verbatim}
 %
-This program is similar to {\tt Countdown}; as long as {\tt n} is
+This program is similar to {\tt countdown}; as long as {\tt n} is
 greater than zero, it outputs one newline, and then calls itself to
 output {\tt n-1} additional newlines.  Thus, the total number of
 newlines is {\tt 1 + (n-1)}, which usually comes out to roughly {\tt
@@ -405,6 +709,15 @@ does not appear until you run the program).
 
 You should write a small program that recurses forever and run
 it to see what happens.
+
+\section {Tips on writing recursion solutions}
+It is helpful to have a strategy to tackle recursive solutions. 
+\begin{enumerate}
+	\item Identify a base case. This is what stops the recursion. This block will not have a recursive call
+	\item Identify the general case (the recursive step). This is the repeating part. It will contain a recursive call
+	\item The recursive call will use an argument that gets the next step closer to the base case.
+	\item An if statement will test the parameter and determine if the base case is run or the general case.
+\end{enumerate}
 
 \section {Stack diagrams for recursive functions}
 \index{stack}
@@ -446,8 +759,22 @@ stack diagram for {\tt PrintLines()}, invoked with the parameter {\tt n=4}.
 the remainder when one number is divided by another.  In C
 it is denoted with a percent sign ({\tt \%}).
 
-\item[conditional:]  A block of statements that may or may not
-be executed depending on some condition.
+\item[deterministic:]  A program that does the same thing every
+time it is run.
+
+\item[pseudorandom:]  A sequence of numbers that appear to be
+random, but which are actually the product of a deterministic
+computation.
+
+\item[seed:]  A value used to initialize a random number sequence.
+Using the same seed should yield the same sequence of values.
+
+\item[condition:]  An expression that results in true or false
+
+
+\item[control structure:]  A structure that uses a condition to allow for conditionally executing a block of code. 
+
+\item[selection structure:]  A type of control structure. Selection structures include {\tt if}, {\tt if...else}, and {\tt switch}
 
 \item[chaining:]  A way of joining several conditional statements
 in sequence.
@@ -464,12 +791,14 @@ an infinite recursion will cause a run-time error.
 
 \index{modulus}
 \index{conditional}
+
 \index{conditional!chained}
 \index{conditional!nested}
 \index{recursion}
 \index{recursion!infinite}
 \index{infinite recursion}
-
+\index{random}
+\index{random!seed}
 \end{description}
 
 

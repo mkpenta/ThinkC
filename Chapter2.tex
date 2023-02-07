@@ -1,6 +1,7 @@
 % LaTeX source for textbook ``How to think like a computer scientist''
 % Copyright (C) 1999  Allen B. Downey
 % Copyright (C) 2009  Thomas Scheffler
+% Copyright (C) 2023  Michael Penta
 
 \setcounter{chapter}{1}
 \chapter{Variables and types}
@@ -121,12 +122,13 @@ inside the quotes, but behind them separated by comma.
 The string is still there, but now contains a {\tt \%i} instead of
 any text. 
 The {\tt \%i} a placeholder that tells the \texttt{printf()} command
-to print an integer value. Several such placeholders exist
-for different data types and formatting options of the output.
-We will see the next one just now.
+to print an integer value (you can also use {\tt \%d} for integers). 
+Several such placeholders, called {\bf format specifiers}, exist
+for different data types and formatting options of the output. 
+We can look at more next.
 
 A character value is a letter or digit or punctuation mark
-enclosed in single quotes, like {\tt 'a'} or {\tt '5'}.
+enclosed in single quotes, like {\tt 'a'} or {\tt '5'} - that is the character 5 not the integer 5.
 You can output character values in a similar way:
 
 \begin{verbatim}
@@ -635,6 +637,123 @@ where the result will go.  Expressions
 do not represent storage locations, only values.  So the
 following is illegal:  {\tt minute + 1 = hour;}.
 
+
+\section{Scanning User Input}
+\index{scanning}
+\index{input}
+In all of the examples so far we have assigned variable values before we run our program. 
+We can also ask the user to input values when the program is running. 
+ {\tt scanf()} is a function in the C programming language that is used to read input from the user.
+  It can be used to read various types of data, such as integers, characters, and strings (we will get back to strings in a later chapter)
+ 
+To read a single character from the user, you can use the  {\tt \%c} 
+format specifier. The {\tt \%c} format specifier tells {\tt scanf()} to read a 
+character and store it in the variable. For example:
+\begin{verbatim}
+char c;
+scanf("%c", &c);
+\end{verbatim}
+%
+
+In this example, {\tt scanf()} will read a character from the user's input and store it in the variable c. Note that the {\tt \&} operator is used when we refer to the variable name. This will be explained in a later chapter, but it is important not to forget it here.
+
+To read an integer, you can use the  {\tt \%d} or  {\tt \%i}  format specifier. These specifiers tells {\tt scanf()} to read an integer and store it in the variable.  For example:
+\begin{verbatim}
+int x;
+scanf("%d", &x);
+\end{verbatim}
+In this example, {\tt scanf()} will read an integer from the user's input and store it in the variable x.
+
+{\tt scanf()} can also be used to scan strings, but we will get back to strings in a later chapter.
+
+
+\section{Prompting for User Input}
+\index{scanning}
+\index{input}
+\index{puts}
+
+Prompting for input is a way to gather information from the user and store it in variables for use in the program. 
+When using  {\tt scanf()}, you first need to print a prompt to let the user know what to enter. This can be done using {\tt printf}. 
+
+For example, to prompt the user for an integer, you can use:
+
+\begin{verbatim}
+	int x;
+	printf("%s", "Enter an integer: \n");
+	scanf("%d", &x);
+\end{verbatim}
+%
+In this example, the {\tt printf()} function is used to print the message "Enter an integer: "  
+with a new line at the end. The user can enter an integer and the {\tt scanf()}  
+function is used to read the integer from the user and store it in the variable x.
+
+{\bf Caution} It is considered insecure to use{\tt printf()} to print a string without the string format specifier.  
+
+\begin{verbatim}
+	printf( "Enter an integer: \n");  //works but is consdered insecure
+	printf("%s", "Enter an integer: \n");  // this is considered a secure use
+\end{verbatim}
+%
+
+As an alternative to printing strings with {\tt printf()},  you can use the {\tt puts()} function to print a string. 
+Unlike {\tt printf()}, {\tt puts()} automatically appends a newline character after the string, 
+which can be useful if you want to print multiple strings on separate lines.
+
+For example:
+\begin{verbatim}
+puts("Welcome to the program");
+puts("Enter an integer:");
+\end{verbatim}
+%
+\section{Mixing Calls to Scan Integers and Character}
+\index{scanning}
+\index{input}
+It is important to note that when mixing calls to {\tt scanf()} to read different types, newline characters can cause problems. 
+For example, if the user enters an integer followed by a newline character, the newline character will be 
+left in the input buffer and can cause issues when trying to read the next input using scanf(). 
+
+One way to manage this is to include a space in the quotes before the format specifier - like this {\tt " \%d"}. 
+The space indicates to ignore whitespace characters.
+
+\begin{verbatim}
+	
+	#include <stdio.h>
+	#include <stdlib.h>
+	
+	int main (void)
+	{
+			int age;
+			char initial;
+			puts("enter your age");
+			scanf("%d", &age);
+			puts("enter your first intial");
+			scanf(" %c", &initial); //note the space after " and before %
+	}
+	
+\end{verbatim}
+%
+ Another way to manage this is to insert a second call to scan the newline.
+
+\begin{verbatim}
+	
+	#include <stdio.h>
+	#include <stdlib.h>
+	
+	int main (void)
+	{
+			int age;
+			char initial;
+			char newline;
+   			puts("enter your age");
+			scanf("%d", &age);
+			scanf("%c", &newline); //this will scan the extra new line
+			puts("enter your first intial");
+			scanf("%c", &initial); 
+	}
+	
+\end{verbatim}
+%
+
 \section{Glossary}
 
 \begin{description}
@@ -667,6 +786,8 @@ determines its type.
 values that represents a single result value.  Expressions also
 have types, as determined by their operators and operands.
 
+\item[format specifier:] A special character or sequence of characters that tells the printing and scanning functions how to format and interpret data.
+
 \item[operator:] A special symbol that represents a simple
 computation like addition or multiplication.
 
@@ -688,6 +809,9 @@ in order to represent complex computations concisely.
 \index{operator}
 \index{operand}
 \index{composition}
+\index{scanning}
+\index{format}
+
 
 \end{description}
 

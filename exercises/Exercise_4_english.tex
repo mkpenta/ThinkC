@@ -2,6 +2,23 @@
 % Copyright (C) 1999  Allen B. Downey
 % Copyright (C) 2009  Thomas Scheffler
 
+\begin{exercise}
+Use the variables initialized below to evaluate each expression. State if C would consider the resulting value as true or false.
+\begin{verbatim}
+	int m = 0;
+	int n = 1;
+	char p = 'k';
+	char s = 'F'
+	double t = 1.2    
+\end{verbatim}
+\begin{enumerate}
+	\item {\tt m  n}
+	\item {\tt m + n}
+	\item {\tt m}
+	\item {\tt p <= k}
+	\item {\tt t < n}
+\end{enumerate}
+\end{exercise}
 
 \begin{exercise}
 This exercise reviews the flow of execution through a program
@@ -12,38 +29,36 @@ questions below.
 
    #include <stdio.h>
    #include <stdlib.h>
-
-   void Zippo (int quince, int flag);
-
-   void Baffle (int output)
-    {
-       printf ("%i\n",output);
-       Zippo (12, -5);
-     }
- 
-    void Zippo (int quince, int flag)
-    {
-       if (flag < 0)
-       {
-             printf ("%i zoop\n", quince);
-       }
-       else
-       {
-          printf ("rattle ");
-          Baffle (quince);
-          printf ("boo-wa-ha-ha\n");
-         }
-     }
- 
-     int main (void)
-     {
-         Zippo (5, 13);
-         return EXIT_SUCCESS;
-     }
-
-
+  
+   void zippo (int, int);
+   void baffle (int);
+  
+   int main (void)
+   {
+  	 zippo (5, 13);
+  	 return EXIT_SUCCESS;
+   }
+   void baffle (int output)
+   {
+  	 printf ("%i\n",output);
+  	 zippo (12, -5);
+   }
+  
+   void zippo (int quince, int flag)
+   {
+    	if (flag < 0)
+    	{
+  	    	printf ("%i zoop\n", quince);
+     	}
+    	else
+    	{
+  	    	printf ("rattle ");
+  	    	baffle (quince);
+  	    	printf ("boo-wa-ha-ha\n");
+    	}
+    }
 \end{verbatim}
-
+%
 \begin{enumerate}
 
 \item Write the number {\tt 1} next to the first {\em statement}
@@ -54,16 +69,45 @@ things that are statements from things that are not.
 until the end of the program.  If a statement is executed more than
 once, it might end up with more than one number next to it.
 
-\item What is the value of the parameter {\tt blimp} when {\tt baffle()}
-gets invoked?
+\item What is the value of the parameter {\tt quince} when {\tt baffle()}
+gets invoked for the first time?
 
-\item What is the output of this program?
+\item What is the exact output of this program? Pay close attention to the printed white space like spaces and {\tt \\n}.
 
 \end{enumerate}
+
+\end{exercise}
+
+\begin{exercise}
+	In this exercise you will practice using random with functions
+	
+		\begin{enumerate}
+		\item Define a function and a prototype called rollDie that has no parameters. 
+	In the function call rand to generate a random number 1, 2, 3, 4, 5, or 6. Print the resulting value.
+	
+	\item Define a main function that seeds the random with time calls your function 3 times
+		\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+	In this exercise you will practice using selection statements with functions
+	\begin{enumerate}
+		\item Define a function and a prototype called validate that has one parameter, an int. 
+		If the int is 0 the function should print an error message and terminate. 
+		If the parameter is non-zero, multiply the value by 2 and print the result.
+		
+		\item 
+		Define a main function that calls your function 3 times with the following arguments: 0, 3, -2
+		
+	\end{enumerate}
+
 \end{exercise}
 
 
 \begin{exercise}
+There is an old song about 
+beer bottles that can be expressed recursively.
+
 The first verse of the song ``99 Bottles of Beer'' is:
 
 \begin{quote}
@@ -91,6 +135,9 @@ Write a program that prints the entire lyrics of
 recursive method that does the hard part, but you also
 might want to write additional methods to separate the major
 functions of the program.
+
+The last verse, when the number of bottles left is 0, is the base case. 
+The other verses are the recursive step. 
 
 As you are developing your code, you will probably
 want to test it with a small number of verses, like
@@ -175,30 +222,5 @@ input value on the computer screen.
 %\end{verbatim}
 %\end{exercise}
 
-\begin{exercise}
-Fermat's Last Theorem says that there are no integers
-$a$, $b$, and $c$ such that
 
-\[a^n + b^n = c^n \]
-%
-except in the case when $n=2$.
-
-Write a function named {\tt checkFermat()} that takes four
-integers as parameters---{\tt a}, {\tt b}, {\tt c} and {\tt n}---and
-that checks to see if Fermat's theorem holds.  If
-$n$ is greater than 2 and it turns out to be true that 
-$a^n + b^n = c^n$,
-the program should print ``Holy smokes, Fermat was wrong!''
-Otherwise the program should print ``No, that doesn't work.''
-
-You should assume that there is a function named {\tt raiseToPow()}
-that takes two integers as arguments and that raises the
-first argument to the power of the second.  For example:
-
-\begin{verbatim}
-    int x = raiseToPow (2, 3);
-\end{verbatim}
-%
-would assign the value {\tt 8} to {\tt x}, because $2^3 = 8$.
-\end{exercise}
 

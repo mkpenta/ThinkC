@@ -1,8 +1,30 @@
 % LaTeX source for textbook ``How to think like a computer scientist''
 % Copyright (C) 1999  Allen B. Downey
 % Copyright (C) 2009  Thomas Scheffler
+% Copyright (C) 2023  Michael Penta
 
 
+\begin{exercise}
+	
+Evaluate each of the following expressions to determine the resulting value. 
+Use the following variables and values when you evaluate the expressions:
+\begin{verbatim}
+	int x= 2;
+	double y = 1.2;
+	char z = 'A'
+\end{verbatim}
+%
+\begin{enumerate}
+	\item {\tt x + 1}
+	\item {\tt x + y}
+	\item {\tt x/3}
+	\item {\tt x/3.0}
+	\item {\tt (int)y}
+	\item {\tt (int)z}
+\end{enumerate}
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{exercise}
 
 The point of this exercise is to practice reading code and to
@@ -14,44 +36,45 @@ a program with multiple functions.
 \item What is the output of the following program?  Be precise
 about where there are spaces and where there are newlines.
 
-HINT: Start by describing in words what {\tt Ping()} and
-{\tt Baffle()} do when they are invoked.
+HINT: Start by describing in words what {\tt ping()} and
+{\tt baffle()} do when they are invoked.
 
 \begin{verbatim}
-#include <stdio.h>
-#include <stdlib.h>
+ #include <stdio.h>
+ #include <stdlib.h>
 
- void Ping () 
+ void ping(void);
+ void baffle(void);
+ void zoop(void);
+
+ int main (void)
  {
-    printf (".\n");
+ 	printf ("No, I ");
+ 	zoop ();
+ 	printf ("I ");
+ 	baffle ();
+ 	return EXIT_SUCCESS;
   }
-
-  void Baffle () 
-  {
-    printf ("wug");
-    Ping ();
-  }
-
- void Zoop () 
+ void ping(void)
  {
-    Baffle ();    
-    printf ("You wugga ");
-    Baffle ();
-  }
-
-  int main (void) 
-  {
-    printf ("No, I ");
-    Zoop ();
-    printf ("I ");
-    Baffle ();
-    return EXIT_SUCCESS;
-  }
+ 	printf (".\n"); 
+ }
+ void baffle(void)
+ {
+ 	printf("wug");
+ 	ping (); 
+ }
+ void zoop(void)
+ {
+ 	baffle ();
+ 	printf ("You wugga ");
+ 	baffle ();
+ }
 \end{verbatim}
-
+%
 
 \item Draw a stack diagram that shows the state of the program
-the first time {\tt Ping()} is invoked.
+the first time {\tt ping()} is invoked.
 
 \end{enumerate}
 
@@ -65,10 +88,10 @@ to write and invoke functions that take parameters.
 
 \begin{enumerate}
 
-\item Write the first line of a function named {\tt Zool()} that
+\item Write a function prototype for a function named {\tt zool()} that
 takes three parameters: an {\tt int} and two {\tt char}.
 
-\item Write a line of code that invokes {\tt Zool()}, passing
+\item Write a line of code that invokes {\tt zool()}, passing
 as arguments the value {\tt 11}, the letter {\tt a}, and the letter {\tt z}.
 \end{enumerate}
 
@@ -87,7 +110,7 @@ start with a working solution to exercise
 
 \begin{enumerate}
 
-\item Write a function called {\tt PrintDateAmerican()}
+\item Write a function definition and prototype for a function called {\tt printDateAmerican()}
 that takes the day, month and year as parameters and that
 prints them in American format.
 
@@ -96,12 +119,15 @@ appropriate arguments.  The output should look something like this
 (except that the date might be different):
 %
 \begin{verbatim}
-3/29/2009
+3/29/2022
 \end{verbatim}
 %
-\item Once you have debugged {\tt PrintDateAmerican()}, write another
-function called {\tt PrintDateEuropean()} that prints the date in
+\item Once you have successfully run the{\tt printDateAmerican()}, write another
+function called {\tt printDateEuropean()} that prints the date in
 European format.
+
+\item Once you have the two functions working, write a main program that asks the user for the day, month, and year and scan the values into variables.
+Call each of your functions with the given input. Do this three times - each time prompt and scan the data from the user and call both functions with the data.
 
 \end{enumerate}
 
@@ -118,17 +144,20 @@ floating-point numbers.
 
 \begin{enumerate}
 
-\item Create a new program called {\tt Multadd.c}.
-
-\item Write a function called {\tt Multadd()} that takes three {\tt doubles}
+\item Write a function definition and prototype for a function called {\tt multadd()} that takes three {\tt doubles}
 as parameters and that prints their multadditionization.
 
-\item Write a {\tt main()} function that tests {\tt Multadd()} by invoking it with a
+\item Write a {\tt main()} function that tests {\tt multadd()} by invoking it with a
 few simple parameters, like {\tt 1.0, 2.0, 3.0}, and then prints
 the result, which should be {\tt 5.0}.
 
-\item Also in {\tt main()}, use {\tt Multadd()} to compute the
+\item Also in {\tt main()}, use {\tt multadd()} to compute the
 following value:
+
+
+{\bf NOTE:} Do not let the math scare you -- you don't have to understand the math to write the code.
+Break down each piece. Leverage variables and functions. Look for patterns.
+
 %
 \begin{eqnarray*}
 & \sin \frac{\pi}{4} + \frac{\cos \frac{\pi}{4}}{2} & 
@@ -137,8 +166,8 @@ following value:
 %& \log 10 + \log 20 &
 \end{eqnarray*}
 %
-\item Write a function called {\tt Yikes()} that takes a
-double as a parameter and that uses {\tt Multadd()} to calculate
+\item Write a function called {\tt yikes()} that takes a
+double as a parameter and that uses {\tt multadd()} to calculate
 and print
 %
 \begin{eqnarray*}
@@ -157,8 +186,7 @@ at the same time, which can be very difficult.
 
 One of the purposes of this exercise is to practice pattern-matching:
 the ability to recognize a specific problem as an instance of a
-general category of problems.
-
+general category of problems (think about how these meet the pattern of the multadd function)
 
 
 \end{exercise}

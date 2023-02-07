@@ -1,6 +1,7 @@
 % LaTeX source for textbook ``How to think like a computer scientist''
 % Copyright (C) 1999  Allen B. Downey
 % Copyright (C) 2009  Thomas Scheffler
+% Copyright (C) 2023  Michael Penta
 
 \setcounter{chapter}{2}
 \chapter{Function}
@@ -15,8 +16,15 @@ that were not integers.  We worked around the problem by measuring
 percentages instead of fractions, but a more general solution is
 to use floating-point numbers, which can represent fractions
 as well as integers.  In C, there are two floating-point types,
-called {\tt float} and {\tt double}.  In this book we will use
-{\tt double}s exclusively.
+called {\tt float} and {\tt double}.  These two different data types
+are  used to store decimal numbers. A "float" is a single-precision number, 
+which means it has less precision (or fewer digits) than a "double", 
+which is a double-precision number. Because of this,
+a double is more accurate when dealing with decimal numbers than a float. 
+The trade-off is precision for memory usage - the more precise data type uses more bits
+to store the value. In this text we accept this trade-off  and exclusively use the
+{\tt double} data type for floating point numbers.  
+
 
 You can create floating-point variables and assign values to them
 using the same syntax we used for the other types.  For example:
@@ -26,6 +34,22 @@ using the same syntax we used for the other types.  For example:
   pi = 3.14159;
 \end{verbatim}
 %
+
+To print a single precision {\tt float}, we can use the format specifier {\tt \%f}, 
+but for a double we need to use {\tt \%lf} -- that is L F, as in Long Float.  
+In C, the type modifier {\tt long} doubles the amount of memory (if possible) for a data type. 
+If we have a 4 byte {\tt int}, then a {\tt long int} would be 8 bytes. 
+We can also reduce the amount of memory allocated with the type modifier {\tt short}.
+Our 4 byte {\tt int}, is reduced to 2 bytes when we use a {\tt a short int}.
+In essence our {\tt double} data type is a {\tt long float}, hence the {\tt \%lf}.
+
+\begin{verbatim}
+	double pi;
+	pi = 3.14159;
+	printf("%lf\n", pi);
+\end{verbatim}
+%
+
 It is also legal to declare a variable and assign a value to it at the
 same time:
 
@@ -60,7 +84,7 @@ is illegal:
 Because the variable on the left is an {\tt int}
 and the value on the right is a {\tt double}.  But it is easy
 to forget this rule, especially because there are places where C
-automatically converts from one type to another.
+automatically converts from one type to another (this is called implicit casting, more on that in a bit).
 For example,
 
 \begin{verbatim}
@@ -78,20 +102,23 @@ but it can cause problems; for example:
 You might expect the variable {\tt y} to be given the value
 {\tt 0.333333}, which is a legal floating-point value, but in
 fact it will get the value {\tt 0.0}.  The reason is that the
-expression on the right appears to be the ratio of two integers,
-so C does {\em integer} division, which yields the integer
-value {\tt 0}.  Converted to floating-point, the result is
-{\tt 0.0}.
+expression on the right is evaluated as integer division. In C, 
+an an integer divided by an integer will be evaluated with integer division.
+The result of integer division will always be the whole number of the standard division result.
+This means {\tt 5/2 = 2} and {\tt 1/3 = 0}. In the examples above, after the integer division results in {\tt 0}, 
+it is converted to floating-point value with the assignment, and it finally 
+results in the value {\tt 0.0}.
 
-One way to solve this problem (once you figure out what
-it is) is to make the right-hand side a floating-point
+\index{casting}
+
+One way to solve this problem is to make the right-hand side a floating-point
 expression:
 
 \begin{verbatim}
     double y = 1.0 / 3.0;
 \end{verbatim}
 %
-This sets {\tt y} to {\tt 0.333333}, as expected.
+This sets {\tt y} to {\tt 0.333333}, because if either value in the division is a float or double, the compiler will use floating-point division.
 
 \index{arithmetic!floating-point}
 
@@ -128,28 +155,27 @@ cause some very hard to find bugs in your program.
 
 C allows you to specify the static nature of storage locations through
 the use of the keyword {\tt const}. It must be used in conjunction with the 
-required type of the constant. A value will be assigned at initialisation but can
+required type of the constant. A value will be assigned at initialization but can
 never be changed again during the runtime of the program.  
 
 \begin{verbatim}
     const double PI = 3.14159;
-    printf ("Pi: %f\n", PI);
+    printf ("Pi: %lf\n", PI);
      ...
     PI = 10.999;  /* wrong, error caught by the compiler  */
 \end{verbatim}
 %
 
-It is no longer possible to change the value for  {\tt PI} once it has been initialised, but 
+It is no longer possible to change the value for  {\tt PI} once it has been initialized, but 
 other than this we can use it just like a variable.
 
 In order to visually separate constants from variables we will use
 all uppercase letters in their names. 
 
 
-
 %todo: typecasting überarbeiten  - siehe deutsche Folien
 
-\section{Converting from {\tt double} to {\tt int}}
+\section{Converting types}
 \label{rounding}
 \label{typecasting} 
 \index{rounding}
@@ -178,11 +204,36 @@ For example:
 \end{verbatim}
 %
 The {\tt (int)} operator casts the value of PI into an integer, so {\tt x} gets the value
-3.  Converting to an integer always rounds down, even if the fraction
-part is 0.99999999.
+3.  Converting to an integer always truncates the double -- it cuts off the fractional part of the value. 
+This is essentially  rounding down, even if the fraction part is 0.99999999. 
 
-For every type in C, there is a corresponding operator that
-typecasts its argument to the appropriate type.
+Of course we can cast an {\tt int} to a {\tt double} without any worry about loss of 
+information because we are only add .0 and not changing the value. 
+\begin{verbatim}
+	 int x = 3;
+	 double y = (double) x;  /* y = 3.0 */
+\end{verbatim}
+%
+We can also directly convert from {\tt char} to {\tt int} because each ASCII character is stored 
+as an integer value. If an integer is between 0 and 255 (inclusively) we can also cast to the ASCII character.
+\begin{verbatim}
+ 	char lettter = 'A'
+ 	int x = 65;
+ 	char letterX = (char)x;
+ 	int y = (int) letter;
+\end{verbatim}
+%
+Type can change how C treats values and operations.  
+We saw that dividing two {\tt int}s results in integer division. 
+However,  when mixing {\tt int} and {\tt double} in arithmetic operations the result will always be a {\tt double}. C will implicitly cast values depending on the operation being performed. Some operations/conversion don't really ``make sense.'' Can you cast a  {\tt double} like 3.12 to a {\tt char}? We can add an {\tt int} to a {\tt char} (because they are really both integers), but can you add a {\tt double} and a {\tt char}?
+\begin{verbatim}
+ 	int x = 3;
+ 	double y = (double) x;   /* explicit cast */
+ 	double z = x;  /*implicit cast*/
+ 	double m = x + 3;  /* implcit cast*/
+ 	/*m = 6.0 even though x + 3 = 6*/
+\end{verbatim}
+%
 
 \section{Math functions}
 \index{math function}
@@ -241,14 +292,14 @@ $\pi$ is -1.
 \end{verbatim}
 %
 Before you can use any of the math functions, you have to
-include the math {\bf header file}.  Header files contain
-information the compiler needs about functions that are defined
-outside your program.  For example, in the ``Hello, world!''
+include the math {\bf header file}.  You may also need to use the -ml option at compile.
+Header files contain information the compiler needs about functions that are defined
+outside your program. For example, in the ``Hello, world!''
 program we included a header file named {\tt stdio.h} using
 an {\bf include} statement:
 
 \begin{verbatim}
-#include <stdio.h>
+      #include <stdio.h>
 \end{verbatim}
 %
 {\tt stdio.h} contains information about input and output
@@ -265,9 +316,9 @@ about the math functions.  You can include it at the beginning
 of your program along with {\tt stdio.h}:
 
 \begin{verbatim}
-#include <math.h>
+    #include <math.h>
 \end{verbatim}
-
+%
 \section {Composition}
 \label{composition}
 \index{composition}
@@ -297,11 +348,12 @@ statement finds the log base $e$ of 10 and then raises $e$ to that
 power.  The result gets assigned to {\tt x}; I hope you know what it
 is.
 
+
 \section{Adding new functions}
 \index{function!definition}
 \index{main}
 \index{function!main}
-
+\index{function!prototype}
 So far we have only been using the functions that are built into C,
 but it is also possible to add new functions.  Actually, we have already
 seen one function definition: {\tt main()}.  The function named {\tt main()}
@@ -310,10 +362,10 @@ begins, but the syntax for {\tt main()} is the same as for any other
 function definition:
 
 \begin{verbatim}
-  void NAME ( LIST OF PARAMETERS ) 
-  {
-      STATEMENTS
-  }
+   void NAME ( LIST OF PARAMETERS ) 
+   {
+       STATEMENTS
+   }
 \end{verbatim}
 %
 You can make up any name you want for your function, except
@@ -325,32 +377,54 @@ provide in order to use (or {\bf call}) the new function.
 {\tt main()} doesn't take any parameters, as indicated by
 the parentheses containing the keyword {\tt (void)} in it's definition.  The first couple
 of functions we are going to write also have no parameters, so the
-syntax looks like this:
-
+definition looks like this:
 \begin{verbatim}
-  void PrintNewLine (void) 
-  {
-      printf ("\n");
-  }
+ 	 void printNewLine(void) 
+ 	 {
+  	        	printf ("%c", '\n');
+ 	 }
 \end{verbatim}
 %
-This function is named {\tt PrintNewLine()}. It contains only a single
+This function is named {\tt printNewLine()}. It contains only a single
 statement, which outputs a newline character. Notice that we start
-the function name with an uppercase letter. The following words of the
-function name are also capitalized. We will use this convention for the naming 
-of functions consistently throughout the book.
+the function name with an lowercase letter. The following words of the
+function name are also capitalized. We will use this convention, 
+often called camel case because of the humps the capital letters create,  for the naming 
+of functions consistently throughout the book. 
 
-In {\tt main()} we can call this new function using syntax that
-is similar to the way we call the built-in C commands:
 
+A function definition should always have a corresponding {\bf function prototype}. 
+These tell the compiler the name of the function, the number and types of arguments it takes, 
+and the type of value it returns (if any). Prototypes are written above the main program (or in a header file). 
+Function definitions should be written below main. The prototype for the  {\tt printNewLine()} function would be:
+\vskip 0.5em
 \begin{verbatim}
-  int main (void)
-  {
-     printf ("First Line.\n");
-     PrintNewLine ();
-     printf ("Second Line.\n");
-     return EXIT_SUCCESS;
-  }
+	 	void printNewLine (void);
+\end{verbatim}
+%
+\vskip 0.5em
+Function prototypes aid in error checking by allowing the compiler to check the function calls in your code 
+against the function prototypes ensuring that the correct number and types of arguments are being passed.  
+This can also help keep code more readable and organized by keeping the main function near the top 
+of your code while also providing a sort of quick view list of all the function at the top of the program.
+
+
+Once we have a prototype and definition, we can call this few function in {\tt main()} using syntax that
+is similar to the way we call the built-in C commands:
+\vskip 0.5em
+\begin{verbatim}
+ 	void printNewLine (void);  /*function prototype*/
+
+ 	 int main (void) {
+    	 printf ("First Line.\n");
+     	printNewLine ();                  /*function call*/
+     	printf ("Second Line.\n");
+     	return EXIT_SUCCESS;
+  	}
+   void printNewLine (void)   /*function definition*/
+   {
+       printf ("\n");
+   }
 \end{verbatim}
 %
 The output of this program is:
@@ -370,29 +444,35 @@ function repeatedly:
   int main (void)
   {
       printf ("First Line.\n");
-      NewLine ();
-      NewLine ();
-      NewLine ();
+      printNewLine ();
+      printNewLine ();
+      printNewLine ();
       printf ("Second Line.\n");
   }
 \end{verbatim}
 %
-Or we could write a new function, named {\tt PrintThreeLines()}, that 
+Or we could write a new function, named {\tt printThreeLines()}, that 
 prints three new lines:
 
 \begin{verbatim}
-  void PrintThreeLines (void)
-  {
-    PrintNewLine ();  PrintNewLine ();  PrintNewLine ();
-  }
-
-  int main (void)
-  {
-      printf ("First Line.\n");
-      PrintThreeLines ();
-      printf ("Second Line.\n");
-      return EXIT_SUCCESS;
-  }
+  	void printNewLine (void); 
+  	void printThreeLines (void);
+  	int main (void)
+  	{
+    		printf ("First Line.\n");
+    		printThreeLines ();
+	    	printf ("Second Line.\n");
+    		return EXIT_SUCCESS;
+ 	 }
+   void printThreeLines (void)
+  	{
+	    	printNewLine ();  printNewLine ();  printNewLine (); 
+	    	 /*this is legal but maybe better with each on it's own line*/
+  	}
+   void printNewLine (void)  
+   {
+  	    printf ("\n");
+   }
 \end{verbatim}
 %
 You should notice a few things about this program:
@@ -403,10 +483,10 @@ You should notice a few things about this program:
 fact, it is quite common and useful to do so.
 
 \item You can have one function call another function.  In this
-case, {\tt main()} calls {\tt PrintThreeLines()} and {\tt PrintThreeLines()}
-calls {\tt PrintNewLine()}.  Again, this is common and useful.
+case, {\tt main()} calls {\tt printThreeLines()} and {\tt printThreeLines()}
+calls {\tt printNewLine()}.  Again, this is common and useful.
 
-\item In {\tt PrintThreeLines()} I wrote three statements all on the
+\item In {\tt printThreeLines()} I wrote three statements all on the
 same line, which is syntactically legal (remember that spaces
 and new lines usually don't change the meaning of a program).
 On the other hand, it is usually a better idea to put each
@@ -420,17 +500,20 @@ create all these new functions.  Actually, there are a lot
 of reasons, but this example only demonstrates two:
 
 \begin{enumerate}
+\item Functions are a form of abstraction and abstraction reduces cognitive load (makes it easier to think)
 
 \item Creating a new function gives you an opportunity to
-give a name to a group of statements.  Functions can simplify a program
+give a name to a group of statements. Functions can simplify a program
 by hiding a complex computation behind a single command, and by using
 English words in place of arcane code.  Which is clearer, {\tt
-PrintNewLine()} or {\tt printf("$\backslash$n")}?
+printNewLine()} or {\tt printf("$\backslash$n")}?
 
 \item Creating a new function can make a program smaller by eliminating
 repetitive code.  For example, a short way to print nine consecutive
-new lines is to call {\tt PrintThreeLines()} three times.  How would you
+new lines is to call {\tt printThreeLines()} three times.  How would you
 print 27 new lines?
+
+\item Functions isolate code into contained areas. This can make it easier to fix issues, make changes, and find bugs
 
 \end{enumerate}
 
@@ -443,48 +526,47 @@ section, the whole program looks like this:
   #include <stdio.h>
   #include <stdlib.h>
 
-  void PrintNewLine (void) 
-  {
-      printf ("\n");
-  }
-
-  void PrintThreeLines (void)
-  {
-      PrintNewLine ();  PrintNewLine ();  PrintNewLine ();
-  }
-
+ void printNewLine (void);
+ void printThreeLines (void);
   int main (void)
   {
      printf ("First Line.\n");
-     PrintThreeLines ();
+     printThreeLines ();
      printf ("Second Line.\n");
      return EXIT_SUCCESS;
   }
 
-\end{verbatim}
+	void printNewLine (void) 
+	{
+	     printf ("\n");
+	}
 
+	void printThreeLines (void)
+	{
+	   printNewLine ();  
+	   printNewLine ();  
+	   printNewLine ();
+	}
+
+\end{verbatim}
+%
 This program contains three function definitions: {\tt PrintNewLine()},
-{\tt PrintThreeLine()}, and {\tt main()}.
+{\tt printThreeLine()}, and {\tt main()}.
 
 Inside the definition of {\tt main()}, there is a statement that
-uses or calls {\tt PrintThreeLine()}.  Similarly, {\tt PrintThreeLine()} calls
-{\tt PrintNewLine()} three times.  Notice that the definition of each
-function appears above the place where it is used.
+uses or calls {\tt printThreeLine()}.  Similarly, {\tt printThreeLine()} calls
+{\tt printNewLine()} three times.  
 
-This is necessary in C; the definition of a function must
-appear before (above) the first use of the function.  You
-should try compiling this program with the functions in a
-different order and see what error messages you get.
+Without function prototypes,  the definition of each
+function would need to appear above the place it is used -- filling the 
+top of our program with definitions and putting main down at the bottom appears above the place where it is used. 
+With prototypes, the order of function definitions doesn't matter (so long as the prototypes are at the top of the program)
+
 
 \section {Programs with multiple functions}
 
-When you look at the C source code that contains several functions, it
-is tempting to read it from top to bottom, but that is likely to be
-confusing, because that is not the {\bf order of execution} of the
-program.
-
-Execution always begins at the first statement of {\tt main()},
-regardless of where it is in the program (often it is at the bottom).
+When you look at the C source code remember execution always begins at the first statement of {\tt main()},
+regardless of where it is in the program.
 Statements are executed one at a time, in order, until you reach a
 function call.  Function calls are like a detour in the flow of
 execution.  Instead of going to the next statement, you go to the
@@ -494,12 +576,12 @@ and then come back and pick up again where you left off.
 That sounds simple enough, except that you have to remember that one
 function can call another.  Thus, while we are in the middle of {\tt
 main()}, we might have to go off and execute the statements in {\tt
-PrintThreeLines()}.  But while we are executing {\tt PrintThreeLines()}, we get
-interrupted three times to go off and execute {\tt PrintNewLine()}.
+printThreeLines()}.  But while we are executing {\tt printThreeLines()}, we get
+interrupted three times to go off and execute {\tt printNewLine()}.
 
 Fortunately, C is adept at keeping track of where it is, so
-each time {\tt PrintNewLine()} completes, the program picks up where it left
-off in {\tt PrintThreeLine()}, and eventually gets back to {\tt main()} so the
+each time {\tt printNewLine()} completes, the program picks up where it left
+off in {\tt printThreeLine()}, and eventually gets back to {\tt main()} so the
 program can terminate.
 
 What's the moral of this sordid tale?  When you read a program, don't
@@ -525,7 +607,7 @@ function definition, the parameter list indicates the type of
 each parameter.  For example:
 
 \begin{verbatim}
-  void PrintTwice (char phil) 
+  void printTwice (char phil) 
   {
       printf("%c%c\n", phil, phil);
   }
@@ -537,15 +619,19 @@ this point we have no idea what it is), it gets printed
 twice, followed by a newline.
 I chose the name {\tt phil} to suggest that the name
 you give a parameter is up to you, but in general you want to
-choose something more illustrative than {\tt phil}.
+choose something more illustrative than {\tt phil}. A better name 
+parameter may be something like {\tt charToPrint} or {\tt symbol}
 
-In order to call this function, we have to provide a {\tt char}.
+In the function definition the parameter (also called the  ``formal parameter'') has no value, you can think of it like a placeholder.
+When we call this function, we have to provide a {\tt char}. This is the argument (or the ``actual parameter'')
+and it provides the value that replaces the formal parameter in the definition.
+
 For example, we might have a {\tt main()} function like this:
 
 \begin{verbatim}
   int main (void) 
   {
-      PrintTwice ('a');
+      printTwice ('a');
       return EXIT_SUCCESS;
   }
 \end{verbatim}
@@ -553,7 +639,7 @@ For example, we might have a {\tt main()} function like this:
 The {\tt char} value you provide is called an {\bf argument}, and we
 say that the argument is {\bf passed} to the function.  In this
 case the value {\tt 'a'} is passed as an argument
-to {\tt PrintTwice()} where it will get printed twice.
+to {\tt printTwice()} where it will get printed twice.
 
 Alternatively, if we had a {\tt char} variable, we could
 use it as an argument instead:
@@ -595,7 +681,7 @@ Parameters and
 variables only exist inside their own functions.  Within the
 confines of {\tt main()}, there is no such thing as {\tt phil}.
 If you try to use it, the compiler will complain.  Similarly,
-inside {\tt PrintTwice()} there is no such thing as {\tt argument}.
+inside {\tt printTwice()} there is no such thing as {\tt argument}.
 
 Variables like this are said to be {\bf local}.  In order to
 keep track of parameters and local variables, it is useful to
@@ -603,7 +689,7 @@ draw a {\bf stack diagram}.  Like state diagrams, stack diagrams
 show the value of each variable, but the variables are contained
 in larger boxes that indicate which function they belong to.
 
-For example, the stack diagram for {\tt PrintTwice()} looks 
+For example, the stack diagram for {\tt printTwice()} looks 
 like this:
 
 \vspace{0.1in}
@@ -618,7 +704,7 @@ with the name of the function on the outside and the variables
 and parameters inside.
 
 In the example, {\tt main()} has one local variable, {\tt argument}, and
-no parameters.  {\tt PrintTwice()} has no local variables and one
+no parameters.  {\tt printTwice()} has no local variables and one
 parameter, named {\tt phil}.
 
 \section {Functions with multiple parameters}
@@ -632,7 +718,7 @@ that you have to declare the type of every parameter.  For
 example
 
 \begin{verbatim}
-  void PrintTime (int hour, int minute) 
+  void printTime (int hour, int minute) 
   {
     printf ("%i", hour);
     printf (":");
@@ -650,14 +736,14 @@ to declare the types of arguments.  The following is wrong!
 \begin{verbatim}
     int hour = 11;
     int minute = 59;
-    PrintTime (int hour, int minute);   /* WRONG! */
+    printTime (int hour, int minute);   /* WRONG! */
 \end{verbatim}
 %
 In this case, the compiler can tell the type of {\tt hour}
 and {\tt minute} by looking at their declarations.  It is
 unnecessary and illegal to include the type when you pass them
 as arguments.  The correct
-syntax is {\tt PrintTime (hour, minute);}.
+syntax is {\tt printTime (hour, minute);}.
 
 \section {Functions with results}
 \index{fruitful function}
@@ -665,8 +751,9 @@ syntax is {\tt PrintTime (hour, minute);}.
 
 You might have noticed by now that some of the functions we are using,
 like the math functions, yield results.  Other functions,
-like {\tt PrintNewLine}, perform an action but
-don't return a value.  That raises some questions:
+like {\tt printNewLine}, perform an action but
+don't report a result. We say a function returns a value of a specif type or if nothing is returned then we say it has void return.
+That raises some questions:
 
 \begin{itemize}
 
@@ -675,10 +762,10 @@ do anything with the result (i.e. you don't assign it to
 a variable or use it as part of a larger expression)?
 
 \item What happens if you use a function without a result as part
-of an expression, like {\tt PrintNewLine() + 7}?
+of an expression, like {\tt printNewLine() + 7}?
 
 \item Can we write functions that yield results, or are we
-stuck with things like {\tt PrintNewLine()} and {\tt PrintTwice()}?
+stuck with things like {\tt printNewLine()} and {\tt printTwice()}?
 
 \end{itemize}
 
@@ -691,9 +778,10 @@ illegal in C, a good way to find out is to ask the compiler.
 \section{Glossary}
 
 \begin{description}
+\item[casting:]  Converting from one type to another. This can be explicit or implicit.
 
 \item[constant:] A named storage location similar to a variable, that can not be changed
-once it has been initialised.
+once it has been initialized.
 
 \item[floating-point:] A type of variable (or value) that can contain
 fractions as well as integers.  There are a few floating-point types
@@ -716,12 +804,18 @@ parameter.
 
 \item[call:]  Cause a function to be executed.
 
+\item[void:] A type that represents no type. It is used to signify a function takes no parameters and/or reports no value
+
 \index{floating-point}
 \index{function}
 \index{parameter}
 \index{argument}
 \index{call}
 \index{initialization}
+\index{void}
+\index{casting}
+\index{typecasting}
+
 
 \end{description}
 
