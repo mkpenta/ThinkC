@@ -16,7 +16,7 @@ a triangle:
 then you cannot form a triangle.  Otherwise, you can.''
 \end{quotation}
 
-Write a function named {\tt IsTriangle()} that it takes three integers as
+Write a function named {\tt isTriangle()} that it takes three integers as
 arguments, and that returns either {\tt TRUE} or {\tt FALSE},
 depending on whether you can or cannot form a triangle from sticks
 with the given lengths.
@@ -33,43 +33,17 @@ write a function that returns a value.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{exercise}
-What is the output of the following program? 
+What is the output of the following program?  Is there any dead code in this program?
 
 The purpose of this exercise is to make sure you understand logical operators and the flow of execution through fruitful methods.
 
 \begin{verbatim}
-#define TRUE 1
-#define FALSE 0
+  #define TRUE 1
+  #define FALSE 0
 
+  short isHoopy (int);
+  short isFrabjuous (int);
 
-  short IsHoopy (int x)
-   {
-      short hoopyFlag;
-      if (x%2 == 0) 
-      {
-          hoopyFlag = TRUE;
-      } 
-      else 
-      {
-          hoopyFlag = FALSE;
-      }
-      return hoopyFlag;
-  }
-
-  short IsFrabjuous (int x) 
-  {
-      short frabjuousFlag;
-      if (x > 0) 
-      {
-          frabjuousFlag = TRUE;
-      }
-      else 
-      {
-          frabjuousFlag = FALSE;
-      }
-      return frabjuousFlag;
-  }
-  
   int main (void) 
   {
       short flag1 = IsHoopy (202);
@@ -78,14 +52,43 @@ The purpose of this exercise is to make sure you understand logical operators an
       printf ("%i\n", flag2);
       if (flag1 && flag2) 
       {
-          printf ("ping!\n");
+          puts ("ping!");
       }
       if (flag1 || flag2) 
       {
-          printf ("pong!\n");
+          puts("pong!");
       }
       return EXIT_SUCCESS;
   }
+
+short isHoopy (int x)
+{
+	short hoopyFlag;
+	if (x%2 == 0) 
+	{
+		hoopyFlag = TRUE;
+	} 
+	else 
+	{
+		hoopyFlag = FALSE;
+	}
+	return hoopyFlag;
+}
+
+short isFrabjuous (int x) 
+{
+	short frabjuousFlag;
+	if (x > 0) 
+	{
+		frabjuousFlag = TRUE;
+	}
+	else 
+	{
+		frabjuousFlag = FALSE;
+	}
+	return frabjuousFlag;
+}
+
   
 \end{verbatim}
 \end{exercise}
@@ -97,10 +100,10 @@ The purpose of this exercise is to make sure you understand logical operators an
 
 
 \item Create a new program called {\tt Sum.c},
-and type in the following two functions.
+and type in the following two functions, their prototypes a main function.
 
 \begin{verbatim}
-  int FunctionOne (int m, int n) 
+  int functionOne (int m, int n) 
   {
       if (m == n) 
       {
@@ -108,11 +111,11 @@ and type in the following two functions.
       } 
       else 
       {
-          return m + FunctionOne (m+1, n);
+          return m + functionOne (m+1, n);
       }
   }
 
-  int FunctionTwo (int m, int n) 
+  int functionTwo (int m, int n) 
   {
       if (m == n) 
       {
@@ -120,7 +123,7 @@ and type in the following two functions.
       } 
       else 
       {
-          return n * FunctionTwo (m, n-1);
+          return n * functionTwo (m, n-1);
       }
   }
 \end{verbatim}
@@ -142,51 +145,15 @@ programs, since it demonstrates the flow of execution.
 
 \begin{exercise}
 \label{ex.power}
-Write a recursive function called {\tt Power()} that
+Write a recursive function called {\tt power()} that
 takes a double {\tt x} and an integer {\tt n} and that
 returns $x^n$.  
 
 Hint: a recursive definition of this
-operation is {\tt Power (x, n) = x * Power (x, n-1)}.
+operation is {\tt power (x, n) = x * power (x, n-1)}.
 Also, remember that anything raised to the zeroeth power
 is 1.
 \end{exercise}
-
-
-\begin{exercise}
-
-\label{gcd}
-(This exercise is based on page 44 of Ableson and Sussman's
-{\em Structure and Interpretation of Computer Programs}.)
-
-The following algorithm is known as Euclid's Algorithm because
-it appears in Euclid's {\em Elements} (Book 7, ca. 300 B.C.).
-It may be the oldest nontrivial algorithm.
-
-The algorithm is based on the observation that, if $r$ is the
-remainder when $a$ is divided by $b$, then the common divisors
-of $a$ and $b$ are the same as the common divisors of $b$ and $r$.
-Thus we can use the equation
-
-\[ gcd (a, b) = gcd (b, r) \]
-
-to successively reduce the problem of computing a GCD to the
-problem of computing the GCD of smaller and smaller pairs of integers.
-For example,
-
-\[ gcd (36, 20) = gcd (20, 16) = gcd (16, 4) = gcd (4, 0) = 4\]
-
-implies that the GCD of 36 and 20 is 4.  It can be shown
-that for any two starting numbers, this repeated reduction eventually
-produces a pair where the second number is 0.  Then the GCD is the
-other number in the pair.
-
-Write a function called {\tt gcd} that takes two integer parameters and
-that uses Euclid's algorithm to compute and return the greatest
-common divisor of the two numbers.
-\end{exercise}
-
-
 
 
 %
@@ -197,24 +164,22 @@ is
 
 \[Distance = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} \]
 
-Please write a function named {\tt Distance()} that takes four
+Please write a function named {\tt distance()} that takes four
 doubles as parameters---{\tt x1}, {\tt y1}, {\tt x2} and {\tt
 y2}---and that prints the distance between the points.
 
-You should assume that there is a function named {\tt SumSquares()}
+You should first write a function called  {\tt sumSquares()}
 that calculates and returns the sum of the squares of its arguments.
 For example:
 
 \begin{verbatim}
-    double x = SumSquares (3.0, 4.0);
+    double x = sumSquares (3.0, 4.0);
 \end{verbatim}
 %
 would assign the value {\tt 25.0} to {\tt x}.
 
 The point of this exercise is to write a new function that uses an
-existing one.  You should write only one function: {\tt Distance()}.  You
-should not write {\tt SumSquares()} or {\tt main()} and you should not
-invoke {\tt Distance()}.
+existing one.  You should first write the sumSquares function then use that function in your distance function.  Write a main function that tests each function
 \end{exercise}
 
 
@@ -233,8 +198,6 @@ that instead of printing a result, it returns it.
 \item Everywhere in the program that {\tt Multadd()} gets
 invoked, change the invocation so that it stores the
 result in a variable and/or prints the result.
-
-\item Transform {\tt Yikes()} in the same way.
 
 \end{enumerate}
 \end{exercise}
