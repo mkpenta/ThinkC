@@ -31,16 +31,18 @@ For example:
 But so far all the functions we have written have been {\bf void}
 functions; that is, functions that return no value.  When you call
 a void function, it is typically on a line by itself, with
-no assignment:
+no assignment -- there is nothing to store as no result was produced:
 
 \begin{verbatim}
-   PrintLines (3);
-   Countdown (n-1);
+   printLines (3);
+   countdown (n-1);
 \end{verbatim}
 %
-In this chapter, we are going to write functions that return things,
-which I will refer to as {\bf fruitful} functions, for want of a
-better name.  The first example is {\tt area}, which takes a {\tt
+In this chapter, we will create functions that produce results, or ``fruit,'' 
+as opposed to our previous void functions, which produced nothing. 
+I will refer to as {\bf fruitful} functions because they yield results.
+
+The first example is {\tt area}, which takes a {\tt
 double} as a parameter, and returns the area of a circle with the
 given radius:
 
@@ -48,9 +50,9 @@ given radius:
 \index{pi}
 
 \begin{verbatim}
-  double Area (double radius) 
+  double area (double radius) 
   {
-      double pi = acos (-1.0);
+      double pi = acos (-1.0); 
       double area = pi * radius * radius;
       return area;
   }
@@ -58,40 +60,59 @@ given radius:
 %
 The first thing you should notice is that the beginning of the
 function definition is different.  Instead of {\tt void}, which
-indicates a void function, we see {\tt double}, which indicates that
-the return value from this function will have type {\tt double}.
+indicates a void function (that will not produce a fruit), we see {\tt double}, which indicates that
+the return value (the fruit) from this function will have type {\tt double}. 
 
 Also, notice that the last line is an alternate form of the
 {\tt return} statement that includes a return value.  This
 statement means, ``return immediately from this function and
-use the following expression as a return value.''  The
-expression you provide can be arbitrarily complicated,
-so we could have written this function more concisely:
-
-\begin{verbatim}
-  double Area (double radius) 
-  {
-      return acos(-1.0) * radius * radius;
-  }
-\end{verbatim}
-%
-On the other hand, {\bf temporary} variables like {\tt area} often
-make debugging easier.  In either case, the type of the expression in
+use the following expression as a return value.'' The type of the expression in
 the {\tt return} statement must match the return type of the function.
 In other words, when you declare that the return type is {\tt double},
 you are making a promise that this function will eventually
 produce a {\tt double}.  If you try to {\tt return} with no
 expression, or an expression with the wrong type, the compiler will
-take you to task.
+take you to task. The purpose of our function prototypes is to
+let the compiler know the type of the parameters and return value of our function.
+ 
+The prototype for this function would be:
+
+\begin{verbatim}
+	double area (double ) ;
+\end{verbatim}
+%
+
+When we define a fruitful function we can only return one value. The return
+expression you provide can be arbitrarily complicated, but it must yield only one value. 
+We could have written this function more concisely, but ultimately we only return one value:
+
+\begin{verbatim}
+	double area (double radius) 
+	{
+		return acos(-1.0) * radius * radius;
+	}
+\end{verbatim}
+%
 
 \index{temporary variable}
 \index{variable!temporary}
+\index{variable!local}
+\index{prototype!with return}
+On the other hand, {\bf temporary}, or {\bf local}, variables like {\tt area} and {\tt pi} often
+make debugging easier and help to break up concepts into smaller more manageable parts.
 
-Sometimes it is useful to have multiple return
-statements, one in each branch of a conditional:
+There are two main schools of thought when it comes to returning from functions.
+
+One idea is that functions should have only one return statement, a single exit point. 
+Others favor multiple returns. This book takes no stance on this issue -- other than we 
+strive to write readable and maintainable code. Sometimes this means we have single exit point, 
+while other times using multiple return statements to return early from a function.
+We will note that single exit functions can be easier to debug because they
+uses local variables to store return results.
+We use multiple return statements in this absolute value example:
 
 \begin{verbatim}
-  double AbsoluteValue (double x) 
+  double absoluteValue (double x) 
   {
       if (x < 0) 
       {
@@ -105,10 +126,34 @@ statements, one in each branch of a conditional:
 \end{verbatim}
 %
 Since these returns statements are in an alternative conditional, only
-one will be executed.  Although it is legal to have more than one
-{\tt return} statement in a function, you should keep in mind that as soon
-as one is executed, the function terminates without executing any
-subsequent statements.
+one will be executed.  Having more than one
+{\tt return} statement in a function, means as soon
+as a return is executed, the function terminates without executing any
+subsequent statements. This can be used to exit a function when 
+we know there is no point in executing the remaining code:
+
+\begin{verbatim}
+	/*
+	this function returns 0 if either 
+	x or y are negative otherwise it returns
+	their product
+	*/
+  double earlyReturnExample (double x) 
+  {
+	if (x < 0)   //gaurd from x being negative
+	{
+		return 0;
+	} 
+
+   	if (y < 0)   //gaurd from y being negative
+   {
+   	   return 0;
+   } 
+
+	return x * y;
+}
+\end{verbatim}
+%
 
 Code that appears after a {\tt return} statement, or any place else
 where it can never be executed, is called {\bf dead code}.  Some
@@ -151,11 +196,11 @@ than getting a compiler error is {\em not} getting a compiler error
 when your program is wrong.
 
 Here's the kind of thing that's likely to happen: you test {\tt
-AbsoluteValue()} with several values of {\tt x} and it seems to work
+absoluteValue()} with several values of {\tt x} and it seems to work
 correctly.  Then you give your program to someone else and they run it
 in another environment.  It fails in some mysterious way, and it
 takes days of debugging to discover that the problem is an
-incorrect implementation of {\tt AbsoluteValue()}.  If only the
+incorrect implementation of {\tt absoluteValue()}.  If only the
 compiler had warned you!
 
 \index{compile-time error}
@@ -206,7 +251,7 @@ distance, which will have type {\tt double}.
 Already we can write an outline of the function:
 
 \begin{verbatim}
-  double Distance (double x1, double y1, double x2, double y2) 
+  double distance (double x1, double y1, double x2, double y2) 
   {
       return 0.0;
   }
@@ -222,7 +267,7 @@ In order to test the new function, we have to call it with
 sample values.  Somewhere in {\tt main()} I would add:
 
 \begin{verbatim}
-  double dist = Distance (1.0, 2.0, 4.0, 6.0);
+  double dist = distance (1.0, 2.0, 4.0, 6.0);
   printf  ("%f\n" dist);
 \end{verbatim}
 %
@@ -230,7 +275,8 @@ I chose these values so that the horizontal
 distance is 3 and the vertical distance is 4; that way,
 the result will be 5 (the hypotenuse of a 3-4-5 triangle).
 When you are testing a function, it is useful to know the right
-answer.
+answer. Before you test any code you should 
+state what you expect the output to be.
 
 Once we have checked the syntax of the function definition, we
 can start adding lines of code one at a time.  After each
@@ -243,7 +289,7 @@ $x_2 - x_1$ and $y_2 - y_1$.  I will store those values in
 temporary variables named {\tt dx} and {\tt dy}.
 
 \begin{verbatim}
-  double Distance (double x1, double y1, double x2, double y2) 
+  double distance (double x1, double y1, double x2, double y2) 
   {
       double dx = x2 - x1;
       double dy = y2 - y1;
@@ -287,7 +333,7 @@ Finally, we can use the {\tt sqrt()} function to compute and
 return the result.
 
 \begin{verbatim}
-  double Distance (double x1, double y1, double x2, double y2) 
+  double distance (double x1, double y1, double x2, double y2) 
   {
       double dx = x2 - x1;
       double dy = y2 - y1;
@@ -318,7 +364,7 @@ you can output and check them.
 \item Once the program is working, you might want to remove
 some of the scaffolding or consolidate multiple statements into
 compound expressions, but only if it does not make the program
-difficult to read.
+difficult to read. We call this refactoring the code.
 
 \end{itemize}
 
@@ -338,24 +384,24 @@ is the distance between the two points.  Fortunately, we have
 a function, {\tt Distance()}, that does that.
 
 \begin{verbatim}
-  double radius = Distance (xc, yc, xp, yp);
+  double radius = distance (xc, yc, xp, yp);
 \end{verbatim}
 %
 The second step is to find the area of a circle with that
 radius, and return it.
 
 \begin{verbatim}
-  double result = Area (radius);
+  double result = area (radius);
   return result;
 \end{verbatim}
 %
 Wrapping that all up in a function, we get:
 
 \begin{verbatim}
-  double AreaFromPoints (double xc, double yc, double xp, double yp) 
+  double areaFromPoints (double xc, double yc, double xp, double yp) 
   {
-      double radius = Distance (xc, yc, xp, yp);
-      double result = Area (radius);
+      double radius = distance (xc, yc, xp, yp);
+      double result = area (radius);
       return result;
   } 
 \end{verbatim}
@@ -365,12 +411,12 @@ Wrapping that all up in a function, we get:
 The temporary variables {\tt radius} and {\tt area} are
 useful for development and debugging, but once the program is
 working we can make it more concise by composing
-the function calls:
+the function calls, but we should always favor readability over conciseness:
 
 \begin{verbatim}
-  double AreaFromPoints (double xc, double yc, double xp, double yp) 
+  double areaFromPoints (double xc, double yc, double xp, double yp) 
   {
-      return Area (Distance (xc, yc, xp, yp));
+      return area (dstance (xc, yc, xp, yp));
   } 
 \end{verbatim}
 
