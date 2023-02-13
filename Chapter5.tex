@@ -584,7 +584,7 @@ functions.  For example:
     }
 \end{verbatim}
 %
-The name of this function is {\tt IsSingleDigit()}.  It is common
+The name of this function is {\tt isSingleDigit()}.  It is common
 to give such test functions names that sound like yes/no questions.
 The return type is {\tt int}, which means that again we need
 to follow the agreement that  0 represents {\tt false} and 1 
@@ -598,7 +598,7 @@ is evaluated to a {\tt boolean} value, so there is nothing wrong with returning 
 directly, and avoiding the {\tt if} statement altogether:
 
 \begin{verbatim}
-    int IsSingleDigit (int x)
+    int iSingleDigit (int x)
     {
         return (x >= 0 && x < 10);
     }
@@ -607,8 +607,8 @@ directly, and avoiding the {\tt if} statement altogether:
 In {\tt main()} you can call this function in the usual ways:
 
 \begin{verbatim}
-    printf("%i\n", IsSingleDigit (2));
-    short bigFlag = !IsSingleDigit (17);
+    printf("%i\n", isSingleDigit (2));
+    short bigFlag = !isSingleDigit (17);
 \end{verbatim}
 %
 The first line outputs the value {\tt true} because 2 is a
@@ -625,7 +625,8 @@ The most common use of boolean functions is inside conditional
 statements
 
 \begin{verbatim}
-    if (IsSingleDigit (x)) 
+	//very readable with the bool funciton - if is single digit
+    if (isSingleDigit (x))  
     {
         printf("x is little\n");
     } 
@@ -937,6 +938,8 @@ while, so we define  {\tt main()} as having no parameters:  {\tt int main (void)
 \item[return value:]  The value provided as the result of a function
 call.
 
+\item[local variable:]  Also called a temporary variable, is a variable declared in a function and is only accessible from within the function in which it is declared
+
 \item[dead code:]  Part of a program that can never be executed,
 often because it appears after a {\tt return} statement.
 
@@ -945,7 +948,6 @@ but is not part of the final version.
 
 \item[void:]  A special return type that indicates a void function;
 that is, one that does not return a value.
-
 
 \item[boolean:]  A value or variable that can take on one of
 two states, often called $true$ and $false$.  In C, boolean
