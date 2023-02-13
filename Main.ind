@@ -1,0 +1,245 @@
+\begin{theindex}
+
+  \item <math.h>, \hyperpage{31}
+  \item <stdio.h>, \hyperpage{31}
+  \item <stdlib.h>, \hyperpage{45}, \hyperpage{68}
+
+  \indexspace
+
+  \item absolute value, \hyperpage{61}
+  \item ambiguity, \hyperpage{6}
+  \item argument, \hyperpage{30}, \hyperpage{36}, \hyperpage{39}
+  \item arithmetic
+    \subitem floating-point, \hyperpage{28}
+    \subitem integer, \hyperpage{19}
+  \item assignment, \hyperpage{16}, \hyperpage{24}
+
+  \indexspace
+
+  \item bool, \hyperpage{67}, \hyperpage{69}
+  \item boolean, \hyperpage{65}
+  \item bug, \hyperpage{3}
+
+  \indexspace
+
+  \item call, \hyperpage{39}
+  \item casting, \hyperpage{28}, \hyperpage{39}
+  \item chain, \hyperpage{49}
+  \item character operator, \hyperpage{20}
+  \item coding style, \hyperpage{73}
+  \item comment, \hyperpage{7}, \hyperpage{9}
+  \item comparison
+    \subitem operator, \hyperpage{43}
+  \item comparison operator, \hyperpage{65}
+  \item compile, \hyperpage{2}, \hyperpage{9}
+  \item compile-time error, \hyperpage{4}, \hyperpage{61, 62}
+  \item composition, \hyperpage{21}, \hyperpage{24}, \hyperpage{31}, 
+		\hyperpage{64}
+  \item condition, \hyperpage{43}
+  \item conditional, \hyperpage{56}
+    \subitem alternative, \hyperpage{48}
+    \subitem chained, \hyperpage{56}
+    \subitem nested, \hyperpage{49}, \hyperpage{56}
+  \item conditional expression, \hyperpage{43}
+  \item constant values, \hyperpage{29}
+  \item constants, \hyperpage{29}
+  \item control structure
+    \subitem switch, \hyperpage{50}
+  \item control structures, \hyperpage{43}
+    \subitem selection, \hyperpage{44}, \hyperpage{48}
+
+  \indexspace
+
+  \item dead code, \hyperpage{61}, \hyperpage{69}
+  \item debugging, \hyperpage{3}, \hyperpage{9}, \hyperpage{62}
+  \item declaration, \hyperpage{15}
+  \item deterministic, \hyperpage{45}
+  \item diagram
+    \subitem stack, \hyperpage{55}
+    \subitem state, \hyperpage{55}
+  \item division
+    \subitem integer, \hyperpage{19}
+  \item double (floating-point), \hyperpage{27}
+  \item Doyle, Arthur Conan, \hyperpage{5}
+
+  \indexspace
+
+  \item error, \hyperpage{9}
+    \subitem compile-time, \hyperpage{4}, \hyperpage{61, 62}
+    \subitem logic, \hyperpage{4}
+    \subitem run-time, \hyperpage{4}
+  \item EXIT\_FAILURE, \hyperpage{68}
+  \item EXIT\_SUCCESS, \hyperpage{68}
+  \item expression, \hyperpage{19}, \hyperpage{21}, \hyperpage{24}, 
+		\hyperpage{30, 31}
+
+  \indexspace
+
+  \item flag, \hyperpage{66}
+  \item floating-point, \hyperpage{39}
+  \item floating-point number, \hyperpage{27}
+  \item formal language, \hyperpage{5}, \hyperpage{9}
+  \item format, \hyperpage{24}
+  \item fruitful function, \hyperpage{38}, \hyperpage{59}
+  \item function, \hyperpage{39}
+    \subitem bool, \hyperpage{67}
+    \subitem definition, \hyperpage{32}
+    \subitem fruitful, \hyperpage{38}, \hyperpage{59}
+    \subitem main, \hyperpage{32}
+    \subitem math, \hyperpage{30}
+    \subitem multiple parameter, \hyperpage{38}
+    \subitem prototype, \hyperpage{32}
+    \subitem void, \hyperpage{59}
+
+  \indexspace
+
+  \item header file, \hyperpage{31}
+    \subitem math.h, \hyperpage{31}
+    \subitem stdio.h, \hyperpage{31}
+    \subitem stdlib.h, \hyperpage{45}, \hyperpage{68}
+  \item hello world, \hyperpage{7}
+  \item high-level language, \hyperpage{1}, \hyperpage{9}
+  \item Holmes, Sherlock, \hyperpage{5}
+
+  \indexspace
+
+  \item incremental development, \hyperpage{62}
+  \item infinite recursion, \hyperpage{54}, \hyperpage{56}
+  \item initialization, \hyperpage{28}, \hyperpage{39}, \hyperpage{66}
+  \item input, \hyperpage{21--23}
+  \item integer division, \hyperpage{19}
+  \item interpret, \hyperpage{2}, \hyperpage{9}
+
+  \indexspace
+
+  \item keyword, \hyperpage{18}, \hyperpage{24}
+
+  \indexspace
+
+  \item language
+    \subitem formal, \hyperpage{5}
+    \subitem high-level, \hyperpage{1}
+    \subitem low-level, \hyperpage{1}
+    \subitem natural, \hyperpage{5}
+    \subitem programming, \hyperpage{1}
+    \subitem safe, \hyperpage{4}
+  \item Linux, \hyperpage{5}
+  \item literalness, \hyperpage{6}
+  \item logic error, \hyperpage{4}
+  \item logical operator, \hyperpage{66}
+  \item low-level language, \hyperpage{1}, \hyperpage{9}
+
+  \indexspace
+
+  \item main, \hyperpage{32}
+  \item math function, \hyperpage{30}
+    \subitem acos(), \hyperpage{59}
+    \subitem exp(), \hyperpage{59}
+    \subitem fabs(), \hyperpage{62}
+    \subitem sin(), \hyperpage{59}
+  \item modulus, \hyperpage{44}, \hyperpage{56}
+
+  \indexspace
+
+  \item natural language, \hyperpage{5}, \hyperpage{9}
+  \item nested structure, \hyperpage{50}, \hyperpage{66}
+  \item newline, \hyperpage{13}, \hyperpage{54}
+  \item nondeterministic, \hyperpage{45}
+
+  \indexspace
+
+  \item one-way selcection, \hyperpage{44}
+  \item operand, \hyperpage{19}, \hyperpage{24}
+  \item operator, \hyperpage{18}, \hyperpage{24}
+    \subitem character, \hyperpage{20}
+    \subitem comparison, \hyperpage{43}, \hyperpage{65}
+    \subitem conditional, \hyperpage{69}
+    \subitem logical, \hyperpage{66}, \hyperpage{69}
+    \subitem modulus, \hyperpage{44}
+  \item order of operations, \hyperpage{19}
+  \item output, \hyperpage{13}
+
+  \indexspace
+
+  \item parameter, \hyperpage{36}, \hyperpage{39}
+    \subitem multiple, \hyperpage{38}
+  \item parse, \hyperpage{6}, \hyperpage{9}
+  \item pi, \hyperpage{59}
+  \item poetry, \hyperpage{6}
+  \item portable, \hyperpage{1}
+  \item precedence, \hyperpage{19}
+  \item printf(), \hyperpage{7}
+  \item problem-solving, \hyperpage{9}
+  \item program development, \hyperpage{62}
+  \item programming language, \hyperpage{1}
+  \item prose, \hyperpage{6}
+  \item prototype
+    \subitem with return, \hyperpage{60}
+  \item puts, \hyperpage{22}
+
+  \indexspace
+
+  \item random, \hyperpage{46}, \hyperpage{56}
+    \subitem seed, \hyperpage{56}
+  \item random number, \hyperpage{45}
+  \item recursion, \hyperpage{52}, \hyperpage{56}
+    \subitem infinite, \hyperpage{54}, \hyperpage{56}
+  \item recursive, \hyperpage{54}
+  \item redundancy, \hyperpage{6}
+  \item return, \hyperpage{51}, \hyperpage{59}
+  \item return type, \hyperpage{69}
+  \item return value, \hyperpage{59}, \hyperpage{69}
+  \item rounding, \hyperpage{29}
+  \item run-time error, \hyperpage{4}, \hyperpage{54}
+
+  \indexspace
+
+  \item safe language, \hyperpage{4}
+  \item scaffolding, \hyperpage{63}, \hyperpage{69}
+  \item scanning, \hyperpage{21--24}
+  \item seed, \hyperpage{46}
+  \item selection
+    \subitem chaining, \hyperpage{49}
+    \subitem one-way, \hyperpage{44}
+    \subitem switch, \hyperpage{50}
+    \subitem two-way, \hyperpage{48}
+  \item semantics, \hyperpage{4}, \hyperpage{9}, \hyperpage{66}
+  \item stack, \hyperpage{55}
+  \item stack diagram, \hyperpage{55}
+  \item statement, \hyperpage{3}, \hyperpage{9}, \hyperpage{24}
+    \subitem assignment, \hyperpage{16}
+    \subitem comment, \hyperpage{7}
+    \subitem conditional, \hyperpage{44}
+    \subitem declaration, \hyperpage{15}
+    \subitem initialization, \hyperpage{66}
+    \subitem output, \hyperpage{13}
+    \subitem printf, \hyperpage{7}
+    \subitem return, \hyperpage{51}, \hyperpage{59}
+  \item String, \hyperpage{13}
+  \item structures
+    \subitem selection, \hyperpage{44}, \hyperpage{48}
+  \item style, \hyperpage{73}
+  \item switch, \hyperpage{50}
+  \item syntax, \hyperpage{4}, \hyperpage{9}
+
+  \indexspace
+
+  \item temporary variable, \hyperpage{60}
+  \item two-way selcection, \hyperpage{48}
+  \item type, \hyperpage{14}, \hyperpage{24}
+    \subitem {\tt bool}, \hyperpage{66}
+    \subitem double, \hyperpage{27}
+    \subitem int, \hyperpage{19}
+    \subitem String, \hyperpage{13}
+  \item typecasting, \hyperpage{29}, \hyperpage{39}
+
+  \indexspace
+
+  \item value, \hyperpage{14, 15}, \hyperpage{24}
+    \subitem boolean, \hyperpage{65}
+  \item variable, \hyperpage{15}, \hyperpage{24}
+    \subitem local, \hyperpage{60}
+    \subitem temporary, \hyperpage{60}
+  \item void, \hyperpage{39}, \hyperpage{59}, \hyperpage{69}
+
+\end{theindex}
