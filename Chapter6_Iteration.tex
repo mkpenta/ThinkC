@@ -83,6 +83,7 @@ Finally we assign the result of 6 to {\tt a}..
 \index{operator!self assignment}
 
 Self assignment is actually very common. In fact, C has operators specifically for this task.
+Several of these operators follow:
 
  \begin{verbatim}
  	int x = 3;
@@ -95,6 +96,43 @@ Self assignment is actually very common. In fact, C has operators specifically f
  \end{verbatim}
  %
  
+For a very specific set of self assignment, we have an even shorter way to write it. 
+When we add one to a number, we call that incrementing. We call subtracting 1 decrementing. 
+Incrementing and decrementing are so common they have 
+their own operators {\tt ++} for increment and {\tt --} for decrementing.
+
+ \begin{verbatim}
+  int x = 5;
+  x++;         					 //add 1 to x
+  printf("%i\n", x);	  //prints 6
+   x--;         				 //sutracts 1 from x
+  printf("%i\n", x);  	//prints 5
+\end{verbatim}
+%
+
+ The increment/decrement operator can be placed before the variable (pre-increment/pre-decrement) or after the variable (post-increment/post-decrement). Regardless of its position, the operation is performed however, they do not work the same way. 
+ 
+  \begin{verbatim}
+  int x = 1;
+  int y = 1;
+  printf("%i\n", x++);  //prints 1, but x = 2 when completed
+  printf("%i\n", ++y); //prints 2 and y = 2 when completed
+  printf("%i\n", x);  //prints 2
+  printf("%i\n", y);  //prints 2
+ \end{verbatim}
+ %
+This behavior can be confusing and careless with them can lead to errors. 
+The best advice I can give is never mix the increment and decrement operators with other expressions. 
+They should be executed on a line alone.
+  \begin{verbatim}
+	int x = 1;
+	int y = 1;
+	 x++;
+	 ++y;
+	printf("%i\n", x);  //prints 2
+	printf("%i\n", y);  //prints 2
+\end{verbatim}
+%
 \section{Iteration}
 \index{iteration}
 
@@ -104,10 +142,10 @@ making errors is something that computers do well and people do
 poorly.
 
 In section \ref{recursion} we have seen programs that use {\bf recursion} to perform
-repetition, such as {\tt PrintLines()} and {\tt Countdown()}. 
+repetition, such as {\tt printLines()} and {\tt countdown()}. 
 I now want to introduce a new
 type of repetition, that is called {\bf iteration}, and C provides
-several language features that make it easier to write repetetive
+several language features that make it easier to write repetitive
 programs.
 
 The two features we are going to look at are the {\tt while}
