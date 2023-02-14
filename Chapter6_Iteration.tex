@@ -4,11 +4,13 @@
 
 \chapter{Iteration}
 
-\section{Multiple assignment}
+\section{More on assignments }
 \index{assignment}
 \index{statement!assignment}
 \index{multiple assignment}
-
+\index{self assignment}
+\index{assignment!multiple}
+\index{assignment!self}
 I haven't said much about it, but it is legal in C to
 make more than one assignment to the same variable.  The
 effect of the second assignment is to replace the old value
@@ -22,8 +24,8 @@ of the variable with a new value.
 \end{verbatim}
 %
 The output of this program is {\tt 57}, because the first
-time we print {\tt fred} his value is 5, and the second time
-his value is 7.
+time we print {\tt fred} its value is 5, and the second time
+its value is 7.
 
 This kind of {\bf multiple assignment} is the reason I
 described variables as a {\em container} for values.  When
@@ -38,7 +40,10 @@ When there are multiple assignments to a variable, it is especially
 important to distinguish between an assignment statement and a
 statement of equality.  Because C uses the {\tt =} symbol for
 assignment, it is tempting to interpret a statement like {\tt a = b}
-as a statement of equality.  It is not!
+as a statement of equality.  It is not! In many programming languages 
+an alternate symbol is used
+for assignment, such as {\tt <-} or {\tt :=}, in order to
+avoid confusion.
 
 First of all, equality is commutative, and assignment is not.
 For example, in mathematics if $a = 7$ then $7 = a$.  But in
@@ -52,21 +57,27 @@ but they don't have to stay that way!
 
 \begin{verbatim}
   int a = 5;
-  int b = a;     /* a and b are now equal */
-  a = 3;         /* a and b are no longer equal */
+  int b = a;     /* a and b no have the same value*/
+  a = 3;         /* a and b are no longer have the same value */
 \end{verbatim}
 %
 The third line changes the value of {\tt a} but it does not
 change the value of {\tt b}, and so they are no longer equal.
-In many programming languages an alternate symbol is used
-for assignment, such as {\tt <-} or {\tt :=}, in order to
-avoid confusion.
 
-Although multiple assignment is frequently useful, you should
-use it with caution.  If the values of variables are changing
-constantly in different parts of the program, it can make
-the code difficult to read and debug.
+The ability to make multiple assignments to a variable means we can {\bf self assign} variables:
 
+\begin{verbatim}
+	int a = 5;  
+	a = a + 1;         /* a + 1 results in 6. 
+								and 6 is assigned to a	*/
+\end{verbatim}
+%
+Assignment has the lowest precedent. 
+This means that all other operations in the expression are evaluated before the assignment is performed. 
+In the first line code {\tt a} is initialized with a value of 5. In the second line, 
+all operation to the right of the assignment operator ($=$), are evaluated before the assignment is executed.
+In the right side we see {\tt a + 1} which results in the value 6. The value of 6 is then assigned to {\tt a}.
+ 
 \section{Iteration}
 \index{iteration}
 
