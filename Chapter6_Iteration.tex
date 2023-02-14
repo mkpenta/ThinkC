@@ -11,6 +11,7 @@
 \index{self assignment}
 \index{assignment!multiple}
 \index{assignment!self}
+\index{assignment!operator}
 I haven't said much about it, but it is legal in C to
 make more than one assignment to the same variable.  The
 effect of the second assignment is to replace the old value
@@ -68,15 +69,31 @@ The ability to make multiple assignments to a variable means we can {\bf self as
 
 \begin{verbatim}
 	int a = 5;  
-	a = a + 1;         /* a + 1 results in 6. 
-								and 6 is assigned to a	*/
+	a = a + 1;       
 \end{verbatim}
 %
 Assignment has the lowest precedent. 
-This means that all other operations in the expression are evaluated before the assignment is performed. 
+This means that all other operations in the expression are evaluated before the assignment. 
 In the first line code {\tt a} is initialized with a value of 5. In the second line, 
-all operation to the right of the assignment operator ($=$), are evaluated before the assignment is executed.
-In the right side we see {\tt a + 1} which results in the value 6. The value of 6 is then assigned to {\tt a}.
+the expression  to the right of the assignment operator ($=$) is evaluated first. 
+Since {\tt a} has the value 5, {\tt a + 1}  results in the value 6.
+Finally we assign the result of 6 to {\tt a}..
+
+\index{self assignment!operator}
+\index{operator!self assignment}
+
+Self assignment is actually very common. In fact, C has operators specifically for this task.
+
+ \begin{verbatim}
+ 	int x = 3;
+ 	x += 2;  /* means x = x + 2 */      
+ 	x *= 4;  /* means x = x * 4  */      
+ 	x -= 6;  /* means x = x - 6  */      
+ 	x /= 6;  /* means x = x / 6   */    
+ 	x %=2 /* means x = x % 2 */  
+ 	
+ \end{verbatim}
+ %
  
 \section{Iteration}
 \index{iteration}
