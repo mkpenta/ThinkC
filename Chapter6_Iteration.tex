@@ -108,9 +108,7 @@ their own operators $++$ for increment and $--$ for decrementing.
   printf("%i\n", x);  	//prints 5
 \end{verbatim}
 %
-
- The increment/decrement operator can be placed before the variable (pre-increment/pre-decrement) or after the variable (post-increment/post-decrement). Regardless of its position, the operation is performed however, they do not work the same way. 
- 
+ The increment/decrement operator can be placed before the variable (pre-increment/pre-decrement) or after the variable (post-increment/post-decrement). When using the pre-operators, the value is modified then utilized in an expression. When the post-operators are used, the value is utilized then modified. 
   \begin{verbatim}
   int x = 1;
   int y = 1;
@@ -158,7 +156,7 @@ These are repetition structures - they repeat stuff.
 We can write {\tt countdown()} program using a {\tt while} statement:
 
 \begin{verbatim}
-  void Countdown (int n) 
+  void countdown (int n) 
   {
       while (n > 0) 
       {
@@ -211,7 +209,7 @@ source of amusement for computer scientists is the observation
 that the directions on shampoo, ``Lather, rinse, repeat,'' are
 an infinite loop.
 
-In the case of {\tt Countdown()}, we can prove that the loop
+In the case of {\tt countdown()}, we can prove that the loop
 will terminate because we know that the value of {\tt n} is
 finite, and we can see that the value of {\tt n} gets smaller
 each time through the loop (each {\bf iteration}), so
@@ -219,7 +217,7 @@ eventually we have to get to zero.  In other cases it is not
 so easy to tell:
 
 \begin{verbatim}
-  void Sequence (int n) 
+  void sequence (int n) 
   {
       while (n != 1) 
       {
