@@ -118,8 +118,8 @@ their own operators $++$ for increment and $--$ for decrementing.
   printf("%i\n", y);  //prints 2
  \end{verbatim}
  %
-This behavior can be confusing and careless with them can lead to errors. 
-The best advice I can give is never mix the increment and decrement operators with other expressions. 
+This behavior can be confusing and being careless with them can lead to errors. 
+The best is to never mix the increment and decrement operators with other expressions. 
 They should be executed on a line alone.
   \begin{verbatim}
 	int x = 1;
@@ -176,9 +176,9 @@ word `Blastoff!'''
 More formally, the flow of execution for a {\tt while} statement
 is as follows:
 
-\begin{enumerate}
-
-\item Evaluate the condition in parentheses, yielding {\tt true}
+ \begin{enumerate}
+ 	
+ 	\item Evaluate the condition in parentheses, yielding {\tt true}
 or {\tt false}.
 
 \item If the condition is false, exit the {\tt while} statement
@@ -256,6 +256,102 @@ starting with 16.
 Particular values aside, the interesting question is whether
 we can prove that this program terminates for {\em all} values of n.
 So far, no one has been able to prove it {\em or} disprove it!
+
+\section{Looping Design Patterns}
+When learning about loops it is helpful to identify common design pattern.
+We will first discuss the a basic strategy for writing loops and then detail a number of common loop patterns such as the counting loop, the user termination loop, the sentinel loop, and the value validation loop.
+
+The while loop is the most universal loop, but any while loop to work properly, it needs three things:
+\begin{enumerate}
+	\item A variable with an initial value before the loop, this will be the test variable in the condition
+	\item A conditional test on the variable at the start of the loop
+	\item An assignment on the test variable inside the loop body
+\end{enumerate}
+
+All of these components are needed for a loop to work. Let's identify these pieces from one of our previous loops. 
+
+\begin{verbatim}
+	void countdown (int n) 
+	{
+		//#1 n has an initial value when passed to the function
+		while (n > 0) //#2 this is a test on the variable
+		{
+			printf ("%i\n", n);
+			n = n-1;  //#3 this is an assignment on the variable
+		}
+		printf ("Blastoff!\n");
+	}
+\end{verbatim}
+%
+\index{loops!counting}
+Now that we have a basic strategy for laying out our while loops, let's examine some common patterns. The most common pattern we see it the {\bf counting loop}. This loop is used for iterating a specified number of times. If you can count the number of times you need your loop to run this may the pattern you need.
+
+in a counting loop we start out counter with an initial value. Our condition will test if the count has yet to reach a specific limit. At each iteration we increment the count. 
+\begin{verbatim}
+		//#1 count has an initial value of zero
+		int count = 0;
+		
+		while (count  < 10) //#2 this is a test on the variable, we will loop 10 times
+		{
+			printf ("%i\n", count);  //do something in the loop
+			
+			count++;   //#3 this is an assignment on the variable
+		}
+	
+	}
+\end{verbatim}
+%
+
+\index{loops!sentinel}
+Another common pattern we see it the {\bf sentinel loop}. A sentient is like a guard on watch. This loop will keep iterating until a special value is seen by the guard.  
+\begin{verbatim}
+ 	int value;
+ 	puts("enter a grade from 0 to 100. Enter a negative number to stop");
+ 	scanf(" %i", &value);  //#1 get an intial value before the loop
+	
+ 	while (value >= 0) //#2 test for a sentinel value
+ 	{
+	  	printf ("%i\n", value);  //do something in the loop
+		
+	   //#3 this is an assignment on the variable - we need to prompt and scan again
+	   puts("enter a grade from 0 to 100. Enter a negative number to stop");
+	   scanf(" %i", &value);  //this is an assignment
+ 	}
+\end{verbatim}
+%
+\index{loops!user-terminated}
+We can look at another sentinel, but we will call this a {\bf user terminated loop}. Like our sentinel, this uses user input to end a program.
+\begin{verbatim}
+	char choice;
+	puts("start a program y or n");
+	scanf(" %c", &choice);  //#1 get an intial value before the loop
+	
+	while (choice == 'y') //#2 test for a sentinel value
+	{
+		/ /run a wholoe program
+		
+		 //#3 this is an assignment on the variable - we need to prompt and scan again
+		
+		 puts("Do you want to run the progam again");
+		 scanf(" %c", &choice); 
+	}
+\end{verbatim}
+%
+\index{loops!value validation}
+Our last looping pattern is the value validation pattern. If you need a user to enter a number a bounded value. You can use this loop to ensure a value fits your bound.  In this loop we ask the user for input until an 'y' or an 'n' is entered. All three of our loop components are here, unlabeled. Can you identify them?
+\begin{verbatim}
+	char choice;
+	puts("start a program y or n");
+	scanf(" %c", &choice);  
+	while(choice != 'y' && choice != 'n')
+	{
+		puts("that is invalid input");
+		puts("start a program y or n");
+		scanf(" %c", &choice);  
+	}	
+//more program after this
+\end{verbatim}
+%
 
 \section{Tables}
 \index{table}
