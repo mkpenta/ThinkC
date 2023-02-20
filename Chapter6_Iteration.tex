@@ -265,7 +265,7 @@ The while loop is the most universal loop, but any while loop to work properly, 
 \begin{enumerate}
 	\item A variable with an initial value before the loop, this will be the test variable in the condition
 	\item A conditional test on the variable at the start of the loop
-	\item An assignment on the test variable inside the loop body
+	\item A re-assignment on the test variable inside the loop body
 \end{enumerate}
 
 All of these components are needed for a loop to work. Let's identify these pieces from one of our previous loops. 
@@ -337,7 +337,7 @@ We can look at another sentinel, but we will call this a {\bf user terminated lo
 \end{verbatim}
 %
 \index{loops!value validation}
-Our last looping pattern is the value validation pattern. If you need a user to enter a number a bounded value. You can use this loop to ensure a value fits your bound.  In this loop we ask the user for input until an 'y' or an 'n' is entered. All three of our loop components are here, unlabeled. Can you identify them?
+This looping pattern is the value validation pattern. If you need a user to enter a number a bounded value. You can use this loop to ensure a value fits your bound.  In this loop we ask the user for input until an 'y' or an 'n' is entered. All three of our loop components are here, unlabeled. Can you identify them?
 \begin{verbatim}
 	char choice;
 	puts("start a program y or n");
@@ -352,6 +352,69 @@ Our last looping pattern is the value validation pattern. If you need a user to 
 \end{verbatim}
 %
 
+\index{loops!accumulator}
+Accumulators are loops that act to accumulate some value. Accumulator variables act in concert with loops. The variable must be initialized before the loop. It is not usually the control variable of the loop. It accumulates its value in the loop body. Here is an accumulator store the total sum of all the grades. 
+\begin{verbatim}
+	int sum = 0;
+	int value;
+	puts("enter a grade from 0 to 100. Enter a negative number to stop");
+	scanf(" %i", &value);  //#1 get an intial value before the loop
+	
+	while (value >= 0) //#2 test for a sentinel value
+	{
+		
+		sum = sum + value;
+		
+		//#3 this is an assignment on the variable
+		//we need to prompt and scan again
+		puts("enter a grade from 0 to 100. Enter a negative number to stop");
+		scanf(" %i", &value);  //this is an assignment
+	}
+
+   printf("%i\n", sum);
+\end{verbatim}
+%
+\section{The for loop}
+For loops are a short hand way of expressing a counting loop. It has all the same parts as a counting loop but it organizes them in a new way.
+
+The for loop still needs these three things:
+\begin{enumerate}
+	\item A variable with an initial value before the loop, this will be the test variable in the condition
+	\item A conditional test on the variable at the start of the loop
+	\item A re-assignment on the test variable inside the loop body
+\end{enumerate}
+However in a for loop these are all written at the top of the structure.  
+
+\begin{verbatim}
+	 for( intialization ; condition; assignment)
+	 {
+	 }
+\end{verbatim}
+Below we present a counting while loop and its equivalent for loop
+\begin{verbatim}
+
+		//#1  an initial value
+		int i = 0;
+		while (i < 10) //#2 this is a test on the variable
+		{
+			printf ("%i\n", i);
+			
+			i++;  //#3 re-assignment on the variable
+		}
+	}
+\end{verbatim}
+%
+\begin{verbatim}
+
+	for (int i; i < 10, i++)  //#1, #2, #3
+	{
+		printf ("%i\n", i);
+	}
+}
+\end{verbatim}
+%
+As you can see a for loop is a more compact version of a counting loop, but where a while loop is a universal loop, a for loop is used primarily as a counting loop. For loops really show their worth when we work with arrays and strings. We will see more of them in upcoming chapters.
+ 
 \section{Tables}
 \index{table}
 \index{logarithm}
