@@ -58,11 +58,27 @@ calculation.
 
 
 \begin{exercise}
-	In Exercise~\ref{ex.power} we wrote a recursive version of {\tt
-		power()}, which takes a double {\tt x} and an integer {\tt n} and
-	returns $x^n$.  Now write an iterative function to perform the same
-	calculation.
+	Define a function and prototype called getFirstNumber(). This function takes no parameters and returns an integer. The function should prompt a user for a number between 1 and 10. Use a loop to validate the input's value. If the value is invalid, continue to prompt until a valid value is received. When a valid value is given, it should be returned from the function
+	
+	Define a function and prototype called getSecondNumber(). This function takes one integer parameter and returns an integer. The parameter is a lower bound for a number. The function should prompt a user for a number between the lower bound and 15. Use a loop to validate the input's value. If the value is invalid, continue to prompt until a valid value is received. When a valid value is given, it should be returned from the function
+	
+	Define a function and prototype called printRange. This function takes two integer parameters, the lower and upper bound) and returns void. The function should use to print all the numbers form the lower to upper bound.
+	
+	Write a main program that calls the getFirstNumber function and uses the result as input to the getSecondNumber function. These will be the lower and upper bound for calling printRange, call print range with this input
+	
+	The goal of this exercise is to practice various loop patterns and practice using functions. 
 \end{exercise}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+\begin{exercise}
+	Write a program that meets the following description. 
+	The user is asked if they want to play a game. If so the program should generate a random number between 1 and 10. This is the secret number. Prompt the user to make a guess at the secret number. Allow the to make 3 guesses. The game ends it the user guesses correctly or if they run out of guesses. Once the game is over, ask the user if they want to play again and replay the game.
+	
+	It is up to you to use the best loop designs for this problem. Be sure to use functions (can you reuse any functions you previously wrote)
+	
+	The goal of this exercise is to practice program design and loop types.
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
