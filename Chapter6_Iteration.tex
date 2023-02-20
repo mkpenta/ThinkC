@@ -291,7 +291,7 @@ in a counting loop we start out counter with an initial value. Our condition wil
 		//#1 count has an initial value of zero
 		int count = 0;
 		
-		while (count  < 10) //#2 this is a test on the variable, we will loop 10 times
+		while (count  < 10) //#2 this is a test on the variable
 		{
 			  printf ("%i\n", count);  //do something in the loop
 			  count++;   //#3 this is an assignment on the variable
@@ -310,7 +310,8 @@ Another common pattern we see it the {\bf sentinel loop}. A sentient is like a g
  	{
 	  	 printf ("%i\n", value);  //do something in the loop
 		
-	    //#3 this is an assignment on the variable - we need to prompt and scan again
+	    //#3 this is an assignment on the variable
+	    //we need to prompt and scan again
 	     puts("enter a grade from 0 to 100. Enter a negative number to stop");
 	     scanf(" %i", &value);  //this is an assignment
  	}
