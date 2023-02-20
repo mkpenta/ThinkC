@@ -535,8 +535,8 @@ generalize}.
 Encapsulation usually means taking a piece of code and wrapping it up
 in a function, allowing you to take advantage of all the things functions
 are good for.  We have seen two examples of encapsulation, when we
-wrote {\tt PrintParity()} in Section~\ref{alternative} and {\tt
-IsSingleDigit()} in Section~\ref{bool}.
+wrote {\tt printParity()} in Section~\ref{alternative} and {\tt
+isSingleDigit()} in Section~\ref{bool}.
 
 Generalization means taking something specific, like printing
 multiples of 2, and making it more general, like printing the
@@ -549,7 +549,7 @@ Here's a function that encapsulates the loop from the previous
 section and generalizes it to print multiples of {\tt n}.
 
 \begin{verbatim}
-    void PrintMultiples (int n)
+    void printMultiples (int n)
     {
         int i = 1;
         while (i <= 6) 
@@ -580,7 +580,7 @@ and with argument 4, the output is
 \end{verbatim}
 %
 By now you can probably guess how we are going to print a
-multiplication table: we'll call {\tt PrintMultiples()} repeatedly with
+multiplication table: we'll call {\tt printMultiples()} repeatedly with
 different arguments.  In fact, we are going to use another loop to
 iterate through the rows.
 
@@ -594,8 +594,8 @@ iterate through the rows.
 \end{verbatim}
 %
 First of all, notice how similar this loop is to the one inside {\tt
-PrintMultiples()}.  I only replaced the call of the \texttt{printf()} function with 
-the call of the \texttt{PrintMultiples()} function.
+printMultiples()}.  I only replaced the call of the \texttt{printf()} function with 
+the call of the \texttt{printMultiples()} function.
 
 The output of this program is
 
@@ -610,7 +610,7 @@ The output of this program is
 %
 which is a (slightly sloppy) multiplication table.  If the
 sloppiness bothers you, try replacing the spaces between
-columns with tab characters and see what you get.
+columns with tab characters (\tt \\t) and see what you get.
 
 \section{Functions}
 \index{function}
