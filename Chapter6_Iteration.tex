@@ -644,7 +644,7 @@ To demonstrate encapsulation again, I'll take the code
 from the previous section and wrap it up in a function:
 
 \begin{verbatim}
-    void PrintMultTable () 
+    void printMultTable () 
     {
         int i = 1;
         while (i <= 6) 
@@ -667,13 +667,13 @@ functions.  This approach lets you design as you go along.
 \section{Local variables}
 
 About this time, you might be wondering how we can use the same
-variable {\tt i} in both {\tt PrintMultiples()} and {\tt
-PrintMultTable()}.  Didn't I say that you can only declare a variable
+variable {\tt i} in both {\tt printMultiples()} and {\tt
+printMultTable()}.  Didn't I say that you can only declare a variable
 once?  And doesn't it cause problems when one of the functions changes
 the value of the variable?
 
 The answer to both questions is ``no,'' because the {\tt i} in {\tt
-PrintMultiples()} and the {\tt i} in {\tt PrintMultTable()} are
+printMultiples()} and the {\tt i} in {\tt printMultTable()} are
 {\em not the same variable}.  They have the same name, but
 they do not refer to the same storage location, and changing
 the value of one of them has no effect on the other.
@@ -699,9 +699,9 @@ the other.
 \index{diagram!stack}
 %
 Notice that the value of the parameter {\tt n} in
-{\tt PrintMultiples()} has to be the same as the value
-of {\tt i} in {\tt PrintMultTable()}.  On the other hand,
-the value of {\tt i} in {\tt PrintMultiples()} goes
+{\tt printMultiples()} has to be the same as the value
+of {\tt i} in {\tt printMultTable()}.  On the other hand,
+the value of {\tt i} in {\tt printMultiples()} goes
 from 1 up to {\tt 6}.  In the diagram, it happens to be 3.
 The next time through the loop it will be 4.
 
@@ -724,10 +724,10 @@ harder to read.
 As another example of generalization, imagine you wanted
 a program that would print a multiplication table of any
 size, not just the 6x6 table.  You could add a parameter to
-{\tt PrintMultTable()}:
+{\tt printMultTable()}:
 
 \begin{verbatim}
-    void PrintMultTable (int high) 
+    void printMultTable (int high) 
     {
         int i = 1;
         while (i <= high) 
@@ -739,7 +739,7 @@ size, not just the 6x6 table.  You could add a parameter to
 \end{verbatim}
 %
 I replaced the value 6 with the parameter {\tt high}.  If I
-call {\tt PrintMultTable()} with the argument 7, I get:
+call {\tt printMultTable()} with the argument 7, I get:
 
 \begin{verbatim}
     1   2   3   4   5   6   
@@ -753,7 +753,7 @@ call {\tt PrintMultTable()} with the argument 7, I get:
 %
 which is fine, except that I probably want the table to
 be square (same number of rows and columns), which means
-I have to add another parameter to {\tt PrintMultiples()},
+I have to add another parameter to {\tt printMultiples()},
 to specify how many columns the table should have.
 
 Just to be annoying, I will also call this parameter {\tt high},
@@ -785,7 +785,7 @@ with the same name (just like local variables):
 %
 Notice that when I added a new parameter, I had to change the first
 line of the function, and I also had to
-change the place where the function is called in {\tt PrintMultTable()}.
+change the place where the function is called in {\tt printMultTable()}.
 As expected, this program generates a square 7x7 table:
 
 \begin{verbatim}
@@ -804,16 +804,16 @@ For example, you might notice that the multiplication table
 is symmetric, because $ab = ba$, so all the entries in the
 table appear twice.  You could save ink by printing only
 half the table.  To do that, you only have to change one
-line of {\tt PrintMultTable()}.  Change
+line of {\tt printMultTable()}.  Change
 
 \begin{verbatim}
-      PrintMultiples (i, high);
+      printMultiples (i, high);
 \end{verbatim}
 %
 to
 
 \begin{verbatim}
-      PrintMultiples (i, i);
+      printMultiples (i, i);
 \end{verbatim}
 %
 and you get:
