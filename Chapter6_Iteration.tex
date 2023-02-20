@@ -397,20 +397,19 @@ Below we present a counting while loop and its equivalent for loop
 		int i = 0;
 		while (i < 10) //#2 this is a test on the variable
 		{
-			printf ("%i\n", i);
+		  	printf ("%i\n", i);
 			
-			i++;  //#3 re-assignment on the variable
+		   	i++;  //#3 re-assignment on the variable
 		}
-	}
 \end{verbatim}
 %
 \begin{verbatim}
 
 	for (int i; i < 10, i++)  //#1, #2, #3
 	{
-		printf ("%i\n", i);
+	   	printf ("%i\n", i);
 	}
-}
+
 \end{verbatim}
 %
 As you can see a for loop is a more compact version of a counting loop, but where a while loop is a universal loop, a for loop is used primarily as a counting loop. For loops really show their worth when we work with arrays and strings. We will see more of them in upcoming chapters.
