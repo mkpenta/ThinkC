@@ -43,7 +43,7 @@ The second line, {\tt double values[10];} has the type "array of doubles" and
 
 C allows you to to initialize the element values of an array immediately
 after you have declared it.  The values  for the individual elements must be 
-enclosed in curly brakets {\tt \{\}} and separated by comma, as in the following example:
+enclosed in curly brackets {\tt \{\}} and separated by comma, as in the following example:
 
 \begin{verbatim}
     int c[4] = {0, 0, 0, 0};
@@ -85,66 +85,8 @@ The large numbers inside the boxes are the values of the {\bf elements} in
 the array.  The small numbers outside the boxes are the
 indices used to identify each box.  When you allocate a new
 array, without initializing, the arrays elements typically
-contain arbitrary values and you must initialise them to
+contain arbitrary values and you must initialize them to
 a meaningful value before using them.
-
-
-%%
-\section{Increment and decrement operators}
-\index{operator!increment}
-\index{operator!decrement}
-\index{increment}
-\index{decrement}
-
-Incrementing and decrementing are such common operations that C
-provides special operators for them.  The {\tt ++} operator adds one
-to the current value of an {\tt int}, {\tt char} or {\tt double}, and
-{\tt -}{\tt -} subtracts one.  
-%Neither operator works on {\tt apstring}s,
-%and neither {\em should} be used on {\tt bool}s.
-
-Technically, it is legal to increment a variable and use it
-in an expression at the same time.  For example, you might see
-something like:
-
-\begin{verbatim}
-    printf ("%i\n ", i++);
-\end{verbatim}
-%
-Looking at this, it is not clear whether the increment will
-take effect before or after the value is displayed.  Because
-expressions like this tend to be confusing, I would discourage
-you from using them.  In fact, to discourage you even more,
-I'm not going to tell you what the result is.  If you really
-want to know, you can try it.
-
-Using the increment operators, we can rewrite the {\tt PrintMultTable()} from Section~\ref{More generalization}:
-
-\begin{verbatim}
-    void PrintMultTable(int high) 
-    { 
-        int i = 1; 
-        while (i <= high) 
-        { 
-            PrintMultiples(i); 
-            i++; 
-        } 
-    }
-\end{verbatim}
-%
-It is a common error to write something like:
-
-\begin{verbatim}
-    index = index++;             /* WRONG!! */
-\end{verbatim}
-%
-Unfortunately, this is syntactically legal, so the compiler
-will not warn you.  The effect of this statement is to leave
-the value of {\tt index} unchanged.  This is often a difficult
-bug to track down.
-
-Remember, you can write {\tt index = index + 1;}, or you
-can write {\tt index++;}, but you shouldn't mix them.
 
 %%
 \section{Accessing elements}
