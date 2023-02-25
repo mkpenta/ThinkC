@@ -669,6 +669,57 @@ You should pass a second array to the function where a histogram of the
 values in the array can be stored.
 
 
+\section{Partially filled arrays}
+In C, an array's sized is fixed at the moment it is declared. But what if we don't know how much space is needed when an array is declared. For example, we may want to store the names of students who enrolled in a course, but we don’t know how many students there will be until they register. Or we may want to store some numbers that are entered by the user, but we don’t know how many numbers there will be until they stop entering them. In these cases, we can use a {\bf partially filled array}.
+
+A partially filled array is an array that has some empty slots that are not used for storing data. For example, if we declare an array of size 10, but only use 5 elements to store some data, then we have a partially filled array with 5 empty slots. The advantage of using a partially filled array is that we can allocate more space than we need at first, and then fill it up later as needed. The disadvantage is that we may waste some memory if we allocate too much space than we need.
+
+To work with partially filled arrays in C, we need two things: a variable that defines the maximum size of the array (its capacity), and a local variable that keeps track of how many elements are actually used in the array (usually called size). The size variable also allows us to ensure that we don’t exceed the capacity of the array when adding new elements. All the values are stored contiguously in the array starting at the zero index. This means we can use the size variable to find the next open location. We can assign a value at that location, then increase the size.
+
+\begin{verbatim}
+ //the maximum size of the array
+ #define CAPACITY  10
+ 
+ // Declare an int array with the max capacity 
+ int arr[CAPACITY];
+
+ // Declare a variable to keep track of how many elements are used
+ int size = 0;
+
+ //get some values from the user using a user-terminated loop (or sentinel loop)
+
+ // Input from user
+ int num;
+ //Prompt and scan for the initial values
+ puts("Enter some numbers (enter -1 to stop):");
+ scanf("%d", &num);
+
+ //while the user enters a valid number 
+ //and we have room in the array
+
+ while (num != -1 && size < CAPACITY) 
+ {
+	  arr[size] = num; 	// Add num to arr at index size
+	  size++;  // Increment size by 1
+	
+	  //Prompt and scan for the next values
+	  puts("Enter some numbers (enter -1 to stop):");
+	  scanf("%d", &num); // Read another number from input
+ }
+
+\end{verbatim}
+%
+The second line initializes the elements of the histogram to
+zeroes.  That way, when we use the increment
+operator ({\tt ++}) inside the loop, we know we are starting from zero.
+Forgetting to initialize counters is a common error.
+
+As an exercise, encapsulate this code in a function called {\tt Histogram()} 
+that takes an array and the range of values in the array
+(in this case 0 through 10) as two parameters \texttt{min} and \texttt{max}. 
+You should pass a second array to the function where a histogram of the
+values in the array can be stored.
+
 \section{Glossary}
 
 \begin{description}
