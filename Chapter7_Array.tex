@@ -670,7 +670,7 @@ values in the array can be stored.
 
 
 \section{Partially filled arrays}
-In C, an array's sized is fixed at the moment it is declared. But what if we don't know how much space is needed when an array is declared. For example, we may want to store the names of students who enrolled in a course, but we don't know how many students there will be until they register. Or we may want to store some numbers that are entered by the user, but we don’t know how many numbers there will be until they stop entering them. In these cases, we can use a {\bf partially filled array}.
+In C, an array's sized is fixed at the moment it is declared. But what if we don't know how much space is needed when an array is declared. For example, we may want to store the names of students who enrolled in a course, but we don't know how many students there will be until they register. Or we may want to store some numbers that are entered by the user, but we don't know how many numbers there will be until they stop entering them. In these cases, we can use a {\bf partially filled array}.
 
 A partially filled array is an array that has some empty slots that are not used for storing data. For example, if we declare an array of size 10, but only use 5 elements to store some data, then we have a partially filled array with 5 empty slots. The advantage of using a partially filled array is that we can allocate more space than we need at first, and then fill it up later as needed. The disadvantage is that we may waste some memory if we allocate too much space than we need.
 
