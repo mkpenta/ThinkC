@@ -677,36 +677,29 @@ A partially filled array is an array that has some empty slots that are not used
 To work with partially filled arrays in C, we need two things: a variable that defines the maximum size of the array (its capacity), and a local variable that keeps track of how many elements are actually used in the array (usually called size). The size variable also allows us to ensure that we don't exceed the capacity of the array when adding new elements. All the values are stored contiguously in the array starting at the zero index. This means we can use the size variable to find the next open location. We can assign a value at that location, then increase the size.
 
 \begin{verbatim}
- //the maximum size of the array
- #define CAPACITY  10
- 
- // Declare an int array with the max capacity 
- int arr[CAPACITY];
 
- // Declare a variable to keep track of how many elements are used
- int size = 0;
+ #define CAPACITY  10  //the maximum size of the array
+
+ int arr[CAPACITY]; // Declare an int array with the max capacity 
+
+ int size = 0;  //the current size of the filled part
 
  //get some values from the user using a user-terminated loop (or sentinel loop)
 
- // Input from user
  int num;
- //Prompt and scan for the initial values
  puts("Enter some numbers (enter -1 to stop):");
  scanf("%d", &num);
 
  //while the user enters a valid number 
  //and we have room in the array
-
  while (num != -1 && size < CAPACITY) 
  {
-	  arr[size] = num; 	// Add num to arr at index size
-	  size++;  // Increment size by 1
-	
-	  //Prompt and scan for the next values
+	  arr[size] = num; 	
+	  size++;  
+
 	  puts("Enter some numbers (enter -1 to stop):");
 	  scanf("%d", &num); // Read another number from input
  }
-
 \end{verbatim}
 %
 The second line initializes the elements of the histogram to
