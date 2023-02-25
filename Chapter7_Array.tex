@@ -702,16 +702,6 @@ To work with partially filled arrays in C, we need two things: a variable that d
  }
 \end{verbatim}
 %
-The second line initializes the elements of the histogram to
-zeroes.  That way, when we use the increment
-operator ({\tt ++}) inside the loop, we know we are starting from zero.
-Forgetting to initialize counters is a common error.
-
-As an exercise, encapsulate this code in a function called {\tt Histogram()} 
-that takes an array and the range of values in the array
-(in this case 0 through 10) as two parameters \texttt{min} and \texttt{max}. 
-You should pass a second array to the function where a histogram of the
-values in the array can be stored.
 
 \section{Glossary}
 
