@@ -1,12 +1,15 @@
 \begin{theindex}
 
+  \item <ctype.h>, \hyperpage{110}
   \item <math.h>, \hyperpage{31}
   \item <stdio.h>, \hyperpage{31}
   \item <stdlib.h>, \hyperpage{45}, \hyperpage{68}
+  \item <string.h>, \hyperpage{103}, \hyperpage{105}
 
   \indexspace
 
   \item absolute value, \hyperpage{61}
+  \item address, \hyperpage{107}, \hyperpage{113}
   \item ambiguity, \hyperpage{6}
   \item argument, \hyperpage{30}, \hyperpage{36}, \hyperpage{39}
   \item arithmetic
@@ -18,6 +21,8 @@
     \subitem length, \hyperpage{94}
   \item array parameters, \hyperpage{96}
   \item arrays, \hyperpage{91}
+  \item assigning
+    \subitem string, \hyperpage{108}
   \item assignment, \hyperpage{16}, \hyperpage{24}, \hyperpage{73}
     \subitem multiple, \hyperpage{73}
     \subitem operator, \hyperpage{73}
@@ -41,15 +46,17 @@
   \item chain, \hyperpage{49}
   \item character operator, \hyperpage{20}
   \item Chianti, \hyperpage{92}
-  \item coding style, \hyperpage{103}
+  \item coding style, \hyperpage{115}
   \item comment, \hyperpage{7}, \hyperpage{9}
   \item comparison
     \subitem operator, \hyperpage{43}
+    \subitem string, \hyperpage{109}
   \item comparison operator, \hyperpage{65}
   \item compile, \hyperpage{2}, \hyperpage{9}
   \item compile-time error, \hyperpage{4}, \hyperpage{61, 62}
   \item composition, \hyperpage{21}, \hyperpage{24}, \hyperpage{31}, 
 		\hyperpage{64}
+  \item concatenate, \hyperpage{113}
   \item condition, \hyperpage{43}
   \item conditional, \hyperpage{56}
     \subitem alternative, \hyperpage{48}
@@ -62,13 +69,14 @@
     \subitem switch, \hyperpage{50}
   \item control structures, \hyperpage{43}
     \subitem selection, \hyperpage{44}, \hyperpage{48}
-  \item counter, \hyperpage{96}
+  \item counter, \hyperpage{96}, \hyperpage{113}
 
   \indexspace
 
   \item dead code, \hyperpage{61}, \hyperpage{69}
   \item debugging, \hyperpage{3}, \hyperpage{9}, \hyperpage{62}
   \item declaration, \hyperpage{15}
+  \item decrement, \hyperpage{113}
   \item deterministic, \hyperpage{45}, \hyperpage{101}
   \item diagram
     \subitem stack, \hyperpage{55}, \hyperpage{85}
@@ -120,9 +128,11 @@
   \indexspace
 
   \item header file, \hyperpage{31}
+    \subitem ctype.h, \hyperpage{110}
     \subitem math.h, \hyperpage{31}
     \subitem stdio.h, \hyperpage{31}
     \subitem stdlib.h, \hyperpage{45}, \hyperpage{68}
+    \subitem string.h, \hyperpage{103}, \hyperpage{105}
   \item hello world, \hyperpage{7}
   \item high-level language, \hyperpage{1}, \hyperpage{9}
   \item histogram, \hyperpage{98, 99}, \hyperpage{101}
@@ -130,12 +140,18 @@
 
   \indexspace
 
+  \item increment, \hyperpage{113}
   \item incremental development, \hyperpage{62}
-  \item index, \hyperpage{92}, \hyperpage{101}
+  \item index, \hyperpage{92}, \hyperpage{101}, \hyperpage{106}, 
+		\hyperpage{113}
   \item infinite loop, \hyperpage{76}, \hyperpage{88}
   \item infinite recursion, \hyperpage{54}, \hyperpage{56}
   \item initialization, \hyperpage{28}, \hyperpage{39}, \hyperpage{66}
   \item input, \hyperpage{21--23}
+    \subitem flushing the buffer, \hyperpage{112}
+    \subitem keyboard, \hyperpage{111}
+  \item input buffer
+    \subitem flushing the buffer, \hyperpage{112}
   \item integer division, \hyperpage{19}
   \item interpret, \hyperpage{2}, \hyperpage{9}
   \item iteration, \hyperpage{75}, \hyperpage{88}
@@ -155,6 +171,7 @@
     \subitem safe, \hyperpage{4}
   \item length
     \subitem array, \hyperpage{94}
+    \subitem string, \hyperpage{105}
   \item Linux, \hyperpage{5}
   \item literalness, \hyperpage{6}
   \item local variable, \hyperpage{85}, \hyperpage{88}
@@ -166,7 +183,8 @@
     \subitem counting, \hyperpage{96}
     \subitem for, \hyperpage{93}
     \subitem infinite, \hyperpage{76}, \hyperpage{88}
-  \item loop variable, \hyperpage{82}, \hyperpage{85}, \hyperpage{92}
+  \item loop variable, \hyperpage{82}, \hyperpage{85}, \hyperpage{92}, 
+		\hyperpage{106}
   \item loops
     \subitem accumulator, \hyperpage{79}
     \subitem counting, \hyperpage{77}
@@ -218,9 +236,10 @@
     \subitem counter, \hyperpage{97}
   \item pi, \hyperpage{59}
   \item poetry, \hyperpage{6}
+  \item pointer, \hyperpage{107}, \hyperpage{113}
   \item portable, \hyperpage{1}
   \item precedence, \hyperpage{19}
-  \item printf(), \hyperpage{7}
+  \item printf(), \hyperpage{7}, \hyperpage{111}
   \item problem-solving, \hyperpage{9}
   \item program development, \hyperpage{62}, \hyperpage{88}
     \subitem bottom-up, \hyperpage{97}
@@ -250,6 +269,7 @@
 
   \item safe language, \hyperpage{4}
   \item scaffolding, \hyperpage{63}, \hyperpage{69}
+  \item scanf(), \hyperpage{111}
   \item scanning, \hyperpage{21--24}
   \item seed, \hyperpage{46}
   \item selection
@@ -276,9 +296,11 @@
     \subitem while, \hyperpage{75}
   \item statistics, \hyperpage{95}
   \item String, \hyperpage{13}
+  \item string, \hyperpage{108, 109}
+    \subitem length, \hyperpage{105}
   \item structures
     \subitem selection, \hyperpage{44}, \hyperpage{48}
-  \item style, \hyperpage{103}
+  \item style, \hyperpage{115}
   \item switch, \hyperpage{50}
   \item syntax, \hyperpage{4}, \hyperpage{9}
 
@@ -288,7 +310,7 @@
   \item table, \hyperpage{80}
     \subitem two-dimensional, \hyperpage{82}
   \item temporary variable, \hyperpage{60}
-  \item traverse
+  \item traverse, \hyperpage{105}, \hyperpage{113}
     \subitem counting, \hyperpage{96}
   \item two-way selcection, \hyperpage{48}
   \item type, \hyperpage{14}, \hyperpage{24}
@@ -305,7 +327,8 @@
     \subitem boolean, \hyperpage{65}
   \item variable, \hyperpage{15}, \hyperpage{24}
     \subitem local, \hyperpage{60}, \hyperpage{85}, \hyperpage{88}
-    \subitem loop, \hyperpage{82}, \hyperpage{85}, \hyperpage{92}
+    \subitem loop, \hyperpage{82}, \hyperpage{85}, \hyperpage{92}, 
+		\hyperpage{106}
     \subitem temporary, \hyperpage{60}
   \item void, \hyperpage{39}, \hyperpage{59}, \hyperpage{69}
 
