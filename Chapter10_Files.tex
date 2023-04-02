@@ -25,7 +25,7 @@ Imagine you are writing a program to track a library's books. You would need to 
 
 In this example, we open a text file called "books.txt" in read mode ("r"). We then check if the file was opened successfully. If the file pointer is NULL, it indicates an error. After performing the necessary operations, we close the file using the {\tt fclose()} function.
 
-\section{Reading from Text Files}
+\section{Reading from text files}
 
 Suppose we have a text file called "library$\_$books.txt" containing a list of books and their authors, separated by a comma. We want to read the data from this file and display it on the screen. The following example demonstrates how to read data from a text file using {\tt fgets()}:
 
@@ -41,7 +41,7 @@ Suppose we have a text file called "library$\_$books.txt" containing a list of b
 	}
 \end{verbatim}
 
-\section{Writing to Text Files}
+\section{Writing to text files}
 
 Now, let's assume we want to create a new text file called "borrowed$\_$books.txt" to store the list of borrowed books and their due dates. We have an array of structs called "BorrowedBook" containing the book title and the due date. The following example demonstrates how to write data to a text file using {\tt fprintf()}:
 
@@ -68,8 +68,7 @@ Now, let's assume we want to create a new text file called "borrowed$\_$books.tx
 \end{verbatim}
 
 
-\section{Reading from Binary Files}
-
+\section{Reading from binary files}
 Suppose we have a binary file called "library$\_$inventory.dat" that stores information about the books in a library. The data is stored as a series of binary records representing the book's title, author, and publication year. We want to read the data from this file and display it on the screen. The following example demonstrates how to read data from a binary file using {\tt fread()}:
 
 \begin{verbatim}
