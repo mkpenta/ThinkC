@@ -1,0 +1,546 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Think C - Chapter 9</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+<body>
+<h1>Chapter 9 - Structures</h1>
+
+    <h2>Compound values</h2>
+    <p>
+        Most of the data types we have been working with represent a single value—an integer, a floating-point number, a character value. 
+        Strings are different in the sense that they are made up of smaller pieces, the characters. Thus, strings are an example of a compound type.
+    </p>
+    <p>
+        Depending on what we are doing, we may want to treat a compound type as a single thing (or object), or we may want to access its parts (or member variables). 
+        This ambiguity is useful. It is also useful to be able to create your own compound values. C provides a mechanism for doing that: <b>structures</b>.
+    </p>
+
+    <h2><code>Point</code> objects</h2>
+    <p>
+        As a simple example of a compound structure, consider the concept of a mathematical point. At one level, a point is two numbers (coordinates) that we treat collectively as a single object. 
+        In mathematical notation, points are often written in parentheses, with a comma separating the coordinates. For example, $(0, 0)$ indicates the origin, and $(x, y)$ indicates the point $x$ units to the right and $y$ units up from the origin.
+    </p>
+    <p>
+        A natural way to represent a point in C is with two <code>double</code>s. The question, then, is how to group these two values into a compound object, or structure. 
+        The answer is a <code>struct</code> definition:
+    </p>
+    <pre><code>
+        <code>
+            typedef struct {
+                double x;
+                double y;
+            } Point_t;
+        </code>
+    </code></pre>
+    <p>
+        <code>struct</code> definitions appear outside of any function definition, usually at the beginning of the program (after the <code>include</code> statements).
+    </p>
+    <p>
+        This definition indicates that there are two elements in this structure, named <code>x</code> and <code>y</code>. These elements are called the <b>members</b> or <b>fields</b> of a structure.
+    </p>
+    <p>
+        It is a common error to leave off the semi-colon at the end of a structure definition. It might seem odd to put a semi-colon after curly-brackets, but you'll get used to it.
+    </p>
+    <p>
+        Once you have defined the new structure, you can create variables with that type:
+    </p>
+    <pre><code>
+        <code>
+            Point_t blank;
+            blank.x = 3.0;
+            blank.y = 4.0;
+        </code>
+    </code></pre>
+    <p>
+        The first line is a conventional variable declaration: <code>blank</code> has type <code>Point_t</code>. 
+        The next two lines initialize the fields of the structure. The "dot notation" used here is called the <b>field selection operator</b> and allows to access the structure fields.
+    </p>
+    
+       <h2>Accessing member variables</h2>
+    <p>
+        You can read the values of an member variable using the same syntax we used to write them:
+    </p>
+    <pre><code>
+        <code>
+            double x = blank.x;
+        </code>
+    </code></pre>
+    <p>
+        The expression <code>blank.x</code> means "go to the object named <code>blank</code> and get the value of <code>x</code>." 
+        In this case we assign that value to a local variable named <code>x</code>. 
+        Notice that there is no conflict between the local variable named <code>x</code> and the member variable named <code>x</code>. 
+        The purpose of dot notation is to identify <em>which</em> variable you are referring to unambiguously.
+    </p>
+    <p>
+        You can use dot notation as part of any C expression, so the following are legal.
+    </p>
+    <pre><code>
+        <code>
+            printf("%0.1f, %0.1f\n", blank.x, blank.y);
+            double distance = blank.x * blank.x + blank.y * blank.y;
+        </code>
+    </code></pre>
+    <p>
+        The first line outputs <code>3, 4</code>; the second line calculates the value 25.
+    </p>
+
+    <h2>Operations on structures</h2>
+    <p>
+        Most of the operators we have been using on other types, like mathematical operators (<code>+</code>, <code>%</code>, etc.) 
+        and comparison operators (<code>==</code>, <code>&gt;</code>, etc.), do not work on structures.
+    </p>
+    <p>
+        On the other hand, the assignment operator <em>does</em> work for structures. 
+        It can be used in two ways: to initialize the member variables of a structure or to copy the member variables from one structure to another. 
+        An initialization looks like this:
+    </p>
+    <pre><code>
+        <code>
+            Point_t blank = {3.0, 4.0};
+        </code>
+    </code></pre>
+    <p>
+        The values in squiggly braces get assigned to the member variables of the structure one by one, in order. 
+        So in this case, <code>x</code> gets the first value and <code>y</code> gets the second.
+    </p>
+    <p>
+        Unfortunately, this syntax can be used only in an initialization, not in an assignment statement. So the following is illegal:
+    </p>
+    <pre><code>
+        <code>
+            Point_t blank;
+            blank = {3.0, 4.0}; /* WRONG !! */
+        </code>
+    </code></pre>
+
+<p>
+You might wonder why this perfectly reasonable statement should
+be illegal; I'm not sure, but I think the problem is that the compiler
+doesn't know what type the right hand side should be.  You must specify
+the type of the assignment by adding a typecast:
+</p>
+<pre><code>
+    Point_t blank;
+    blank = (Point_t){ 3.0, 4.0 };
+</code></pre>
+
+<p>
+It is legal to assign one structure to
+another.  For example:
+</p>
+
+<pre><code>
+    Point_t p1 = { 3.0, 4.0 };
+    Point_t p2 = p1;
+    printf ("%f, %f\n", p2.x, p2.y);
+</code></pre>
+
+<p>
+The output of this program is <code>3, 4</code>.
+</p>
+
+<h2>Structures as parameters</h2>
+
+<p>
+You can pass structures as parameters in the usual way.  For
+example,
+</p>
+
+<pre><code>
+    void PrintPoint (Point_t point) 
+    {
+        printf ("(%0.1f, %0.1f)\n", point.x, point.y);
+    }
+</code></pre>
+
+<p>
+<code>PrintPoint()</code> takes a point as an argument and outputs it in
+the standard format.  If you call <code>PrintPoint(blank)</code>,
+it will output <code>(3.0, 4.0)</code>.
+</p>
+
+<p>
+As a second example, we can rewrite the <code>ComputeDistance()</code> function from
+Section&nbsp;1.2 so that it takes two <code>Point</code>s as parameters
+instead of four <code>double</code>s.
+</p>
+
+<pre><code>
+    double ComputeDistance (Point_t p1, Point_t p2) 
+    {
+        double dx = p2.x - p1.x;
+        double dy = p2.y - p1.y;
+        return sqrt (dx*dx + dy*dy);
+    }
+</code></pre>
+
+<h2>Call by value</h2>
+
+<p>
+When you pass a structure as an argument, remember that the
+argument and the parameter are not the same variable.  Instead,
+there are two variables (one in the caller and one in the
+callee) that have the same value, at least initially.  
+</p>
+
+<p>
+If <code>PrintPoint()</code> happened to change one of the member variables
+of <code>point</code>, it would have no effect on <code>blank</code>.  Of course, there
+is no reason for <code>PrintPoint()</code> to modify its parameter, so this
+isolation between the two functions is appropriate.
+</p>
+
+<p>
+This kind of parameter-passing is called "pass by value"
+because it is the value of the structure (or other type) that
+gets passed to the function.
+</p>
+
+
+
+<h2>Call by reference</h2>
+
+<p>
+An alternative parameter-passing mechanism that is available
+in C is called "pass by reference."  
+By now we already know that C uses pointers as references.
+This mechanism makes
+it possible to pass a structure to a procedure and modify it directly.
+</p>
+
+<p>
+For example, you can reflect a point around the 45-degree line by
+swapping the two coordinates.  The most obvious (but incorrect) way to
+write a <code>ReflectPoint()</code> function is something like this:
+</p>
+
+<pre><code>
+    void ReflectPoint (Point_t point)      /* Does not work! */
+    {
+        double temp = point.x;
+        point.x = point.y;
+        point.y = temp;
+    }
+</code></pre>
+
+<p>
+This won't work, because the changes we make in <code>ReflectPoint()</code>
+will have no effect on the caller.
+</p>
+
+<p>
+Instead, we have to specify that we want to pass the parameter by
+reference.  
+Our function now has a struct pointer argument <code>Point_t *ptr</code>.
+</p>
+
+<pre><code>
+    void ReflectPoint (Point_t *ptr)
+    {
+        double temp = ptr-&gt;x;
+        ptr-&gt;x = ptr-&gt;y;
+        ptr-&gt;y = temp;
+    }
+</code></pre>
+
+<p>
+When we are accessing the struct member variables through a pointer 
+we can no longer use the "field-selection-operator" (<code>.</code>). Instead we need to use
+the "pointing-to" operator (<code>-&gt;</code>).
+</p>
+
+<p>
+We pass a reference of our struct parameter by adding the "address-of"  operator (<code>&amp;</code>) to the
+structure variable when we call the function:
+</p>
+
+<pre><code>
+    PrintPoint (blank);
+    ReflectPoint (&amp;blank);
+    PrintPoint (blank);
+</code></pre>
+
+<p>
+The output of this program is as expected:
+</p>
+
+<pre><code>
+    (3.0, 4.0)
+    (4.0, 3.0)
+</code></pre>
+
+<p>
+The parameter <code>ptr</code> is a reference to the structure named <code>
+blank</code>.  The usual representation for a reference is a dot with an
+arrow that points to whatever the reference refers to.
+</p>
+
+<p>
+The important thing to see in this diagram is that any changes that
+<code>ReflectPoint()</code> makes through <code>ptr</code> will also affect <code>blank</code>.
+</p>
+
+<p>
+Passing structures by reference is more versatile than passing by
+value, because the callee can modify the structure.  It is also
+faster, because the system does not have to copy the whole
+structure.  On the other
+
+
+<h2>Rectangles</h2>
+
+<p>
+Now let's say that we want to create a structure to represent
+a rectangle.  The question is, what information do I have to
+provide in order to specify a rectangle?  To keep things simple
+let's assume that the rectangle will be oriented vertically or
+horizontally, never at an angle.
+</p>
+
+<p>
+There are a few possibilities: I could specify the center of
+the rectangle (two coordinates) and its size (width and height),
+or I could specify one of the corners and the size, or I
+could specify two opposing corners.
+</p>
+
+<p>
+The most common choice in existing programs is to specify the
+upper left corner of the rectangle and the size.  To do that
+in C, we will define a structure that contains a <code>Point_t</code>
+and two doubles.
+</p>
+
+<pre><code>
+    typedef struct 
+    {
+        Point_t corner;
+        double width, height;
+    } Rectangle_t;  
+</code></pre>
+
+<p>
+Notice that one structure can contain another.  In fact, this
+sort of thing is quite common.  Of course, this means that in
+order to create a <code>Rectangle_t</code>, we have to create a <code>Point_t</code>
+first:
+</p>
+
+<pre><code>
+    Point_t corner = { 0.0, 0.0 };
+    Rectangle_t box = { corner, 100.0, 200.0 };
+</code></pre>
+
+<p>
+This code creates a new <code>Rectangle_t</code> structure and initializes the
+member variables.  The figure shows the effect of this assignment.
+</p>
+
+
+<p>
+We can access the <code>width</code> and <code>height</code> in the usual way:
+</p>
+
+<pre><code>
+    box.width += 50.0;
+    printf("%f\n", box.width);
+</code></pre>
+
+<p>
+In order to access the member variables of <code>corner</code>, we can use a
+temporary variable:
+</p>
+
+<pre><code>
+    Point_t temp = box.corner;
+    double x = temp.x;
+</code></pre>
+
+<p>
+Alternatively, we can compose the two statements:
+</p>
+
+<pre><code>
+    double x = box.corner.x;
+</code></pre>
+
+<p>
+It makes the most sense to read this statement from right to
+left: "Extract <code>x</code> from the <code>corner</code> of the <code>box</code>,
+and assign it to the local variable <code>x</code>."
+</p>
+
+<p>
+While we are on the subject of composition, I should point
+out that you can, in fact, create the <code>Point</code> and the
+<code>Rectangle</code> at the same time:
+</p>
+
+<pre><code>
+    Rectangle_t box = { { 0.0, 0.0 }, 100.0, 200.0 };
+</code></pre>
+
+
+<p>
+The innermost squiggly braces are the coordinates of the
+corner point; together they make up the first of the three
+values that go into the new <code>Rectangle</code>.  This statement
+is an example of <b>nested structure</b>.
+</p>
+
+<h2>Structures as return types</h2>
+
+<p>
+You can write functions that return structures.  For example,
+<code>FindCenter()</code> has a <code>Rectangle_t</code> parameter and
+returns a <code>Point_t</code> that contains the coordinates of the
+center of the rectangle:
+</p>
+
+<pre><code>
+    Point_t FindCenter (Rectangle_t box)
+    {
+        double x = box.corner.x + box.width/2;
+        double y = box.corner.y + box.height/2;
+        Point_t result = {x, y};
+        return result;
+    }
+</code></pre>
+
+<p>
+To call this function, we have to pass a <code>Rectangle_t</code> as an argument
+(notice that it is being passed by value), and assign the
+return value to a <code>Point_t</code> variable:
+</p>
+
+<pre><code>
+    Rectangle_t box = { {0.0, 0.0}, 100, 200 };
+    Point_t center = FindCenter (box);
+    PrintPoint (center);
+</code></pre>
+
+<p>
+The output of this program is <code>(50, 100)</code>.
+</p>
+
+<p>
+We could have passed the structure as a reference to the
+function. In this case our function would look like this:
+</p>
+
+<pre><code>
+    Point_t FindCenter (Rectangle_t *box)
+    {
+        double x = box->corner.x + box->width/2;
+        double y = box->corner.y + box->height/2;
+        Point_t result = {x, y};
+        return result;
+    }
+</code></pre>
+
+<p>
+Notice, how we had to change the access to the members of the 
+structure, since <code>box</code> is now a pointer. 
+We would also have to change the function call for <code>FindCenter()</code>:
+</p>
+
+<pre><code>
+    Point_t center = FindCenter (&box);
+</code></pre>
+
+
+
+<h2>Passing other types by reference</h2>
+<p>It's not just structures that can be passed by reference.
+All the other types we've seen can, too.  For example, to swap
+two integers, we could write something like:</p>
+
+<pre>
+    void Swap (int *x, int *y)
+    {
+        int temp = *x;
+        *x = *y;
+        *y = temp;
+    }
+</pre>
+
+<p>We would call this function in the usual way:</p>
+
+<pre>
+    int i = 7;
+    int j = 9;
+    printf (" i=%i, j=%i\n", i, j);
+    Swap (&amp;i, &amp;j);
+    printf (" i=%i, j=%i\n", i, j);
+</pre>
+
+<p>The output of this program shows that the variable
+values have been swapped.  Draw a stack
+diagram for this program to convince yourself this is true.
+If the parameters <tt>x</tt> and <tt>y</tt> were declared as
+regular integer variables (without the <tt>*s</tt>), <tt>Swap()</tt> would
+not work.  It would modify <tt>x</tt> and <tt>y</tt> and have no
+effect on <tt>i</tt> and <tt>j</tt>.</p>
+
+<p>When people start passing things like integers by reference,
+they often try to use an expression
+as a reference argument.  For example:</p>
+
+<pre>
+    int i = 7;
+    int j = 9;
+    Swap (&amp;i, &amp;j+1);         /* WRONG!! */
+</pre>
+
+<p>Presumably the programmer wanted to increase the value of <tt>j</tt> by <tt>1</tt>
+before it is passed to the function.
+This does not work as expected, because the expression <tt>j+1</tt> now
+is interpreted a pointer value and in now pointing to a memory
+location beyond the variable <tt>j</tt>. 
+It is a little tricky to figure out exactly
+what kinds of expressions make sense to be passed by reference.  For now
+a good rule of thumb is that reference arguments have to be
+variables.</p>
+
+<h2>Glossary</h2>
+
+<dl>
+
+<dt>structure:</dt>
+<dd>A collection of data grouped together and
+treated as a single object.</dd>
+
+<dt>member variable:</dt>
+<dd>One of the named pieces of data that make up
+a structure.</dd>
+
+<dt>reference:</dt>
+<dd>A value that indicates or refers to a variable
+or structure.  In a state diagram, a reference appears as an arrow.</dd>
+
+<dt>pass by value:</dt>
+<dd>A method of parameter-passing in which the
+value provided as an argument is copied into the corresponding
+parameter, but the parameter and the argument occupy distinct
+locations.</dd>
+
+<dt>pass by reference:</dt>
+<dd>A method of parameter-passing in which
+the parameter is a reference to the argument variable.  Changes
+to the parameter also affect the argument variable.</dd>
+
+</dl>
+
+
+<a href="ch8.html">prev</a> <a href="ch10.html">next</a> 
+<p> 
+Permission is granted to copy, distribute, transmit and adapt this work un- der the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Inter- national License: https://creativecommons.org/licenses/by-nc/4.0/. 
+If you are interested in distributing a commercial version of this work, please contact the author(s). 
+The LATEX source and code for this book is available from: https://github.com/mkpenta/ThinkC 
+</p>
+</body>

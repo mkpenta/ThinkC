@@ -1,0 +1,509 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Think C - Chapter 4</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+<body>
+<h1>Chapter 4 - Selection structures and recursion</h1>
+
+<h2 id="condrecursion">Conditional expressions</h2>
+
+<p>In order to write useful programs, we almost always need the ability
+to check certain conditions and change the behavior of the program
+accordingly.  In C we can use <strong>control structures</strong> to change the flow of our program.
+Control structures utilize <strong>conditional expressions</strong> to execute statements conditionally.</p>
+
+<p>Conditional expressions are expressions that yield a true or false value. 
+In C, any non-zero expression is true. Zero is false. The following are some example expressions and how they would evaluate in C</p>
+
+<pre><code>'d'      /* true */
+1         /* true */
+-1       /* true */
+4.1     /* true */
+1 + 2  /* true*/
+0        /* false */
+-1 +1  /*false*/
+</code></pre>
+
+<p>Most conditional expressions use <strong>comparison operators</strong></p>
+
+<pre><code>x == y               /* x equals y */
+x != y               /* x is not equal to y */
+x &gt; y                /* x is greater than y */
+x &lt; y                /* x is less than y */
+x &gt;= y               /* x is greater than or equal to y */
+x &lt;= y               /* x is less than or equal to y */
+</code></pre>
+
+<p>Although these operations are probably familiar to you, the
+syntax C uses is a little different from mathematical
+symbols like $=$, $\neq$ and $\le$.  A common error is
+to use a single <code>=</code> instead of a double <code>==</code>.  Remember
+that <code>=</code> is the assignment operator, and <code>==</code> is
+a comparison operator.  Also, there is no such thing as
+<code>=&lt;</code> or <code>=&gt;</code>.</p>
+
+<p>It is generally a good idea to make the two sides of a condition operator be the same
+type so its best to compare <code>int</code>s to <code>int</code>s and <code>double</code>s to <code>double</code>s. With some implicit or explicit casting
+you can also compare <code>int</code>s with <code>char</code>s and <code>int</code>s with <code>double</code>s of course you can always type cast if need.  
+Unfortunately, at this
+point you can't compare strings at all!  There is
+a way to compare strings, but we won't get to it for a couple
+of chapters.</p>
+
+<p><strong>It is also important to note that you should only test floating point values using <code>&gt;</code> and <code>&lt;</code>.</strong></p>
+
+<p>Due to the limitations of the floating point representation, these numbers cannot be compared for equality. 
+If we need to test these for equality we have to determine if the numbers are close enough to each other. 
+To calculate this, we first must decided on a tolerance (like .00001) and then compare  this to the difference of the two numbers.</p>
+
+
+<h2>Selection structures: one-way</h2>
+
+<p>One category of control structures are the selection structures. The simplest selection structure is the <code>if</code> statement:</p>
+
+<pre><code>if (x &gt; 0) 
+{
+    printf ("x is positive\n");
+}
+</code></pre>
+
+<p>The expression in parentheses must be a conditional expression.
+If the expression is true, then the statements in brackets get executed.
+If the condition is not true, the statements are not executed. 
+
+This is considered one - way selection -- either you perform the task or you skip over it. 
+There is only one choice and you select it or you do not.</p>
+
+<h2>The modulus operator</h2>
+
+<p>The modulus operator works on integers (and integer expressions)
+and yields the <em>remainder</em> when the first operand is divided
+by the second.  In C, the modulus operator is a percent sign,
+<code>%</code>.  The syntax is exactly the same as for other operators:</p>
+
+<pre><code>int quotient = 7 / 3;
+int remainder = 7 % 3;
+</code></pre>
+
+<p>The first operator, integer division, yields 2.  The second
+operator yields 1.  Thus, 7 divided by 3 is 2 with 1 left over.</p>
+
+<p>The modulus operator turns out to be surprisingly useful.  For
+example, you can check whether one number is divisible by
+another: if <code>x % y</code> is zero, then <code>x</code> is divisible
+by <code>y</code>.</p>
+
+<p>Also, you can use the modulus operator to extract the rightmost
+digit or digits from a number.  For example, <code>x % 10</code> yields
+the rightmost digit of <code>x</code> (in base 10).  Similarly
+<code>x % 100</code> yields the last two digits.</p>
+
+ <h2>Random numbers</h2>
+  <p>Most computer programs do the same thing every time they are executed,
+    so they are said to be <b>deterministic</b>. Usually, determinism is a good thing,
+    since we expect the same calculation to yield the same result. For some applications, though,
+    we would like the computer to be unpredictable. Games are an obvious example.</p>
+  <p>Making a program truly <b>nondeterministic</b> turns out to be not so easy,
+    but there are ways to make it at least seem nondeterministic. One of them is to generate
+    <i>pseudorandom</i> numbers and use them to determine the outcome of the program.
+    Pseudorandom numbers are not truly random in the mathematical sense, but for our purposes, they will do.</p>
+  <h2>rand()</h2>
+  <p>C provides a function called <code>rand()</code> that generates pseudorandom numbers. It is declared
+    in the header file <code>stdlib.h</code>, which contains a variety of "standard library" functions, hence the name.</p>
+  <p>The return value from <code>rand()</code> is an integer between 0 and <code>RAND_MAX</code>,
+    where <code>RAND_MAX</code> is a large number (about 2 billion on my computer) also defined in the header file.
+    Each time you call <code>rand()</code> you get a different randomly-generated number. To see a sample, run this:</p>
+  <pre>
+    int x = rand();
+    printf("%i\n", x);
+    x = rand();
+    printf("%i\n", x);
+    x = rand();
+    printf("%i\n", x);
+    x = rand();
+    printf("%i\n", x);
+  </pre>
+  <p>On my machine I got the following output:</p>
+  <pre>
+    1804289383
+    846930886
+    1681692777
+    1714636915
+  </pre>
+  <p>You will probably get something similar, but different, on yours.</p>
+  <p>Of course, we don't always want to work with gigantic integers. More often we want to generate integers between 0 and some upper bound.
+    A simple way to do that is with the modulus operator. For example:</p>
+  <pre>
+    int x = rand();
+    int y = x % range + start;
+  </pre>
+  <p>Range here is the number of possible consecutive random values we would like.
+    Start is the lowest random value we want. Since <code>y</code> is the remainder when <code>x</code> is divided by
+    <code>range</code>, the only possible values for <code>y</code> are between 0 and <code>range - 1</code>,
+    including both end points. Keep in mind, though, that <code>y</code> will never be equal to <code>range</code>.
+    The lower bound here is always 0 so if we add a start value we can shift the range to start at a new lower bound.</p>
+
+<h2>Random numbers with a range and start value</h2>
+  <p>For example, if we want a random number between 1 and 6, inclusively, our range is 6 [<code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>, <code>5</code>, <code>6</code>].</p>
+  <pre>
+    int range = 6;
+    int x = rand();
+    int y = x % range;
+  </pre>
+  <p>However, this code will generate a number between 0 and 5, inclusively. To start this sequence at 1, we have to add a start value.</p>
+  <pre>
+    int range = 6;
+    int start = 1;
+    int x = rand();
+    int y = x % range + start;
+  </pre>
+  <p>It is also frequently useful to generate random floating-point values. A common way to do that is by dividing by <code>RAND_MAX</code>.
+    For example:</p>
+  <pre>
+    int x = rand();
+    double y = (double) x / RAND_MAX;
+  </pre>
+  <p>This code sets <code>y</code> to a random value between 0.0 and 1.0, including both end points. As an exercise, you might want to think about how to generate a random floating-point value in a given range; for example, between 100.0 and 200.0.</p>
+  <h2>Random seeds</h2>
+  <p>If you have run the code in this chapter a few times, you might have noticed that you are getting the same "random" values every time.
+    That's not very random!</p>
+  <p>One of the properties of pseudorandom number generators is that if they start from the same place they will generate the same sequence of values.
+    The starting place is called a <b>seed</b>; by default, C uses the same seed every time you run the program.</p>
+  <p>While you are debugging, it is often helpful to see the same sequence over and over. That way, when you make a change to the program you can compare the output before and after the change.</p>
+  <p>If you want to choose a different seed for the random number generator, you can use the <code>srand()</code> function. It takes a single argument,
+    which is an integer between 0 and <code>RAND_MAX</code>.</p>
+
+  <h2>Random seeds and generating random sequences</h2>
+  <p>For many applications, like games, you want to see a different random sequence every time the program runs.
+    A common way to do that is to use a library function like <code>time()</code> to generate something reasonably
+    unpredictable and unrepeatable, like the number of seconds since January 1970, and use that number as a seed.
+    The details of how to do that depend on your development environment but one example is shown here:</p>
+  <pre>
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    #include &lt;time.h&gt;
+
+    int main (void)
+    {
+      // use the number of milliseconds from 1970 to seed rand
+      srand(time(0)); 
+
+      //random number from 1 and 6 
+      int x = rand() % 6 + 1;
+      printf ("%i", x);
+
+      //random number from -5 to positive 4
+      x = rand() % 10 - 5;
+      printf ("%i", x);
+
+      return EXIT_SUCCESS;
+    }
+  </pre>
+  <p>Let's look at a program that combines selection, modulus, and randomness. The following program generates a random number,
+    either 1 for heads or 2 for tails. The result is printed.</p>
+  <pre>
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    #include &lt;time.h&gt;
+
+    int main (void)
+    {
+      // use the number of milliseconds from 1970 to seed rand
+      srand(time(0)); 
+
+      //random number 1 2r 2
+      int flip = rand() % 2 + 1;
+
+      if (flip == 1 )
+      {
+        puts("heads");
+      }
+      if (flip == 2 )
+      {
+        puts("tails");
+      }
+
+      return EXIT_SUCCESS;
+    }
+  </pre>
+  <h2>Selection structures: two-way</h2>
+  <p>A second form of the selection structures is two-way selection, in which there are two possibilities, and the condition determines
+    which one gets executed. We do one thing or we do another thing, unlike one-way selection where we did the thing or we didn't do the thing.
+    The syntax looks like:</p>
+  <pre>
+    if (x%2 == 0)
+    {
+        printf ("x is even\n");
+    }
+    else
+    {
+        printf ("x is odd\n");
+    }
+  </pre>
+  <p>If the remainder when <code>x</code> is divided by 2 is zero, then we know that <code>x</code> is even, and this code displays a message to that effect.
+    If the condition is false, the second set of statements is executed. Since the condition must be true or false, exactly one of the alternatives will be executed.</p>
+
+ 
+  <h2>Wrapping up code in a function</h2>
+  <p>As an aside, if you think you might want to check the parity (evenness or oddness) of numbers often, you might want to
+    "wrap" this code up in a function, as follows:</p>
+  <pre>
+    void printParity (int x) 
+    {
+        if (x%2 == 0) 
+        {
+            printf ("x is even\n");
+        } 
+        else 
+        {
+            printf ("x is odd\n");
+        }
+    }
+  </pre>
+  <p>Now you have a function named <code>printParity()</code> that will display an appropriate message for any integer you care to provide.
+    In <code>main()</code> you would call this function as follows:</p>
+  <pre>
+    printParity(17);
+  </pre>
+  <p>Always remember that when you <em>call</em> a function, you do not have to declare the types of the arguments you provide. C can figure out
+    what type they are based on the definition and the prototype. You should resist the temptation to write things like:</p>
+  <pre>
+    int number = 17;
+    printParity(int number);         /* WRONG!!! */
+  </pre>
+  <h2>Chaining</h2>
+  <p>Sometimes you want to check for a number of related conditions and choose one of several actions. One way to do this is by <b>chaining</b> a series
+    of <code>if</code>s and <code>else</code>s:</p>
+  <pre>
+    if (x > 0) 
+    {
+        printf ("x is positive\n");
+    } 
+    else if (x < 0) 
+    {
+        printf ("x is negative\n");
+    } 
+    else 
+    {
+        printf ("x is zero\n");
+    }
+  </pre>
+  <p>These chains can be as long as you want, although they can be difficult to read if they get out of hand. One way to make them easier to read is
+    to use standard indentation, as demonstrated in these examples. If you keep all the statements and squiggly-braces lined up, you are less
+    likely to make syntax errors and you can find them more quickly if you do.</p>
+<h2>Nested conditionals</h2>
+<p><em>Index: conditional!nested</em></p>
+<p>In addition to chaining, you can also nest one control structures
+within another. We could have written the previous example as:</p>
+<pre>
+if (x == 0) 
+{
+    printf ("x is zero\n");
+} 
+else 
+{
+    if (x > 0) 
+    {
+        printf ("x is positive\n");
+    }
+    else 
+    {
+        printf ("x is negative\n");
+    }
+}
+</pre>
+<p>There is now an outer conditional that contains two branches. The
+first branch contains a simple output statement, but the second
+branch contains another <code>if</code> statement, which has two branches
+of its own. Fortunately, those two branches are both output
+statements, although they could have been conditional statements as
+well.</p>
+<p>Notice again that indentation helps make the structure
+apparent, but nevertheless, nested conditionals get difficult to read
+very quickly. In general, it is a good idea to avoid them when you
+can.</p>
+<p><em>Index: nested structure</em></p>
+<p>On the other hand, this kind of <strong>nested structure</strong> is common, and
+we will see it again, so you better get used to it.</p>
+
+<h2>Selection structures: switch</h2>
+<p><em>Index: switch, selection!switch, control structure!switch</em></p>
+<p>A switch is sort of short hand to replace some long chained structures. 
+You can use a switch when you are testing a single <code>int</code> or <code>char</code>, you
+are testing for equality, and you would otherwise have a long chain. For example we can take this chained structure that is testing the 
+int value and printing a message based on the value.</p>
+<pre>
+//x is an int
+
+if (x == 1) 
+{
+    puts("message1");
+} 
+else if (x == 2) 
+{
+    puts("message2");
+} 
+else if (x == 3) 
+{
+    puts("message3");
+} 
+else 
+{
+    puts("default message");
+}
+</pre>
+<p>We can rewrite this as a switch because we are testing an int value for equality in a chained structure. Each block of code in the chained structure 
+becomes a case in the switch. Each case in the switch must have a label and a break. Most labels start with <code>case|</code> and then have the value we are testing for equality --
+like <code>case 2:</code> or <code>case 'c':</code>. One case has a unique label -- <code>default</code>. The default case has no value to test because it is the catchall -- it only runs if all other cases fail. All cases end with the word <code>break</code>. A break forces control to leave the switch structure. Breaks are an important part of the switch structure.</p>
+<p>Write a program that prompts the user for an integer. Use the switch to print various messages. Try removing some of the breaks and check out how the changes behave.
+Omitting breaks between cases can cause fall through - this can be a bug or a feature depending on how you use it (look into stacking cases in switches).</p>
+
+<pre>
+//x is an int
+
+switch(x)
+{
+    case 1:
+        puts("message1");
+        break;
+
+    case 2:
+        puts("message2");
+        break;
+
+    case 3:
+        puts("message3");
+        break;
+
+    default:
+        puts("message4");
+        break;
+}
+</pre>
+
+<h2>The <code>return</code> statement and early termination</h2>
+<p><em>Index: return, statement!return</em></p>
+<p>The <code>return</code> statement allows you to terminate the execution
+of a function. You can place a return statement in any part of the function. Once the program hits the return it will leave the function and go back to the caller. 
+If you put a return statement before you before you reach the end of a function this is called an early return or early termination. This can be useful to guard the function from doing unnecessary action. For example, if the parameter of the function must greater than zero, then we can put an if statement to act as a gaurd and stop the 
+execution of the function right off the top.</p>
+<pre>
+#include &lt;math.h&gt;
+
+void printLogarithm(double x)
+{
+    if (x > 0.0) /*'guard' for early return if x >0 */
+    {
+        printf("Positive numbers only, please.\n");
+        return;
+    }
+
+    double result = log(x);
+    printf("The log of x is %f\n", result);
+}
+</pre>
+<p>This defines a function named <code>printLogarithm()</code> that takes
+a <code>double</code> named <code>x</code> as a parameter. The first thing
+it does is check whether <code>x</code> is greater than
+zero, in which case it displays an error message and then uses
+<code>return</code> to exit the function. The flow of execution
+immediately returns to the caller and the remaining lines of
+the function are not executed.</p>
+<p>Remember that any time you want to use one a function from the math
+library, you have to include the header file <code>math.h</code> and 
+you may be required to link the math library at compile time with <code>-lm</code> (dash L M)</p>
+
+<h2>Recursion</h2>
+<p><em>Index: recursion</em></p>
+<p>I mentioned in the last chapter that it is legal for one function to
+call another, and we have seen several examples of that.  I neglected
+to mention that it is also legal for a function to call itself.  It
+may not be obvious why that is a good thing, but it turns out to be
+one of the most magical and interesting things a program can do.</p>
+<p>For example, look at the following function:</p>
+<pre>
+void countdown(int n)
+{
+    if (n == 0)
+    {
+        printf("Blastoff!");
+    }
+    else
+    {
+        printf("%i", n);
+        countdown(n-1);
+    }
+}
+</pre>
+<p>The name of the function is <code>countdown()</code> and it takes a single
+integer as a parameter.  If the parameter is zero, it outputs
+the word "Blastoff."  Otherwise, it outputs the parameter and
+then calls a function named <code>countdown()</code>---itself---passing
+<code>n-1</code> as an argument.</p>
+
+In most programming environments, a program with an infinite recursion will not really run forever. Eventually, something will break and the program will report an error. This is the first example we have seen of a run-time error (an error that does not appear until you run the program).
+<p>You should write a small program that recurses forever and run it to see what happens.</p>
+
+<h2>Tips on writing recursion solutions</h2>
+<ol>
+  <li>Identify a base case. This is what stops the recursion. This block will not have a recursive call</li>
+  <li>Identify the general case (the recursive step). This is the repeating part. It will contain a recursive call</li>
+  <li>The recursive call will use an argument that gets the next step closer to the base case.</li>
+  <li>An if statement will test the parameter and determine if the base case is run or the general case.</li>
+</ol>
+
+<h2>Stack diagrams for recursive functions</h2>
+<p>In the previous chapter we used a stack diagram to represent the state of a program during a function call. The same kind of diagram can make it easier to interpret a recursive function.</p>
+<p>Remember that every time a function gets called it creates a new instance that contains the function's local variables and parameters.</p>
+
+<p>There is one instance of main() and four instances of Countdown(), each with a different value for the parameter n. The bottom of the stack, Countdown() with n=0 is the base case. It does not make a recursive call, so there are no more instances of Countdown().</p>
+<p>The instance of main() is empty because main() does not have any parameters or local variables. As an exercise, draw a stack diagram for PrintLines(), invoked with the parameter n=4.</p>
+
+<h2>Glossary</h2>
+<dl>
+  <dt>modulus</dt>
+  <dd>An operator that works on integers and yields the remainder when one number is divided by another. In C it is denoted with a percent sign (%).</dd>
+
+  <dt>deterministic</dt>
+  <dd>A program that does the same thing every time it is run.</dd>
+
+  <dt>pseudorandom</dt>
+  <dd>A sequence of numbers that appear to be random, but which are actually the product of a deterministic computation.</dd>
+
+  <dt>seed</dt>
+  <dd>A value used to initialize a random number sequence. Using the same seed should yield the same sequence of values.</dd>
+
+  <dt>condition</dt>
+  <dd>An expression that results in true or false</dd>
+
+  <dt>control structure</dt>
+  <dd>A structure that uses a condition to allow for conditionally executing a block of code.</dd>
+
+  <dt>selection structure</dt>
+  <dd>A type of control structure. Selection structures include if, if...else, and switch</dd>
+
+  <dt>chaining</dt>
+  <dd>A way of joining several conditional statements in sequence.</dd>
+
+  <dt>nesting</dt>
+  <dd>Putting a conditional statement inside one or both branches of another conditional statement.</dd>
+
+  <dt>recursion</dt>
+  <dd>The process of calling the same function you are currently executing.</dd>
+<dt>infinite recursion:</dt> 
+<dd>A function that calls itself recursively without ever reaching the base case. Eventually, an infinite recursion will cause a run-time error.</dd>
+
+</dl>
+
+<a href="ch3.html">prev</a> <a href="ch5.html">next</a> 
+<p> 
+Permission is granted to copy, distribute, transmit and adapt this work un- der the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Inter- national License: https://creativecommons.org/licenses/by-nc/4.0/. 
+If you are interested in distributing a commercial version of this work, please contact the author(s). 
+The LATEX source and code for this book is available from: https://github.com/mkpenta/ThinkC 
+</p>
+</body>

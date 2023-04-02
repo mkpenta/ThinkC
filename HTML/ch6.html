@@ -1,0 +1,872 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Think C - Chapter 6</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+<body>
+<h1>Chapter 6 - Iteration</h1>
+
+
+<p><strong>More on assignments</strong></p>
+
+<p>I haven't said much about it, but it is legal in C to
+make more than one assignment to the same variable. The
+effect of the second assignment is to replace the old value
+of the variable with a new value.</p>
+
+<pre><code>
+int fred = 5;
+printf ("%i", fred);
+fred = 7;
+printf ("%i", fred);
+</code></code></pre>
+
+<p>The output of this program is <code>57</code>, because the first
+time we print <code>fred</code> its value is 5, and the second time
+its value is 7.</p>
+
+<p>This kind of <strong>multiple assignment</strong> is the reason I
+described variables as a <em>container</em> for values. When
+you assign a value to a variable, you change the contents of
+the container.</p>
+
+<p>When there are multiple assignments to a variable, it is especially
+important to distinguish between an assignment statement and a
+statement of equality. Because C uses the <code>=</code> symbol for
+assignment, it is tempting to interpret a statement like <code>a = b</code>
+as a statement of equality. It is not! In many programming languages 
+an alternate symbol is used
+for assignment, such as <code>&lt;-</code> or <code>:=</code>, in order to
+avoid confusion.</p>
+
+<p>First of all, equality is commutative, and assignment is not.
+For example, in mathematics if  a = 7  then  7 = a .  But in
+C the statement <code>a = 7;</code> is legal, and <code>7 = a;</code>
+is not.</p>
+
+<p>Furthermore, in mathematics, a statement of equality is true
+for all time.  If  a = b  now, then  a  will always equal  b .
+In C, an assignment statement can make two variables equal,
+but they don't have to stay that way!</p>
+
+<pre><code>
+int a = 5;
+int b = a;     /* a and b no have the same value*/
+a = 3;         /* a and b are no longer have the same value */
+</code></code></pre>
+
+<p>The third line changes the value of <code>a</code> but it does not
+change the value of <code>b</code>, and so they are no longer equal.</p>
+
+<p>The ability to make multiple assignments to a variable means we can <strong>self assign</strong> variables:</p>
+
+<pre><code>
+int a = 5;  
+a = a + 1;       
+</code></code></pre>
+
+<p>Assignment has the lowest precedent. This means that all other operations in the expression are evaluated before the assignment. In the first line code <code>a</code> is initialized with a value of 5. In the second line, the expression to the right of the assignment operator (<code>=</code>) is evaluated first. Since <code>a</code> has the value 5, <code>a + 1</code> results in the value 6. Finally we assign the result of 6 to <code>a</code>.</p>
+
+<p>Self assignment is actually very common. In fact, C has operators specifically for this task.
+Several of these operators follow:</p>
+<pre><code>
+int x = 3;
+x += 2;         /* means x = x + 2 */      
+x *= 4;         /* means x = x * 4  */      
+x -= 6;         /* means x = x - 6  */      
+x /= 6;         /* means x = x / 6   */    
+x %=2;          /* means x = x % 2 */  
+
+int x = 5;
+x++;                    //add 1 to x
+printf("%i\n", x);      //prints 6
+x--;                    //sutracts 1 from x
+printf("%i\n", x);      //prints 5
+
+int x = 1;
+int y = 1;
+printf("%i\n", x++);    //prints 1, but x = 2 when completed
+printf("%i\n", ++y);    //prints 2 and y = 2 when completed
+printf("%i\n", x);      //prints 2
+printf("%i\n", y);      //prints 2
+
+int x = 1;
+int y = 1;
+x++;
+++y;
+printf("%i\n", x);      //prints 2
+printf("%i\n", y);      //prints 2
+</code></code></pre>
+
+<h2>Iteration</h2>
+
+<p>One of the things computers are often used for is the automation
+of repetitive tasks.  Repeating identical or similar tasks without
+making errors is something that computers do well and people do
+poorly.</p>
+
+<p>In section <a href="#recursion">recursion</a> we have seen programs that use <b>recursion</b> to perform
+repetition, such as <code>printLines()</code> and <code>countdown()</code>. 
+I now want to introduce a new
+type of repetition, that is called <b>iteration</b>, and C provides
+several language features that make it easier to write repetitive
+programs.</p>
+
+<p>We introduce two new control structures, the <code>while</code>
+statement and the <code>for</code> statement. 
+These are repetition structures - they repeat stuff.</p>
+
+<h2>The <code>while</code> statement</h2>
+
+<p>We can write <code>countdown()</code> program using a <code>while</code> statement:</p>
+
+<pre><code>
+void countdown (int n) 
+{
+    while (n > 0) 
+    {
+        printf ("%i\n", n);
+        n = n-1;
+    }
+    printf ("Blastoff!\n");
+}</code>
+</code></pre>
+
+<p>You can almost read a <code>while</code> statement as if it were
+English.  What this means is, "While <code>n</code> is greater than
+zero, continue displaying the value of <code>n</code> and then reducing
+the value of <code>n</code> by 1.  When you get to zero, output the
+word 'Blastoff!'"</p>
+
+<p>More formally, the flow of execution for a <code>while</code> statement
+is as follows:</p>
+
+<ol>
+    <li>Evaluate the condition in parentheses, yielding <code>true</code>
+    or <code>false</code>.</li>
+    <li>If the condition is false, exit the <code>while</code> statement
+    and continue execution at the next statement.</li>
+    <li>If the condition is true, execute each of the statements
+    between the curly-brackets, and then go back to step 1.</li>
+</ol>
+
+<p>This type of flow is called a <b>loop</b> because the third step loops
+back around to the top.  Notice that if the condition is false the
+first time through the loop, the statements inside the loop are
+never executed.  The statements inside the loop are called
+the <b>body</b> of the loop.</p>
+
+<p>The body of the loop should change the value of
+one or more variables so that, eventually, the condition becomes
+false and the loop terminates.  Otherwise the loop will repeat
+forever, which is called an <b>infinite loop</b>.  An endless
+source of amusement for computer scientists is the observation
+that the directions on shampoo, "Lather, rinse, repeat," are
+an infinite loop.</p>
+
+<p>In the case of <code>countdown()</code>, we can prove that the loop
+will terminate because we know that the value of <code>n</code> is
+finite, and we can see that the value of <code>n</code> gets smaller
+each time through the loop (each <b>iteration</b>), so
+eventually we have to get to zero.  In other cases it is not
+so easy to tell:</p>
+
+<pre><code>
+void sequence (int n) 
+{
+    while (n != 1) 
+    {
+        printf ("%i\n", n);
+        if (n%2 == 0)       /* n is even */
+        {          
+            n = n / 2;
+        } 
+        else                /* n is odd */
+        {                  
+            n = n*3 + 1;
+        }
+    }
+}</code>
+</code></pre>
+
+<p>The condition for this loop is <code>n != 1</code>, so the loop
+will continue until <code>n</code> is 1, which will make the condition
+false.</p>
+
+<p>At each iteration, the program outputs the value of <code>n</code> and then
+checks whether it is even or odd.  If it is even, the value of
+<code>n</code> is divided by two.  If it is odd, the value is replaced
+by $3n+1$.  For example, if the starting value (the argument passed
+to <code>Sequence</code>) is 3, the resulting sequence is
+3, 10, 5, 16, 8, 4, 2, 1.</p>
+
+<p>Since <code>n</code> sometimes increases and sometimes decreases, there is no
+obvious proof that <code>n</code> will ever reach 1, or that the program will
+terminate.  For some particular values of <code>n</code>, we can prove
+termination.  For example, if the starting value is a power of two, then
+the value of <code>n</code> will be even every time through the loop, until
+we get to 1.  The previous example ends with such a sequence,
+starting with 16.</p>
+
+<p>Particular values aside, the interesting question is whether
+we can prove that this program terminates for <em>all</em> values of n.
+So far, no one has been able to prove it <em>or</em> disprove it!</p>
+
+<h2>Looping Design Patterns</h2>
+
+<p>When learning about loops it is helpful to identify common design pattern.
+We will first discuss the a basic strategy for writing loops and then detail a number of common loop patterns such as the counting loop, the user termination loop, the sentinel loop, and the value validation loop.</p>
+
+<p>The while loop is the most universal loop, but any while loop to work properly, it needs three things:</p>
+
+<ol>
+	<li>A variable with an initial value before the loop, this will be the test variable in the condition</li>
+	<li>A conditional test on the variable at the start of the loop</li>
+	<li>A re-assignment on the test variable inside the loop body</li>
+</ol>
+
+<p>All of these components are needed for a loop to work. Let's identify these pieces from one of our previous loops.</p>
+
+<pre><code>void countdown (int n) 
+{
+    //#1 n has an initial value when passed to the function
+    while (n > 0) //#2 this is a test on the variable
+    {
+        printf ("%i\n", n);
+        n = n-1;  //#3 this is an assignment on the variable
+    }
+    printf ("Blastoff!\n");
+}
+</code></code></pre>
+
+<p>Now that we have a basic strategy for laying out our while loops, let's examine some common patterns. The most common pattern we see it the <strong>counting loop</strong>. This loop is used for iterating a specified number of times. If you can count the number of times you need your loop to run this may the pattern you need.</p>
+
+<p>In a counting loop we start out counter with an initial value. Our condition will test if the count has yet to reach a specific limit. At each iteration we increment the count.</p>
+
+ <pre><code>
+//#1 count has an initial value of zero
+int count = 0;
+
+while (count &lt; 10) //#2 this is a test on the variable
+{
+  printf ("%i\n", count);  //do something in the loop
+  count++;   //#3 this is an assignment on the variable
+}
+</code></pre>
+
+<p>Another common pattern we see it the <strong>sentinel loop</strong>. A sentient is like a guard on watch. This loop will keep iterating until a special value is seen by the guard.</p>
+
+ <pre><code>
+int value;
+puts("enter a grade from 0 to 100. Enter a negative number to stop");
+scanf(" %i", &value);  //#1 get an intial value before the loop
+
+while (value &gt;= 0) //#2 test for a sentinel value
+{
+   printf ("%i\n", value);  //do something in the loop
+
+    //#3 this is an assignment on the variable
+    //we need to prompt and scan again
+    puts("enter a grade from 0 to 100. Enter a negative number to stop");
+    scanf(" %i", &value);  //this is an assignment
+}
+</code></pre>
+
+<p>We can look at another sentinel, but we will call this a <strong>user terminated loop</strong>. Like our sentinel, this uses user input to end a program.</p>
+
+ <pre><code>
+char choice;
+puts("start a program y or n");
+scanf(" %c", &choice);  //#1 get an intial value before the loop
+
+while (choice == 'y') //#2 test for a sentinel value
+{
+   //run a wholoe program
+
+    //#3 this is an assignment on the variable
+    //we need to prompt and scan again
+    puts("Do you want to run the progam again");
+    scanf(" %c", &choice);
+}
+</code></pre>
+
+
+
+<p>This looping pattern is the value validation pattern. If you need a user to enter a number a bounded value. You can use this loop to ensure a value fits your bound.  In this loop we ask the user for input until an 'y' or an 'n' is entered. All three of our loop components are here, unlabeled. Can you identify them?</p>
+
+<pre>
+<code>
+char choice;
+puts("start a program y or n");
+scanf(" %c", &amp;choice);  
+while(choice != 'y' &amp;&amp; choice != 'n')
+{
+  puts("that is invalid input");
+  puts("start a program y or n");
+  scanf(" %c", &amp;choice);  
+}	
+//more program after this
+</code>
+</pre>
+
+<p>Accumulators</p>
+<p>Accumulators are loops that act to accumulate some value. Accumulator variables act in concert with loops. The variable must be initialized before the loop. It is not usually the control variable of the loop. It accumulates its value in the loop body. Here is an accumulator store the total sum of all the grades.</p>
+
+<pre>
+<code>
+int sum = 0;
+int value;
+puts("enter a grade from 0 to 100. Enter a negative number to stop");
+scanf(" %i", &amp;value);  //#1 get an intial value before the loop
+
+while (value &gt;= 0) //#2 test for a sentinel value
+{
+    sum = sum + value;
+    
+    //#3 this is an assignment on the variable
+    //we need to prompt and scan again
+    puts("enter a grade from 0 to 100. Enter a negative number to stop");
+    scanf(" %i", &amp;value);  //this is an assignment
+}
+
+printf("%i\n", sum);
+</code>
+</pre>
+
+<h2>The for loop</h2>
+<p>For loops are a short hand way of expressing a counting loop. It has all the same parts as a counting loop but it organizes them in a new way.</p>
+
+<p>The for loop still needs these three things:</p>
+<ol>
+    <li>A variable with an initial value before the loop, this will be the test variable in the condition</li>
+    <li>A conditional test on the variable at the start of the loop</li>
+    <li>A re-assignment on the test variable inside the loop body</li>
+</ol>
+<p>However in a for loop these are all written at the top of the structure.</p>
+
+<pre>
+<code>
+for( intialization ; condition; assignment)
+{
+}
+</code>
+</pre>
+
+<p>Below we present a counting while loop and its equivalent for loop</p>
+
+<pre>
+<code>
+    //#1  an initial value
+    int i = 0;
+    while (i &lt; 10) //#2 this is a test on the variable
+    {
+        printf ("%i\n", i);
+        
+        i++;  //#3 re-assignment on the variable
+    }
+</code>
+</pre>
+
+<pre>
+<code>
+for (int i; i &lt; 10, i++)  //#1, #2, #3
+{
+    printf ("%i\n", i);
+}
+</code>
+</pre>
+<p>As you can see a for loop is a more compact version of a counting loop, but where a while loop is a universal loop, a for loop is used primarily as a counting loop. For loops really show their worth when we work with arrays and strings. We will see more of them in upcoming chapters.</p>
+
+<h2>Tables</h2>
+<p>One of the things loops are good for is generating
+tabular data.  For example, before computers were readily available,
+people had to calculate logarithms, sines and cosines, and other
+common mathematical functions by hand.
+To make that easier, there were books containing long tables
+where you could find the values of various functions.
+Creating these tables was slow and boring, and the result
+tended to be full of errors.</p>
+
+<p>When computers appeared on the scene, one of the initial reactions
+was, "This is great!  We can use the computers to generate the
+tables, so there will be no errors."  That turned out to be true
+(mostly), but shortsighted.  Soon thereafter computers and
+calculators were so pervasive that the tables became obsolete.</p>
+
+<p>Well, almost.  It turns out that for some operations, computers
+use tables of values to get an approximate answer, and then
+perform computations to improve the approximation.  In some
+cases, there have been errors in the underlying tables, most
+famously in the table the original Intel Pentium used to perform
+floating-point division.</p>
+
+<p>Although a "log table" is not as useful as it once was, it still
+makes a good example of iteration.  The following program outputs a
+sequence of values in the left column and their logarithms in the
+right column:</p>
+
+<pre><code>double x = 1.0;
+while (x &lt; 10.0) 
+{
+    printf ("%.0f\t%f\n", x ,log(x));
+    x = x + 1.0;
+}</code></pre>
+
+<p>The sequence \verb+\t+ represents a <strong>tab</strong> character.
+The sequence \verb+\n+ represents a newline character.  
+They are so called <em>escape sequences</em> which are used to encode
+non-printable ASCII-characters.
+Escape sequences can be included anywhere in a string, although in these examples
+the sequence is the whole string.</p>
+
+<p>A tab character causes the cursor to shift to the right until
+it reaches one of the <strong>tab stops</strong>, which are normally every
+eight characters.  As we will see in a minute, tabs are useful
+for making columns of text line up.
+A newline character causes the cursor to move on to the next line. </p>
+
+
+<pre><code>   1      0.000000
+   2      0.693147
+   3      1.098612
+   4      1.386294
+   5      1.609438
+   6      1.791759
+   7      1.945910
+   8      2.079442
+   9      2.197225
+</code></pre>
+
+<p>If these values seem odd, remember that the <code>log()</code> function uses
+base $e$.  Since powers of two are so important in computer science,
+we often want to find logarithms with respect to base 2.  To do that,
+we can use the following formula:</p>
+
+\[ \log_2 x = \frac {log_e x}{log_e 2} \]
+
+<p>Changing the output statement to</p>
+
+<pre><code>      printf ("%.0f\t%f\n", x, log(x) / log(2.0));
+</code></pre>
+
+<p>yields:</p>
+
+<pre><code>    1      0.000000
+    2      1.000000
+    3      1.584963
+    4      2.000000
+    5      2.321928
+    6      2.584963
+    7      2.807355
+    8      3.000000
+    9      3.169925
+</code></pre>
+
+<p>We can see that 1, 2, 4 and 8 are powers of two, because
+their logarithms base 2 are round numbers.  If we wanted to find
+the logarithms of other powers of two, we could modify the
+program like this:</p>
+
+<pre><code>    double x = 1.0;
+    while (x &lt; 100.0) 
+    {
+        printf ("%.0f\t%.0f\n", x, log(x) / log(2.0));
+        x = x * 2.0;
+    }
+</code></pre>
+
+<p>Now instead of adding something to <code>x</code> each time through
+the loop, which yields an arithmetic sequence, we multiply
+<code>x</code> by something, yielding a <strong>geometric</strong> sequence.
+The result is:</p>
+
+<pre><code>    1      0
+    2      1
+    4      2
+    8      3
+    16     4
+    32     5
+    64     6
+</code></pre>
+
+<p>Because we are using tab characters between the columns, the
+position of the second column does not depend on the number
+of digits in the first column.</p>
+
+<p>Log tables may not be useful any more, but for computer scientists,
+knowing the powers of two is!  As an exercise, modify this program
+so that it outputs the powers of two up to 65536
+(that's $2^{16}$).  Print it out and memorize it.</p>
+
+<h2>Two-dimensional tables</h2>
+
+<p>A two-dimensional table is a table where you choose a row and
+a column and read the value at the intersection.  A multiplication
+table is a good example.  Let's say you wanted to print a
+multiplication table for the values from 1 to 6.</p>
+
+<pre>
+    <code>
+        int i = 1;
+        while (i &lt;= 6) 
+        {
+            printf("%i   ", i*2);
+            i = i + 1;
+        }
+        printf("\n");
+    </code>
+</pre>
+
+<p>
+    The first line initializes a variable named <code>i</code>, which is going to act as a counter, or <b>loop variable</b>.  As the loop executes, the value of <code>i</code> increases from 1 to 6, and then when <code>i</code> is 7, the loop terminates.  Each time through the loop, we print the value <code>2*i</code> followed by three spaces.  By omitting the <code>\n</code> from the first output statement, we get all the output on a single line.
+</p>
+
+<p>
+    The output of this program is:
+</p>
+
+<pre>
+    <code>
+        2   4   6   8   10   12
+    </code>
+</pre>
+
+<p>
+    So far, so good.  The next step is to <b>encapsulate</b> and <b>generalize</b>.
+</p>
+
+<h2>Encapsulation and generalization</h2>
+
+<p>
+    Encapsulation usually means taking a piece of code and wrapping it up in a function, allowing you to take advantage of all the things functions are good for.  We have seen two examples of encapsulation, when we wrote <code>printParity()</code> in Section 1.4 and <code>isSingleDigit()</code> in Section 6.6.
+</p>
+
+<p>
+    Generalization means taking something specific, like printing multiples of 2, and making it more general, like printing the multiples of any integer.
+</p>
+
+<p>
+    Here's a function that encapsulates the loop from the previous section and generalizes it to print multiples of <code>n</code>.
+</p>
+
+<pre>
+    <code>
+        void printMultiples (int n)
+        {
+            int i = 1;
+            while (i &lt;= 6) 
+            {
+                printf("%i   ", i*n);
+                i = i + 1;
+            }
+            printf("\n");
+        }
+    </code>
+</pre>
+
+<p>
+    To encapsulate, all I had to do was add the first line, which declares the name, parameter, and return type.  To generalize, all I had to do was replace the value 2 with the parameter <code>n</code>.
+</p>
+
+<p>
+    If we call this function with the argument 2, we get the same output as before.  With argument 3, the output is:
+</p>
+
+<pre>
+    <code>
+        3   6   9   12   15   18
+    </code>
+</pre>
+
+<p>
+    and with argument 4, the output is
+</p>
+
+<pre>
+    <code>
+        4   8   12   16   20   24 
+    </code>
+</pre>
+
+<p>
+    By now you can probably guess how we are going to print a multiplication table: we'll call <code>printMultiples()</code> repeatedly with different arguments.  In fact, we are going to use another loop to iterate through the rows.
+</p>
+<pre>
+    <code>
+        int i = 1;
+        while (i &lt;= 6) 
+        {
+            PrintMultiples (i);
+            i = i + 1;
+        }    
+    </code>
+</pre>
+
+<p>
+    First of all, notice how similar this loop is to the one inside <code>printMultiples()</code>.  I only replaced the call of the <code>printf()</code> function with the call of the <code>printMultiples()</code> function.
+</p>
+
+<p>
+    The output of this program is:
+</p>
+
+<pre>
+    <code>
+        1   2   3   4   5   6   
+        2   4   6   8   10   12   
+        3   6   9   12   15   18   
+        4   8   12   16   20   24   
+        5   10   15   20   25   30   
+        6   12   18   24   30   36   
+    </code>
+</pre>
+
+<p>
+    which is a (slightly sloppy) multiplication table.  If the sloppiness bothers you, try replacing the spaces between columns with tab characters <code>\t</code> and see what you get.
+</p>
+
+<h2>Functions</h2>
+
+<p>
+    In the last section I mentioned &ldquo;all the things functions are good for.&rdquo;  About this time, you might be wondering what exactly those things are.  Here are some of the reasons functions are useful:
+</p>
+
+<ul>
+    <li>By giving a name to a sequence of statements, you make your program easier to read and debug.</li>
+    <li>Dividing a long program into functions allows you to separate parts of the program, debug them in isolation, and then compose them into a whole.</li>
+    <li>Functions facilitate both recursion and iteration.</li>
+    <li>Well-designed functions are often useful for many programs. Once you write and debug one, you can reuse it.</li>
+</ul>
+
+<h2>More encapsulation</h2>
+
+<p>
+    To demonstrate encapsulation again, I'll take the code from the previous section and wrap it up in a function:
+</p>
+
+<pre>
+    <code>
+        void printMultTable () 
+        {
+            int i = 1;
+            while (i &lt;= 6) 
+            {
+                PrintMultiples (i);
+                i = i + 1;
+            }
+        }
+    </code>
+</pre>
+
+<p>
+    The process I am demonstrating is a common development plan.  You develop code gradually by adding lines to <code>main()</code> or someplace else, and then when you get it working, you extract it and wrap it up in a function.
+</p>
+
+<p>
+    The reason this is useful is that you sometimes don't know when you start writing exactly how to divide the program into functions.  This approach lets you design as you go along.
+</p>
+
+<h2>Local variables</h2>
+
+<p>About this time, you might be wondering how we can use the same
+variable <code>i</code> in both <code>printMultiples()</code> and <code>printMultTable()</code>.  Didn't I say that you can only declare a variable
+once?  And doesn't it cause problems when one of the functions changes
+the value of the variable?</p>
+
+<p>The answer to both questions is &ldquo;no,&rdquo; because the <code>i</code> in <code>printMultiples()</code> and the <code>i</code> in <code>printMultTable()</code> are
+<em>not the same variable</em>.  They have the same name, but
+they do not refer to the same storage location, and changing
+the value of one of them has no effect on the other.</p>
+
+<p>Remember that variables that are declared inside a function definition
+are local.  You cannot access a local variable from outside its
+&ldquo;home&rdquo; function, and you are free to have multiple variables with
+the same name, as long as they are not in the same function.</p>
+
+<p>The stack diagram for this program shows clearly that the
+two variables named <code>i</code> are not in the same storage location.
+They can have different values, and changing one does not affect
+the other.</p>
+
+
+<p>Notice that the value of the parameter <code>n</code> in
+<code>printMultiples()</code> has to be the same as the value
+of <code>i</code> in <code>printMultTable()</code>.  On the other hand,
+the value of <code>i</code> in <code>printMultiples()</code> goes
+from 1 up to <code>6</code>.  In the diagram, it happens to be 3.
+The next time through the loop it will be 4.</p>
+
+<p>It is often a good idea to use different variable names in
+different functions, to avoid confusion, but there are good
+reasons to reuse names.  For example, it is common to
+use the names <code>i</code>, <code>j</code> and <code>k</code> as loop variables.
+If you avoid using them in one function just because you
+used them somewhere else, you will probably make the program
+harder to read.</p>
+
+
+<h2>More generalization</h2>
+
+<p>As another example of generalization, imagine you wanted
+a program that would print a multiplication table of any
+size, not just the 6x6 table.  You could add a parameter to
+<code>printMultTable()</code>:</p>
+
+<pre><code>void printMultTable (int high) 
+{
+    int i = 1;
+    while (i &lt;= high) 
+    {
+        PrintMultiples (i);
+        i = i + 1;
+    }
+}
+</code></pre>
+
+<p>I replaced the value 6 with the parameter <code>high</code>.  If I
+call <code>printMultTable()</code> with the argument 7, I get:</p>
+
+<pre><code>1   2   3   4   5   6   
+2   4   6   8   10   12   
+3   6   9   12   15   18   
+4   8   12   16   20   24   
+5   10   15   20   25   30   
+6   12   18   24   30   36   
+7   14   21   28   35   42   
+</code></pre>
+
+<p>which is fine, except that I probably want the table to
+be square (same number of rows and columns), which means
+I have to add another parameter to <code>printMultiples()</code>,
+to specify how many columns the table should have.</p>
+
+<p>Just to be annoying, I will also call this parameter <code>high</code>,
+demonstrating that different functions can have parameters
+with the same name (just like local variables):</p>
+
+<pre><code>void PrintMultiples (int n, int high) 
+{
+    int i = 1;
+    while (i &lt;= high) 
+    {
+        printf ("%i    ", n*i);
+        i = i + 1;
+    }    
+    printf ("\n");
+}
+
+void PrintMultTable (int high) 
+{
+    int i = 1;
+    while (i &lt;= high) 
+    {
+        PrintMultiples (i, high);
+        i = i + 1;
+    }
+}
+</code></pre>
+
+<p>Notice that when I added a new parameter, I had to change the first
+line of the function, and I also had to
+change the place where the function is called in <code>printMultTable()</code>.
+As expected, this program generates a square 7x7 table:</p>
+
+<pre><code>1   2   3   4   5   6   7   
+2   4   6   8   10   12   14   
+3   6   9   12   15   18   21   
+4   8   12   16   20   24   28   
+5   10   15   20   25   30   35   
+6   12   18   24   30   36   42   
+7   14   21   28   35   42   49
+</code></pre>
+
+<h2>When you generalize a function appropriately, you often find
+that the resulting program has capabilities you did not intend.</h2>
+
+<p>For example, you might notice that the multiplication table
+is symmetric, because $ab = ba$, so all the entries in the
+table appear twice.  You could save ink by printing only
+half the table.  To do that, you only have to change one
+line of <code>printMultTable()</code>.  Change</p>
+
+<pre><code>printMultiples (i, high);
+</code></pre>
+
+<p>to</p>
+
+<pre><code>printMultiples (i, i);
+</code></pre>
+
+<p>and you get:</p>
+
+<pre><code>1   
+2   4   
+3   6   9   
+4   8   12   16   
+5   10   15   20   25   
+6   12   18   24   30   36   
+7   14   21   28   35   42   49  
+</code></pre>
+
+<p>I'll leave it up to you to figure out how it works.</p>
+
+<h2>Glossary</h2>
+
+<dl>
+    <dt>loop:</dt>
+    <dd>A statement that executes repeatedly while a
+    condition is true or until some condition is satisfied.</dd>
+    
+    <dt>infinite loop:</dt>
+    <dd>A loop whose condition is always true.</dd>
+    
+    <dt>body:</dt>
+    <dd>The statements inside the loop.</dd>
+    
+    <dt>iteration:</dt>
+    <dd>One pass through (execution of) the body
+    of the loop, including the evaluation of the condition.</dd>
+    
+    <dt>tab:</dt>
+    <dd>A special character, written as <code>\t</code> in C,
+    that causes the cursor to move to the next tab stop on the
+    current line.</dd>
+    
+    <dt>encapsulate:</dt>
+    <dd>To divide a large complex program into
+    components (like functions) and isolate the components from
+    each other (for example, by using local variables).</dd>
+    
+    <dt>local variable:</dt>
+    <dd>A variable that is declared inside
+    a function and that exists only within that function.  Local variables
+    cannot be accessed from outside their home function, and do not
+    interfere with any other functions.</dd>
+    
+    <dt>generalize:</dt>
+    <dd>To replace something unnecessarily specific
+    (like a constant value) with something appropriately general
+    (like a variable or parameter).  Generalization makes code more
+    versatile, more likely to be reused, and sometimes even easier
+    to write.</dd>
+    
+    <dt>development plan:</dt>
+    <dd>A process for developing a program.
+    In this chapter, I demonstrated a style of development based on
+    developing code to do simple, specific things, and then encapsulating
+    and generalizing.</dd>
+</dl>
+
+
+
+<a href="ch5.html">prev</a> <a href="ch7.html">next</a> 
+<p> 
+Permission is granted to copy, distribute, transmit and adapt this work un- der the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Inter- national License: https://creativecommons.org/licenses/by-nc/4.0/. 
+If you are interested in distributing a commercial version of this work, please contact the author(s). 
+The LATEX source and code for this book is available from: https://github.com/mkpenta/ThinkC 
+</p>
+</body>

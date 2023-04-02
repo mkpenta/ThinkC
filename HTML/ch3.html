@@ -1,0 +1,515 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Think C - Chapter 3</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+<body>
+<h1> Chapter 3 Functions </h1>
+<h2>Floating-point</h2>
+
+<p>In the last chapter we had some problems dealing with numbers that were not integers. We worked around the problem by measuring percentages instead of fractions, but a more general solution is to use floating-point numbers, which can represent fractions as well as integers. In C, there are two floating-point types, called <code>float</code> and <code>double</code>. These two different data types are used to store decimal numbers. A "float" is a single-precision number, which means it has less precision (or fewer digits) than a "double", which is a double-precision number. Because of this, a double is more accurate when dealing with decimal numbers than a float. The trade-off is precision for memory usage - the more precise data type uses more bits to store the value. In this text we accept this trade-off and exclusively use the <code>double</code> data type for floating point numbers.</p>
+<p>You can create floating-point variables and assign values to them using the same syntax we used for the other types. For example:</p>
+<pre><code>double pi;
+pi = 3.14159;</code></pre>
+<p>To print a single precision <code>float</code>, we can use the format specifier <code>%f</code>, but for a double we need to use <code>%lf</code>--that is L F, as in Long Float. In C, the type modifier <code>long</code> doubles the amount of memory (if possible) for a data type. If we have a 4 byte <code>int</code>, then a <code>long int</code> would be 8 bytes. We can also reduce the amount of memory allocated with the type modifier <code>short</code>. Our 4 byte <code>int</code>, is reduced to 2 bytes when we use a <code>a short int</code>. In essence our <code>double</code> data type is a <code>long float</code>, hence the <code>%lf</code>.</p>
+<pre><code>double pi;
+pi = 3.14159;
+printf("%lf\n", pi);</code></pre>
+<p>It is also legal to declare a variable and assign a value to it at the same time:</p>
+<pre><code>int x = 1;
+char first_char = "a";
+double pi = 3.14159;</code></pre>
+<p>In fact, this syntax is quite common. A combined declaration and assignment is sometimes called an <b>initialization</b>.</p>
+<p>Although floating-point numbers are useful, they are often a source of confusion because there seems to be an overlap between integers and floating-point numbers. For example, if you have the value <code>1</code>, is that an integer, a floating-point number, or both?</p>
+
+<p>Strictly speaking, C distinguishes the integer value <code>1</code> from the floating-point value <code>1.0</code>, even though they seem to be the same number. They belong to different types, and strictly speaking, you are not allowed to make assignments between types. For example, the following is illegal:</p>
+<pre><code>int x = 1.1;</code></pre>
+<p>Because the variable on the left is an <code>int</code> and the value on the right is a <code>double</code>. But it is easy to forget this rule, especially because there are places where C automatically converts from one type to another (this is called implicit casting, more on that in a bit). For example,</p>
+<pre><code>double y = 1;</code></pre>
+<p>should technically not be legal, but C allows it by converting the <code>int</code> to a <code>double</code> automatically. This is convenient for the programmer, but it can cause problems; for example:</p>
+<pre><code>double y = 1 / 3;</code></pre>
+<p>You might expect the variable <code>y</code> to be given the value <code>0.333333</code>, which is a legal floating-point value, but in fact it will get the value <code>0.0</code>. The reason is that the expression on the right is evaluated as integer division. In C, an integer divided by an integer will be evaluated with integer division. The result of integer division will always be the whole number of the standard division result. This means <code>5/2 = 2</code> and <code>1/3 = 0</code>. In the examples above, after the integer division results in <code>0</code>, it is converted to floating-point value with the assignment, and it finally results in the value <code>0.0</code>.</p>
+<p>One way to solve this problem is to make the right-hand side a floating-point expression:</p>
+<pre><code>double y = 1.0 / 3.0;</code></pre>
+<p>This sets <code>y</code> to <code>0.333333</code>, because if either value in the division is a float or double, the compiler will use floating-point division.</p>
+<p>All the operations we have seen---addition, subtraction, multiplication, and division---work on floating-point values, although you might be interested to know that the underlying mechanism is completely different. In fact, most processors have special hardware just for performing floating-point operations.</p>
+
+<h2>Constants</h2>
+<p>In the previous section we have assigned the value 3.14159 to a floating point variable. An important thing to remember about variables is, that they can hold -- as their name implies -- different values at different points in your program. For example, we could assign the value 3.14159 to the variable <code>pi</code> now and assign some other value to it later on:</p>
+<pre><code>double pi = 3.14159;
+...
+pi = 10.999;  /* probably a logical error in your program */</code></pre>
+<p>The second value is probably not what you intended when you first created the named storage location <code>pi</code>. The value for $\pi$ is constant and does not change over time. Using the storage location <code>pi</code> to hold arbitrary other values can cause some very hard to find bugs in your program.</p>
+<p>C allows you to specify the static nature of storage locations through the use of the keyword <code>const</code>. It must be used in conjunction with the required type of the constant. A value will be assigned at initialization but can never be changed again during the runtime of the program.</p>
+<pre><code>const double PI = 3.14159;
+printf ("Pi: %lf\n", PI);
+ ...
+PI = 10.999;  /* wrong, error caught by the compiler  */</code></pre>
+<p>It is no longer possible to change the value for <code>PI</code> once it has been initialized, but other than this we can use it just like a variable.</p>
+<p>In order to visually separate constants from variables we will use all uppercase letters in their names.</p>
+
+<h2>Converting types</h2>
+<h2>Rounding and Typecasting</h2>
+<p>As I mentioned, C converts <code>int</code>s
+to <code>double</code>s automatically if necessary, because no
+information is lost in the translation. On the other hand,
+going from a <code>double</code> to an <code>int</code> requires rounding
+off. C doesn't perform this operation automatically, in
+order to make sure that you, as the programmer, are aware
+of the loss of the fractional part of the number.</p>
+
+<p>The simplest way to convert a floating-point value to an integer is to
+use a <b>typecast</b>. Typecasting is so called because it allows you
+to take a value that belongs to one type and "cast" it into another
+type (in the sense of molding or reforming, not throwing).</p>
+
+<p>The syntax for typecasting requires the explicit specification of
+the target type, set in parenthesis before the expression <code>(Type)</code>.
+For example:</p>
+
+<pre><code>const double PI = 3.14159;
+int x = (int) PI;</code></pre>
+
+<p>The <code>(int)</code> operator casts the value of PI into an integer, so <code>x</code> gets the value
+3. Converting to an integer always truncates the double -- it cuts off the fractional part of the value.
+This is essentially rounding down, even if the fraction part is 0.99999999.</p>
+
+<p>Of course, we can cast an <code>int</code> to a <code>double</code> without any worry about loss of
+information because we are only adding .0 and not changing the value.</p>
+
+<pre><code>int x = 3;
+double y = (double) x;  /* y = 3.0 */</code></pre>
+
+<p>We can also directly convert from <code>char</code> to <code>int</code> because each ASCII character is stored
+as an integer value. If an integer is between 0 and 255 (inclusively), we can also cast to the ASCII character.</p>
+
+<pre><code>char letter = 'A';
+int x = 65;
+char letterX = (char)x;
+int y = (int)letter;</code></pre>
+
+<p>Type can change how C treats values and operations.
+We saw that dividing two <code>int</code>s results in integer division.
+However, when mixing <code>int</code> and <code>double</code> in arithmetic operations, the result will always be a <code>double</code>.
+C will implicitly cast values depending on the operation being performed. Some operations/conversion don't really "make sense."
+Can you cast a <code>double</code> like 3.12 to a <code>char</code>? We can add an <code>int</code> to a <code>char</code> (because they are really both integers),
+but can you add a <code>double</code> and a <code>char</code>?</p>
+
+<pre><code> 	int x = 3;
+ 	double y = (double) x;   /* explicit cast */
+ 	double z = x;  /*implicit cast*/
+ 	double m = x + 3;  /* implcit cast*/
+ 	/*m = 6.0 even though x + 3 = 6*/
+</code></pre>
+
+<h2>Math functions</h2>
+<p>In mathematics, you have probably seen functions like &pi; and
+&log;, and you have learned to evaluate expressions like
+&sin;(&pi;/2) and &log;(1/x).  First, you evaluate the
+expression in parentheses, which is called the <b>argument</b> of the
+function.  For example, &pi;/2 is approximately 1.571, and 1/x is
+0.1 (if x happens to be 10).</p>
+
+<p>Then you can evaluate the function itself, either by looking it up in
+a table or by performing various computations.  The &sin; of 1.571 is
+1, and the &log; of 0.1 is -1 (assuming that &log; indicates the
+logarithm base 10).</p>
+
+<p>This process can be applied repeatedly to evaluate more complicated
+expressions like &log;(1/&sin;(&pi;/2)).  First we evaluate the
+argument of the innermost function, then evaluate the function,
+and so on.</p>
+
+<p>C provides a set of built-in functions that includes most
+of the mathematical operations you can think of.
+The math functions are invoked using a syntax that is similar to
+mathematical notation:</p>
+
+<pre><code>     double log = log (17.0);
+     double angle = 1.5;
+     double height = sin (angle);
+</code></pre>
+
+<p>The first example sets <code>log</code> to the logarithm of 17, base
+e.  There is also a function called <code>log10</code> that takes
+logarithms base 10.</p>
+
+<p>The second example finds the sine of the value of the variable
+<code>angle</code>.  C assumes that the
+values you use with <code>sin</code> and the other trigonometric functions
+(<code>cos</code>, <code>tan</code>) are in <em>radians</em>.  To
+convert from degrees to radians, you can divide by 360
+and multiply by 2 &pi;.</p>
+
+<p>If you don't happen to know &pi; to 15 digits, you can
+calculate it using the <code>acos</code> function.  The arccosine
+(or inverse cosine) of -1 is &pi;, because the cosine of
+&pi; is -1.</p>
+
+<pre><code>  const double PI = acos(-1.0);
+  double degrees = 90;
+  double angle = degrees * 2 * PI / 360.0;
+</code></pre>
+
+<p>Before you can use any of the math functions, you have to
+include the math <b>header file</b>.  You may also need to use the -ml option at compile.
+Header files contain information the compiler needs about functions that are defined
+outside your program. For example, in the "Hello, world!"
+program we included a header file named <code>stdio.h</code> using
+an <b>include</b> statement:</p>
+
+<pre><code>      #include &lt;stdio.h&gt;
+</code></pre>
+
+<p><code>stdio.h</code> contains information about input and output
+(I/O) functions available in C.</p>
+
+<p>Similarly, the math header file contains information
+about the math functions.  You can include it at the beginning
+of your program along with <code>stdio.h</code>:</p>
+
+<pre><code>    #include &lt;math.h&gt;
+</code></pre>
+
+<h2>Composition</h2>
+<p>Just as with mathematical functions, C functions can be <b>composed</b>, meaning that you use one expression as part of another.
+For example, you can use any expression as an argument to a function:</p>
+
+<pre><code>    double x = cos (angle + PI/2);
+</code></pre>
+
+<p>This statement takes the value of <code>PI</code>, divides it by two and
+adds the result to the value of <code>angle</code>.  The sum is
+then passed as an argument to the <code>cos</code> function.</p>
+
+<p>You can also take the result of one function and pass it as
+an argument to another:</p>
+
+<pre><code>    double x = exp (log (10.0));
+</code></pre>
+
+<p>This statement finds the log base $e$ of 10 and then raises $e$ to that
+power.  The result gets assigned to <code>x</code>; I hope you know what it
+is.</p>
+
+<h2>Adding new functions</h2>
+<p>So far we have only been using the functions that are built into C,
+but it is also possible to add new functions.  Actually, we have already
+seen one function definition: <code>main()</code>.  The function named <code>main()</code>
+is special because it indicates where the execution of the program
+begins, but the syntax for <code>main()</code> is the same as for any other
+function definition:</p>
+
+<pre><code>   void NAME ( LIST OF PARAMETERS ) 
+   {
+       STATEMENTS
+   }
+</code></pre>
+
+<p>You can make up any name you want for your function, except
+that you can't call it <code>main</code> or any other
+C keyword.  The list of
+parameters specifies what information, if any, you have to
+provide in order to use (or <b>call</b>) the new function.</p>
+
+<p><code>main()</code> doesn't take any parameters, as indicated by
+the parentheses containing the keyword <code>(void)</code> in its definition.  The first couple
+of functions we are going to write also have no parameters, so the
+definition looks like this:</p>
+
+<pre><code> 	 void printNewLine(void) 
+ 	 {
+  	        	printf ("%c", '\n');
+ 	 }
+</code></pre>
+
+<p>This function is named <code>printNewLine()</code>. It contains only a single
+statement, which outputs a newline character. Notice that we start
+the function name with a lowercase letter. The following words of the
+function name are also capitalized. We will use this convention, 
+often called camel case because of the humps the capital letters create,  for the naming 
+of functions consistently throughout the book. </p>
+
+<p>A function definition should always have a corresponding <b>function prototype</b>. 
+These tell the compiler the name of the function, the number and types of arguments it takes, 
+and the type of value it returns (if any). Prototypes are written above the main program (or in a header file). 
+Function definitions should be written below main. The prototype for the  <code>printNewLine()</code> function would be:</p>
+
+<pre><code>	 	void printNewLine (void);
+</code></pre>
+
+<p>Function prototypes aid in error checking by allowing the compiler to check the function calls in your code 
+against the function prototypes ensuring that the correct number and types of arguments are being passed.  
+This can also help keep code more readable and organized by keeping the main function near the top 
+of your code while also providing a sort of quick view list of all the function at the top of the program.</p>
+
+<h2>Using Functions in <code>main()</code></h2>
+<p>Once we have a prototype and definition, we can call this few function in <code>main()</code> using syntax that
+is similar to the way we call the built-in C commands:</p>
+
+<pre><code> 	void printNewLine (void);  /*function prototype*/
+
+ 	 int main (void) {
+    	 printf ("First Line.\n");
+     	printNewLine ();                  /*function call*/
+     	printf ("Second Line.\n");
+     	return EXIT_SUCCESS;
+  	}
+   void printNewLine (void)   /*function definition*/
+   {
+       printf ("\n");
+   }
+</code></pre>
+
+<p>The output of this program is:</p>
+
+<pre><code>   First line.
+
+   Second line.
+</code></pre>
+
+<p>Notice the extra space between the two lines.  What if we wanted
+more space between the lines?  We could call the same
+function repeatedly:</p>
+
+<pre><code>  int main (void)
+  {
+      printf ("First Line.\n");
+      printNewLine ();
+      printNewLine ();
+      printNewLine ();
+      printf ("Second Line.\n");
+  }
+</code></pre>
+
+<p>Or we could write a new function, named <code>printThreeLines()</code>, that 
+prints three new lines:</p>
+
+<pre><code>  	void printNewLine (void); 
+  	void printThreeLines (void);
+  	int main (void)
+  	{
+    		printf ("First Line.\n");
+    		printThreeLines ();
+	    	printf ("Second Line.\n");
+    		return EXIT_SUCCESS;
+ 	 }
+   void printThreeLines (void)
+  	{
+	    	printNewLine ();  printNewLine ();  printNewLine (); 
+	    	 /*this is legal but maybe better with each on it's own line*/
+  	}
+   void printNewLine (void)  
+   {
+  	    printf ("\n");
+   }
+</code></pre>
+
+<p>You should notice a few things about this program:</p>
+
+<ul>
+<li>You can call the same procedure repeatedly.  In
+fact, it is quite common and useful to do so.</li>
+
+<li>You can have one function call another function.  In this
+case, <code>main()</code> calls <code>printThreeLines()</code> and <code>printThreeLines()</code>
+calls <code>printNewLine()</code>.  Again, this is common and useful.</li>
+
+<li>In <code>printThreeLines()</code> I wrote three statements all on the
+same line, which is syntactically legal (remember that spaces
+and new lines usually don't change the meaning of a program).
+On the other hand, it is usually a better idea to put each
+statement on a line by itself, to make your program easy to
+read.  I sometimes break that rule in this book to save space.</li>
+</ul>
+
+<p>So far, it may not be clear why it is worth the trouble to
+create all these new functions.  Actually, there are a lot
+of reasons, but this example only demonstrates two:</p>
+
+
+<ol>
+    <li>Functions are a form of abstraction and abstraction reduces cognitive load (makes it easier to think)</li>
+    <li>Creating a new function gives you an opportunity to give a name to a group of statements. Functions can simplify a program by hiding a complex computation behind a single command, and by using English words in place of arcane code. Which is clearer, <code>printNewLine()</code> or <code>printf("$\backslash$n")</code>?</li>
+    <li>Creating a new function can make a program smaller by eliminating repetitive code. For example, a short way to print nine consecutive new lines is to call <code>printThreeLines()</code> three times. How would you print 27 new lines?</li>
+    <li>Functions isolate code into contained areas. This can make it easier to fix issues, make changes, and find bugs</li>
+</ol>
+
+<h2>Definitions and uses</h2>
+
+<p>Pulling together all the code fragments from the previous section, the whole program looks like this:</p>
+
+<pre>
+  #include &lt;stdio.h&gt;
+  #include &lt;stdlib.h&gt;
+
+ void printNewLine (void);
+ void printThreeLines (void);
+  int main (void)
+  {
+     printf ("First Line.\n");
+     printThreeLines ();
+     printf ("Second Line.\n");
+     return EXIT_SUCCESS;
+  }
+
+    void printNewLine (void) 
+    {
+         printf ("\n");
+    }
+
+    void printThreeLines (void)
+    {
+       printNewLine ();  
+       printNewLine ();  
+       printNewLine ();
+    }
+
+</pre>
+
+<p>This program contains three function definitions: <code>PrintNewLine()</code>, <code>printThreeLine()</code>, and <code>main()</code>.</p>
+
+<p>Inside the definition of <code>main()</code>, there is a statement that uses or calls <code>printThreeLine()</code>. Similarly, <code>printThreeLine()</code> calls <code>printNewLine()</code> three times.</p>
+
+<p>Without function prototypes, the definition of each function would need to appear above the place it is used -- filling the top of our program with definitions and putting main down at the bottom appears above the place where it is used. With prototypes, the order of function definitions doesn't matter (so long as the prototypes are at the top of the program).</p>
+
+<h2>Programs with multiple functions</h2>
+
+<p>When you look at the C source code remember execution always begins at the first statement of <code>main()</code>, regardless of where it is in the program. Statements are executed one at a time, in order, until you reach a function call. Function calls are like a detour in the flow of execution. Instead of going to the next statement, you go to the first line of the called function, execute all the statements there, and then come back and pick up again where you left off.</p>
+
+<p>That sounds simple enough, except that you have to remember that one function can call another. Thus, while we are in the middle of <code>main()</code>, we might have to go off and execute the statements in <code>printThreeLines()</code>. But while we are executing <code>printThreeLines()</code>, we get interrupted three times to go off and execute <code>printNewLine()</code>.</p>
+
+<p>Fortunately, C is adept at keeping track of where it is, so each time <code>printNewLine()</code> completes, the program picks up where it left off in <code>printThreeLine()</code>, and eventually gets back to <code>main()</code> so the program can terminate.</p>
+
+<p>What's the moral of this sordid tale? When you read a program, don't read from top to bottom. Instead, follow the flow of execution.</p>
+
+<h2>Parameters and arguments</h2>
+
+<p>Some of the built-in functions we have used have <b>parameters</b>, which are values that you provide to let the function do its job. For example, if you want to find the sine of a number, you have to indicate what the number is. Thus, <code>sin()</code> takes a <code>double</code> value as a parameter.</p>
+
+<p>Some functions take more than one parameter, like <code>pow()</code>, which takes two <code>doubles</code>, the base and the exponent.</p>
+
+<p>Notice that in each of these cases we have to specify not only how many parameters there are, but also what type they are. So it shouldn't surprise you that when you write a function definition, the parameter list indicates the type of each parameter. For example:</p>
+
+<pre>
+void printTwice (char phil) 
+{
+    printf("%c%c\n", phil, phil);
+}
+</pre>
+
+<p>This function takes a single parameter, named <code>phil</code>, that has type <code>char</code>. Whatever that parameter is (and at this point we have no idea what it is), it gets printed twice, followed by a newline.
+I chose the name <code>phil</code> to suggest that the name you give a parameter is up to you, but in general you want to choose something more illustrative than <code>phil</code>. A better name parameter may be something like <code>charToPrint</code> or <code>symbol</code>.</p>
+
+<p>In the function definition the parameter (also called the  "formal parameter") has no value, you can think of it like a placeholder. When we call this function, we have to provide a <code>char</code>. This is the argument (or the "actual parameter") and it provides the value that replaces the formal parameter in the definition.</p>
+
+<p>For example, we might have a <code>main()</code> function like this:</p>
+
+<pre>
+int main (void) 
+{
+    printTwice ('a');
+    return EXIT_SUCCESS;
+}
+</pre>
+
+<p>The <code>char</code> value you provide is called an <b>argument</b>, and we say that the argument is <b>passed</b> to the function. In this case the value <code>'a'</code> is passed as an argument to <code>printTwice()</code> where it will get printed twice.</p>
+
+<p>Alternatively, if we had a <code>char</code> variable, we could use it as an argument instead:</p>
+
+<pre>
+int main () 
+{
+    char argument = 'b';
+    PrintTwice (argument);
+    return EXIT_SUCCESS;
+}
+</pre>
+
+<h2>Parameters and variables are local</h2>
+
+<p>Parameters and variables only exist inside their own functions. Within the confines of <code>main()</code>, there is no such thing as <code>phil</code>. If you try to use it, the compiler will complain. Similarly, inside <code>printTwice()</code> there is no such thing as <code>argument</code>.</p>
+
+<p>Variables like this are said to be <b>local</b>. In order to keep track of parameters and local variables, it is useful to draw a <b>stack diagram</b>. Like state diagrams, stack diagrams show the value of each variable, but the variables are contained in larger boxes that indicate which function they belong to.</p>
+
+
+
+<p>Whenever a function is called, it creates a new <b>instance</b> of that function. Each instance of a function contains the parameters and local variables for that function. In the diagram an instance of a function is represented by a box with the name of the function on the outside and the variables and parameters inside.</p>
+
+<p>In the example, <code>main()</code> has one local variable, <code>argument</code>, and no parameters. <code>printTwice()</code> has no local variables and one parameter, named <code>phil</code>.</p>
+
+<h2>Functions with multiple parameters</h2>
+
+<p>The syntax for declaring and invoking functions with multiple parameters is a common source of errors. First, remember that you have to declare the type of every parameter.</p>
+
+<pre><code>
+void printTime (int hour, int minute) 
+{
+    printf ("%i", hour);
+    printf (":");
+    printf ("%i", minute);
+}
+</code></pre>
+
+<p>Another common source of confusion is that you do not have to declare the types of arguments. For example, the following is wrong:</p>
+
+<pre><code>
+int hour = 11;
+int minute = 59;
+printTime (int hour, int minute);   /* WRONG! */
+</code></pre>
+
+<p>In this case, the compiler can tell the type of <code>hour</code> and <code>minute</code> by looking at their declarations. It is unnecessary and illegal to include the type when you pass them as arguments. The correct syntax is <code>printTime (hour, minute);</code>.</p>
+
+<h2>Functions with results</h2>
+
+<p>You might have noticed by now that some of the functions we are using, like the math functions, yield results. Other functions, like <code>printNewLine</code>, perform an action but don't report a result. We say a function returns a value of a specific type or if nothing is returned then we say it has void return. That raises some questions:</p>
+
+<ul>
+<li>What happens if you call a function and you don't do anything with the result (i.e. you don't assign it to a variable or use it as part of a larger expression)?</li>
+<li>What happens if you use a function without a result as part of an expression, like <code>printNewLine() + 7</code>?</li>
+<li>Can we write functions that yield results, or are we stuck with things like <code>printNewLine()</code> and <code>printTwice()</code>?</li>
+</ul>
+
+<p>The answer to the third question is "yes, you can write functions that return values," and we'll do it in a couple of chapters. I will leave it up to you to answer the other two questions by trying them out. Any time you have a question about what is legal or illegal in C, a good way to find out is to ask the compiler.</p>
+<h2>Glossary</h2>
+
+<dl>
+  <dt>casting:</dt>
+  <dd>Converting from one type to another. This can be explicit or implicit.</dd>
+
+  <dt>constant:</dt>
+  <dd>A named storage location similar to a variable, that can not be changed once it has been initialized.</dd>
+
+  <dt>floating-point:</dt>
+  <dd>A type of variable (or value) that can contain fractions as well as integers.  There are a few floating-point types in C; the one we use in this book is <code>double</code>.</dd>
+
+  <dt>initialization:</dt>
+  <dd>A statement that declares a new variable and assigns a value to it at the same time.</dd>
+
+  <dt>function:</dt>
+  <dd>A named sequence of statements that performs some useful function.  Functions may or may not take parameters, and may or may not produce a result.</dd>
+
+  <dt>parameter:</dt>
+  <dd>A piece of information you provide in order to call a function.  Parameters are like variables in the sense that they contain values and have types.</dd>
+
+  <dt>argument:</dt>
+  <dd>A value that you provide when you call a function.  This value must have the same type as the corresponding parameter.</dd>
+
+  <dt>call:</dt>
+  <dd>Cause a function to be executed.</dd>
+
+  <dt>void:</dt>
+  <dd>A type that represents no type. It is used to signify a function takes no parameters and/or reports no value</dd>
+</dl>
+<a href="ch2.html">prev</a> <a href="ch4.html">next</a> 
+<p> 
+Permission is granted to copy, distribute, transmit and adapt this work un- der the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Inter- national License: https://creativecommons.org/licenses/by-nc/4.0/. 
+If you are interested in distributing a commercial version of this work, please contact the author(s). 
+The LATEX source and code for this book is available from: https://github.com/mkpenta/ThinkC 
+</p>
+</body>

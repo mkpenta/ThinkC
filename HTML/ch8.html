@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Think C - Chapter 8</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+<body>
+<h1>Chapter 8 - Strings and things</h1>
+<h2>Containers for strings</h2>
+<p>We have seen four types of values—characters, integers, floating-point numbers and strings—but only three types of variables—<code>char</code>, <code>int</code> and <code>double</code>. So far we have no way to store a string in a variable or perform operations on strings.</p>
+<p>This chapter is going to rectify this situation and I can now tell you that strings in C are stored as an array of characters terminated by the character <code>\0</code>.</p>
+<p>By now this explanation should make sense to you and you probably understand why we had to learn quite a bit about the working of the language before we could turn our attention towards string variables.</p>
+<p>In the previous chapter we have seen that operations on arrays have only minimal support from the C language itself and we had to program extra functions by ourselves. Fortunately things are a little bit easier when we manipulate these special types of arrays - called strings. There exist a number of library functions in <code>string.h</code> that make string handling a bit easier than operations on pure arrays. Nevertheless string operations in C are still a lot more cumbersome than their equivalence in other programing languages and can be a potential source of errors in your programs, if not handled carefully.</p>
+</section>
+<section>
+<h2>String variables</h2>
+<p>You can create a string variable as an array of characters in the following way:</p>
+<pre><code>
+<code>char first[] = "Hello, ";
+char second[] = "world.";</code>
+</code></pre>
+<p>The first line creates an <code>string</code> and assigns it the string value <code>"Hello."</code> In the second line we declare a second string variable. Remember, the combined declaration and assignment is called initialization.</p>
+<p>Initialisation time is the only time you can assign a value to a string directly (just as with arrays in general). The initialisation parameters are passed in the form of a string constant enclosed in quotation marks (<code>"</code>...<code>"</code>).</p>
+<p>Notice the difference in syntax for the initialisation of arrays and strings. If you like you can also initialize the string in the normal array syntax, although this looks a little odd and is not very convenient to type.</p>
+<pre><code>
+<code>char first[] = {'H','e','l','l','o',',',' ','\0'};</code>
+</code></pre>
+<p>There is no need to supply an array size when you are initialising the string variable at declaration time. The compiler compute the necessary array size to store the supplied string.</p>
+
+<h2>Remember what we said about the nature of a string variable</h2>
+<p>It is an array of characters <strong>plus</strong> a marker that shows where our string ends: the termination character  <code>\0</code>.</p>
+<p>Normally you do not have to supply this termination character. The compiler understands our code and insertes it automatically. However, in the example above, we treated our string exactly like an array and in this case we have to insert the termination character ourselves.</p>
+<p>When we are using a string variable to store different sting values during the lifetime of our program we have to declare a size big enough for the largest sequence of characters that we are going to store. We also have to make our string variable exactly one character longer than the text we are going to store, because of the necessary termination character.</p>
+<p>We can output strings in the usual way using the <code>printf()</code> function:</p>
+<pre><code>printf("%s", first);</code></code></pre>
+</section>
+<section>
+<h2>Extracting characters from a string</h2>
+<p>Strings are called "strings" because they are made up of a sequence, or string, of characters. The first operation we are going to perform on a string is to extract one of the characters. C uses an index in square brackets (<code>[</code> and <code>]</code>) for this operation:</p>
+<pre><code>char fruit[] = "banana";
+char letter = fruit[1];
+printf ("%c\n", letter);</code></code></pre>
+<p>The expression <code>fruit[1]</code> indicates that I want character number 1 from the string named <code>fruit</code>. The result is stored in a <code>char</code> named <code>letter</code>. When I output the value of <code>letter</code>, I get a surprise:</p>
+<pre><code>a</code></code></pre>
+<p><code>a</code> is not the first letter of <code>"banana"</code>. Unless you are a computer scientist. For perverse reasons, computer scientists always start counting from zero. The 0th letter ("zeroeth") of <code>"banana"</code> is <code>b</code>. The 1th letter ("oneth") is <code>a</code> and the 2th ("twoeth") letter is <code>n</code>.</p>
+<p>If you want the zereoth letter of a string, you have to put zero in the square brackets:</p>
+<pre><code>char letter = fruit[0];</code></code></pre>
+<h2>Length</h2>
+
+<p>To find the length of a string (the number of characters this string contains), we can use the <code>strlen()</code> function. The function is called using the string variable as an argument:</p>
+
+<pre><code class="language-c">
+#include &lt;string.h&gt;
+int main(void)
+{ 
+   int length;
+   char fruit[] = "banana"; 
+
+   length = strlen(fruit);
+   return EXIT_SUCCESS;
+}   
+</code></code></pre>
+
+<p>The return value of <code>strlen()</code> in this case is 6. We assign this value to the integer <code>length</code> for further use.</p>
+
+<p>In order to compile this code, you need to include the header file for the <code>string.h</code> library. This library provides a number of useful functions for operations on strings. You should familiarize yourself with these functions because they can help you to solve your programming problems faster.</p>
+
+<p>To find the last letter of a string, you might be tempted to try something like:</p>
+
+<pre><code class="language-c">
+int length = strlen(fruit);
+char last = fruit[length];       /* WRONG!! */
+</code></code></pre>
+
+<p>That won't work. The reason is that <code>fruit</code> is still an array and there is no letter at the array index <code>fruit[6]</code> in <code>"banana"</code>. Since we started counting at 0, the 6 letters are numbered from 0 to 5. To get the last character, you have to subtract 1 from <code>length</code>:</p>
+
+<pre><code class="language-c">
+int length = strlen(fruit);
+char last = fruit[length-1];
+</code></code></pre>
+
+<h2>Traversal</h2>
+
+<p>A common thing to do with a string is start at the beginning, select each character in turn, do something to it, and continue until the end. This pattern of processing is called a <strong>traversal</strong>. A natural way to encode a traversal is with a <code>while</code> statement:</p>
+
+<pre><code class="language-c">
+int index = 0;
+while (index &lt; strlen(fruit)) 
+{
+    char letter = fruit[index];
+    printf("%c\n" , letter);
+    index = index + 1;
+}
+</code></code></pre>
+
+<p>This loop traverses the string and outputs each letter on a line by itself. Notice that the condition is <code>index &lt; strlen(fruit)</code>, which means that when <code>index</code> is equal to the length of the string, the condition is false and the body of the loop is not executed. The last character we access is the one with the index <code>strlen(fruit)-1</code>.</p>
+
+<p>The name of the loop variable is <code>index</code>. An <strong>index</strong> is a variable or value used to specify one member of an ordered set, in this case the set of characters in the string. The index indicates (hence the name) which one you want. The set has to be ordered so that each letter has an index and each index refers to a single character.</p>
+
+<p>As an exercise, write a function that takes a <code>string</code> as an argument and that outputs the letters backwards, all on one line.</p>
+
+<h2>Finding a character in a string</h2>
+<p>If we are looking for a letter in a <code>string</code>, we have to search through the string and detect the position where this letter occurs in the string. Here is an implementation of this function:</p>
+
+<pre><code class="language-c">
+int LocateCharacter(char *s, char c)
+{
+    int i = 0;
+    while (i &lt; strlen(s)) 
+    {
+        if (s[i] == c) return i;
+        i = i + 1;
+    }
+    return -1;
+}
+</code></code></pre>
+
+<p>We have to pass the <code>string</code> as the first argument, the other argument is the character we are looking for. Our function returns the index of the first occurrence of the letter, or <code>-1</code> if the letter is not contained in the string.</p>
+
+<h2>Pointers and Addresses</h2>
+
+<p>When we look at the definition of the <code>LocateCharacter()</code> function you may notice the following construct <code>char *s</code> which looks unfamiliar.</p>
+
+<p>Remember, when we discussed how we had to pass an array to a function, back in Section~<a href="#Passing an array to a function">Passing an array to a function</a>, we said that instead of copying the array, we only pass a reference to the function. Back then, we did not say exactly what this reference was.</p>
+
+<p>C is one of the very few high-level programming languages that let you directly manipulate objects in the computer memory. In order to do this direct manipulation, we need to know the location of the object in memory: it's address. Adresses can be stored in variables of a special type. These variables that point to other objects in memory (such as variables, arrays and strings) are therefore called <strong>pointer</strong> variables.</p>
+
+<p>A pointer references the memory location of an object and can be defined like this:</p>
+
+<pre><code class="language-c">
+int *i_p;
+</code></code></pre>
+
+<p>This declaration looks similar to our earlier declarations, with one difference: the asterisk in front of the name. We have given this pointer the type <code>int</code>. The type specification has nothing to do with the pointer itself, but rather defines which object this pointer is supposed to reference (in this case an <code>integer</code>). This allows the compiler to do some type checking on, what would otherwise be, an anonymous reference.</p>
+
+<p>A pointer all by itself is rather meaningless, we also need an object that this pointer is referencing:</p>
+
+<pre><code class="language-c">
+int number = 5; 
+int *i_p;
+</code></code></pre>
+
+<p>This code-fragment defines an <code>int</code> variable and a pointer. We can use the "address-of" operator&nbsp;<code>&amp;</code> to assign the memory location or <strong>address</strong> of our variable to the pointer.</p>
+
+<pre><code class="language-c">
+i_p = &amp;number;
+</code></code></pre>
+
+<p>Pointer <code>i_p</code> now references integer variable <code>number</code>. We can verify this using the "content-of" operator&nbsp;<code>*</code>.</p>
+
+<pre><code class="language-c">
+printf("%i\n", *i_p);
+</code></code></pre>
+
+<p>This prints <code>5</code>, which happens to be the content of the memory location at our pointer reference.</p>
+
+<p>With pointers we can directly manipulate memory locations:</p>
+
+<pre><code class="language-c">
+*i_p = *i_p + 2;
+printf("%i\n", number);
+</code></code></pre>
+
+<p>Our variable <code>number</code> now has the value <code>7</code> and we begin to understand how our <code>LocateCharacter()</code> function can directly access the values of string variables through the use of a <code>char</code> pointer.</p>
+
+<p>Pointers are widely used in many C programs and we have only touched the surface of the topic. They can be immensely useful and efficient, however they can also be a potential source of problems when not used appropriately. For this reason not many programming languages support direct memory manipulation.</p>
+
+
+<h2>String concatenation</h2>
+
+<p>In Section~<a href="#Finding a  character in a string">4.1</a> we have seen how we could implement a search function that finds a <code>character</code> in a <code>string</code>.</p>
+
+<p>One useful operation on strings is string <strong>concatenation</strong>.  To concatenate means to join the two operands end to end.  For example:  <code>shoe</code> and <code>maker</code> becomes <code>shoemaker</code>.</p>
+
+<p>Fortunately, we do not have to program all the necessary functions in C ourselves. The <code>string.h</code> library already provides several functions that we can invoke on strings. </p>
+
+<p>We can use the library function <code>strncat()</code> to concatenate strings in C.</p>
+
+<pre><code class="language-c">
+char fruit[20] = "banana";
+char bakedGood[] = " nut bread";
+strncat(fruit, bakedGood, 10);
+printf ("%s\n", fruit);
+</code></code></pre>
+
+<p>The output of this program is <code>banana nut bread</code>.</p>
+
+<p>When we are using library functions it is important to completely understand all the necessary arguments and to have a complete understanding of the working of the function. </p>
+
+<p>The <code>strncat()</code> does not take the two strings, joins them together and produces a new combined string. It rather copies the content from the second argument into the first. </p>
+
+<p>We therefore have to make sure that our first string is long enough to also hold the second string. We do this by defining the maximum capacity for string <code>fruit</code> to be 19 characters + 1 termination character (<code>char fruit[20]</code>). The third argument of <code>strncat()</code>  specifies the number of characters that will be copied from the second into the first string.</p>
+
+<h2>Assigning new values to <code>string</code> variables</h2>
+
+<p>So far we have seen how to initialise a string variable at declaration time. As with arrays in general, it is not legal to assign values directly to strings, because it is not  possible to assign a value to an entire array.</p>
+
+<pre><code class="language-c">
+fruit = "orange";  /* Wrong: Cannot assign directly! */
+</code></code></pre>
+
+<p>In order to assign a new value to an existing string variable we have to use the <code>strncpy()</code> function. For example,</p>
+
+<pre><code class="language-c">
+char greeting[15];
+strncpy (greeting, "Hello, world!", 13);
+</code></code></pre>
+
+<p>copies 13 characters from the of the second argument string to the first argument string.</p>
+
+<p>This works, but not quite as expected. The <code>strncpy()</code> function copies exactly 13 characters from the second argument string into the first argument string. And what happens to our string termination character <code>\0</code>?</p>
+
+<p>It is <strong>not</strong> copied automatically. We need to change our copy statement to copy also the invisible 14th character at the end of the string:</p>
+
+<pre><code class="language-c">
+strncpy (greeting, "Hello, world!", 14);
+</code></code></pre>
+
+<p>However, if we only copy parts of the second string into the first we need to explicitly set the n+1th character in the <
+
+
+<pre><code>
+    strncpy (greeting, "Hello, world!", 5); /*only Hello is copied*/
+    greeting[5] = '\0';
+</code></pre>
+
+<div style="margin-top: 1.5em; font-weight: bold;">Attention! In the last two sections we have used the <code>strncpy()</code> and the <code>strncat()</code> function that require you to explicitly supply the number of characters that will get copied or attached to the first argument string.
+
+The <code>string.h</code> library also defines the <code>strcpy()</code> and the <code>strcat()</code> functions that have no explicit bound on the number of characters that are copied.
+
+The usage of these functions is strongly discouraged! Their use has lead to a vast number of security problems with C programs. Remember, C does not check array boundaries and will continue copying characters into computer memory even past the length of the variable.</div>
+
+<h2>strings are not comparable</h2>
+
+<p>All the comparison operators that work on <code>int</code>s and <code>double</code>s do work on <code>strings</code>. For example, if you write the following code to determine if two strings are equal:</p>
+
+<pre><code>
+    if (word == "banana")  /* Wrong! */ 
+</code></pre>
+
+<p>This test will always fail.</p>
+
+<p>You have to use the <code>strcmp()</code> function to compare two strings with each other. The function returns <code>0</code> if the two strings are identical, a negative value if the first string is 'alphabetically less' than the second (would be listed first in a dictionary) or a positive value if the second string is 'greater'.</p>
+
+<p>Please notice, this return value is not the standard true/false result, where the return value <code>0</code> is interpreted as 'false'.</p>
+
+<p>The <code>strcmp()</code> function is useful for putting words in alphabetical order.</p>
+
+<pre><code>
+    if (strcmp(word, "banana") &lt; 0) 
+    {
+        printf( "Your word, %s, comes before banana.\n", word);
+    } 
+    else if (strcmp(word, "banana") &gt; 0) 
+    {
+        printf( "Your word, %s, comes after banana.\n", word);
+    } 
+    else 
+    {
+        printf ("Yes, we have no bananas!\n");
+    }</code>
+</code></pre>
+
+<p>You should be aware, though, that the <code>strcmp()</code> function does not handle upper and lower case letters the same way that people do. All the upper case letters come before all the lower case letters. As a result,</p>
+
+<pre><code>Your word, Zebra, comes before banana.</code></code></pre>
+
+<p>A common way to address this problem is to convert strings to a standard format, like all lower-case, before performing the comparison. The next sections explains how.</p>
+
+<h2>Character classification</h2>
+
+<p>It is often useful to examine a character and test whether it is upper or lower case, or whether it is a character or a digit. C provides a library of functions that perform this kind of character classification. In order to use these functions, you have to include the header file <code>ctype.h</code>.</p>
+
+<pre><code>
+    char letter = 'a';
+    if (isalpha(letter)) 
+    {
+        printf("The character %c is a letter.", letter);
+    }
+</code></pre>
+
+<p>The return value from <code>isalpha()</code> is an integer that is 0 if the argument is not a letter, and some non-zero value if it is.</p>
+
+<p>It is legal to use this kind of integer in a conditional, as shown in the example. The value <code>0</code> is treated as <code>false</code>, and all non-zero values are treated as <code>true</code>.</p>
+
+<p>Other character classification functions include <code>isdigit()</code>, which identifies the digits 0 through 9, and <code>isspace()</code>, which identifies all kinds of "white" space, including spaces, tabs, newlines, and a few others. There are also <code>isupper()</code> and <code>islower()</code>, which distinguish upper and lower case letters.</p>
+
+<p>Finally, there are two functions that convert letters from one case to the other, called <code>toupper()</code> and <code>tolower()</code>. Both take a single character as an argument and return a (possibly converted) character.</p>
+
+<pre><code>
+    char letter = 'a';
+    letter = toupper (letter);
+    printf("%c\n", letter);
+</code></pre>
+
+<p>The output of this code is <code>A</code>.</p>
+
+<p>As an exercise, use the character classification and conversion library to write functions named <code>StringToUpper()</code> and <code>StringToLower()</code> that take a single string as a parameter, and that modify the string by converting all the letters to upper or lower case. The return type should be <code>void</code>.</p>
+
+<h2>Getting user input</h2>
+
+<p>The programs we have written so far are pretty predictable; they do the same thing every time they run. Most of the time, though, we want programs that take input from the user and respond accordingly.</p>
+
+<p>There are many ways to get input, including keyboard input, mouse movements and button clicks, as well as more exotic mechanisms like voice control and retinal scanning. In this text we will consider only keyboard input.</p>
+
+<p>In the header file <code>stdio.h</code>, C defines a function named <code>scanf()</code> that handles input in much the same way that <code>printf()</code> handles output. We can use the following code to get an integer value from the user:</p>
+
+<pre><code>
+    int x;
+    scanf("%i", &amp;x);
+</code></pre>
+
+<p>The <code>scanf()</code> function causes the program to stop executing and wait for the user to type something. If the user types a valid integer, the program converts it into an integer value and stores it in <code>x</code>.</p>
+
+<p>If the user types something other than an integer, C doesn't report an error, or anything sensible like that. Instead, the <code>scanf()</code> function returns and leaves the value in <code>x</code> unchanged.</p>
+
+<p>Fortunately, there is a way to check and see if an input statement succeeds. The <code>scanf()</code> function returns the number of items that have been successfully read. This number will be <code>1</code> when the last input statement succeeded. If not, we know that some previous operation failed, and also that the next operation will fail.</p>
+
+<p>Getting input from the user might look like this:</p>
+
+<pre><code>
+    int main (void)
+    {
+        int success, x;
+
+        /* prompt the user for input */
+        printf ("Enter an integer: \n");
+
+        /* get input */
+        success = scanf("%i", &amp;x);
+
+        /* check and see if the input statement succeeded */
+        if (success == 1) 
+        {
+            /* print the value we got from the user */
+            printf ("Your input: %i\n", x);
+            return EXIT_SUCCESS;
+        }
+        printf("That was not an integer.\n");
+        return EXIT_FAILURE;
+    }
+</code></pre>
+
+<p>There is another potential pitfall connected with the <code>scanf()</code> function. Your program code might want to insist that the user types a valid integer, because this value is needed later on. In this case you might want to repeat the input statement in order to get a valid user input:</p>
+
+<pre><code>
+    if (success != 1) 
+    {
+          while (success != 1)                                      
+          { 
+               printf("That was not a number. Please try again:\n");
+               success = scanf("%i", &amp;x);
+          }  
+     }
+</code></pre>
+
+<p>Unfortunately this code leads into an endless loop. You probably ask yourself, why? The input from the keyboard is delivered to your program by the operating system, in something called an input buffer. A successful read operation automatically empties this buffer. However, if the <code>scanf()</code> function fails, like in our example, the buffer does not get emptied and the next <code>scanf()</code> operation re-reads the old value - you see the problem?</p>
+
+
+<p>We need to empty the input buffer, before we can attempt to read the next input from the user. Since there is no standard way to do this, we will introduce our own code that reads and empties the buffer using the <code>getchar()</code> function. It run through a  <code>while</code>-loop until there are no more characters left in the buffer (notice the construction of this loop, where all the operations are executed in the test condition):</p>
+
+<pre>
+      char ch;    /* helper variable stores discarded chars*/
+      while (success != 1)                                      
+      { 
+          printf("That isn't a number. Please try again:\n");
+           /* now we empty the input buffer*/
+           while ((ch = getchar()) != '\n' &amp;&amp; ch != EOF);
+           success = scanf("%i", &amp;x);
+      }    
+</pre>
+
+<p>The <code>scanf()</code> function can also be used to input a <code>string</code>:</p>
+
+<pre>
+    char name[80];
+
+    printf ("What is your name?");
+    scanf ("%s", name);
+    printf ("%s", name);
+</pre>
+
+<p>Again, we have to make sure our string variable is large enough to contain the complete user input. Notice the difference in the argument of the <code>scanf()</code> function when we are reading an <code>integer</code> or a <code>string</code>. The function requires a pointer to the variable where the input value will be stored. If we are reading an <code>integer</code> we need to use the address operator <code>\&amp;</code> with the variable name. In the case of a <code>string</code> we simply provide the variable name.</p>
+
+<p>Also notice, that the <code>scanf()</code> function only takes the first word of the input, and leaves the rest for the next input statement. So, if you run this program and type your full name, it will only output your first name.</p>
+
+<h2>Glossary</h2>
+
+<dl>
+
+<dt>index:</dt><dd> A variable or value used to select one of the members of an ordered set, like a character from a string.</dd>
+
+<dt>traverse:</dt><dd> To iterate through all the elements of a set performing a similar operation on each.</dd>
+
+<dt>counter:</dt><dd> A variable used to count something, usually initialized to zero and then incremented.</dd>
+
+<dt>concatenate:</dt><dd> To join two operands end-to-end.</dd>
+
+<dt>pointer:</dt><dd> A reference to an object in computer memory.</dd>
+
+<dt>address:</dt><dd> The exact storage location of objects in memory.</dd>
+
+</dl>
+
+
+<a href="ch7.html">prev</a> <a href="ch9.html">next</a> 
+<p> 
+Permission is granted to copy, distribute, transmit and adapt this work un- der the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Inter- national License: https://creativecommons.org/licenses/by-nc/4.0/. 
+If you are interested in distributing a commercial version of this work, please contact the author(s). 
+The LATEX source and code for this book is available from: https://github.com/mkpenta/ThinkC 
+</p>
+</body>
