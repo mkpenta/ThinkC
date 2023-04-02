@@ -6,12 +6,65 @@
 \chapter{Working with files}
 \label{files}
 \index{files}
+
+
+\section{Introduction}
+File handling is a fundamental aspect of programming, allowing us to store and retrieve
+data that can be used across multiple runs of a program. In C programming, file handling
+is achieved using the stdio.h library, which provides a variety of functions for reading
+from and writing to files. In this chapter, we will explore the basics of file handling
+in C, including opening and closing files, reading and writing data to files, and
+handling errors that may occur during file input/output.
+
+\section{Text Files vs Binary Files}
+Before diving into working with files in C, it is important to understand the differences
+between text files and binary files. Text files are files that contain human-readable
+text, such as plain text documents or CSV files. These files are composed of a series of
+characters, usually encoded in ASCII or Unicode format. Binary files, on the other hand,
+are files that contain machine-readable data, such as executable files or images. These
+files are composed of a series of bytes that represent binary data and are not
+human-readable.
+
+The choice between text files and binary files depends on the type of data being stored
+and the intended use of the file. Text files are usually used for storing data that can
+be easily edited by humans, such as configuration files or log files. On the other hand,
+binary files are typically used for storing data that is not easily editable by humans,
+such as multimedia files or database files.
+
+One of the key differences between text files and binary files is the way that they are
+read and written. Text files can be read and written using standard functions such as
+{\tt fgets()} and {\tt fprintf()}, while binary files require more specialized functions
+such as {\tt fread()} and {\tt fwrite()}.
+
+\section{Opening and Closing Files}
+Once we have decided on the type of file we want to use, the next step is to open the
+file. In C, we use the {\tt fopen()} function to open a file, which takes two parameters:
+the name of the file to be opened and the mode in which it is to be opened. The mode
+parameter specifies whether the file is to be opened for reading, writing, or both, as
+well as whether the file is to be created if it does not exist.
+
+There are several modes in which a file can be opened, including:
+
+"r": Open file for reading
+"w": Open file for writing (overwrite if file already exists)
+"a": Open file for appending (write to end of file)
+"r+": Open file for both reading and writing
+"w+": Open file for both reading and writing (overwrite if file already exists)
+"a+": Open file for both reading and writing (write to end of file)
+
+Once a file has been opened, we can perform operations on it, such as reading data from
+or writing data to the file. When we are finished working with a file, it is important to
+close it using the {\tt fclose()} function. This ensures that any changes made to the
+file are saved and any resources used by the file are freed up.
+
+
 \section{Reading from Text Files}
 Imagine we have a text file called "students.txt" containing a list of students' names, one name per line. We want to read the data from this file and display it on the screen. The following example demonstrates how to read data from a text file using {\tt fgets()}:
 
 \begin{verbatim}
 	FILE *file = fopen("students.txt", "r");
-	if (file != NULL) {
+	if (file != NULL) 
+	{
 		char name[256];
 		printf("List of Students:\n");
 		while (fgets(name, sizeof(name), file) != NULL) {
@@ -25,20 +78,24 @@ Imagine we have a text file called "students.txt" containing a list of students'
 Suppose we want to create a text file called "grades.txt" to store the grades of students in a course. We have a struct called "Student" containing the student's name and grade. The following example demonstrates how to write data to a text file using {\tt fprintf()}:
 
 \begin{verbatim}
-	typedef struct {
+	typedef struct 
+	{
 		char name[50];
 		int grade;
 	} Student;
 	
-	Student students[] = {
+	Student students[] =
+	 {
 		{"Alice", 85},
 		{"Bob", 92},
 		{"Carol", 78}
 	};
 	
 	FILE *file = fopen("grades.txt", "w");
-	if (file != NULL) {
-		for (int i = 0; i < 3; i++) {
+	if (file != NULL)
+	 {
+		for (int i = 0; i < 3; i++) 
+		{
 			fprintf(file, "Name: %s, Grade: %d\n", students[i].name, students[i].grade);
 		}
 		fclose(file);
@@ -46,21 +103,26 @@ Suppose we want to create a text file called "grades.txt" to store the grades of
 \end{verbatim}
 
 \section{Reading from Binary Files}
-Consider a binary file called "inventory.bin" containing a list of products in a store. Each product has a struct called "Product" containing a product ID and its stock quantity. The following example demonstrates how to read data from a binary file using {\tt fread()}:
+Consider a binary file called "inventory.bin" containing a list of products in a store. 
+Each product has a struct called "Product" containing a product ID and its stock quantity.
+ The following example demonstrates how to read data from a binary file using {\tt fread()}:
 
 \begin{verbatim}
-	typedef struct {
+	typedef struct 
+	{
 		int productID;
 		int stock;
 	} Product;
 	
 	FILE *file = fopen("inventory.bin", "rb");
-	if (file != NULL) {
+	if (file != NULL)
+	 {
 		Product products[5];
 		size_t read_elements = fread(products, sizeof(Product), 5, file);
 		
 		printf("Product Inventory:\n");
-		for (int i = 0; i < read_elements; i++) {
+		for (int i = 0; i < read_elements; i++)
+		{
 			printf("Product ID: %d, Stock: %d\n", products[i].productID, products[i].stock);
 		}
 		
@@ -78,14 +140,16 @@ Suppose we want to create a binary file called "sales.bin" to store the sales da
 		int quantity;
 	} Sale;
 	
-	Sale sales[] = {
+	Sale sales[] =
+	 {
 		{1, 101, 5},
 		{2, 102, 3},
 		{3, 103, 8}
 	};
 	
 	FILE *file = fopen("sales.bin", "wb");
-	if (file != NULL) {
+	if (file != NULL) 
+	{
 		fwrite(sales, sizeof(Sale), 3, file);
 		fclose(file);
 	}
