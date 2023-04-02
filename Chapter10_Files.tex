@@ -239,6 +239,8 @@ Here is an example of how to check for a file not found error:
 
 In this example, we attempt to open a file called "nonexistent.txt" in read mode. If the file does not exist, {\tt fopen()} will return {\tt NULL}, indicating that an error has occurred. We can check for this error by comparing the file pointer returned by {\tt fopen()} to {\tt NULL}. If the file pointer is {\tt NULL}, we print an error message indicating that the file was not found.
 
+Another common file handling error is attempting to read or write to a file that is not open or has been closed. This can occur if the file pointer is not properly initialized or if the file has already been closed with {\tt fclose()}. To avoid this error, always check if the file pointer is not {\tt NULL} before attempting to read or write to the file, and make sure to properly close the file when finished using it.
+
 \section{Glossary}
 
 \begin{description}
