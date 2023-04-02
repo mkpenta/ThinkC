@@ -215,7 +215,7 @@ Here is an example of how to use {\tt ftell()} and {\tt fseek()} to determine th
 	}
 \end{verbatim}
 
-In this example, we first open the file "example.txt" in binary mode using {\tt fopen()}. We then use {\tt fseek()} to move the file pointer to the end of the file by passing the constant {\tt SEEK_END} as the second argument. The first argument to {\tt fseek()} is the file pointer, and the third argument specifies the offset from the current position, which is 0 in this case.
+In this example, we first open the file "example.txt" in binary mode using {\tt fopen()}. We then use {\tt fseek()} to move the file pointer to the end of the file by passing the constant {\tt SEEK$\_$END} as the second argument. The first argument to {\tt fseek()} is the file pointer, and the third argument specifies the offset from the current position, which is 0 in this case.
 
 After moving the file pointer to the end of the file, we call {\tt ftell()} to get the current position of the file pointer, which is the size of the file in bytes. We then print the size of the file using {\tt printf()}, and close the file using {\tt fclose()}.
 
