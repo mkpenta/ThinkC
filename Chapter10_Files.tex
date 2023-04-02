@@ -156,7 +156,88 @@ Suppose we want to create a binary file called "sales.bin" to store the sales da
 \end{verbatim}
 
 
+\section{File Pointers and Positioning}
+File pointers are an important concept in C file handling, as they allow us to
+keep track of our current position within a file. A file pointer is a variable
+that holds the position of the next byte to be read or written in a file. By
+manipulating the file pointer, we can control where in the file we are reading
+or writing data.
 
+The {\tt ftell()} function is used to determine the current position of the file
+pointer within a file. It takes the file pointer as an argument and returns the
+current position in bytes from the beginning of the file.
+
+The {\tt fseek()} function is used to move the file pointer to a specific
+position within a file. It takes three arguments: the file pointer, the offset
+(number of bytes to move the pointer), and the origin (starting position for
+the pointer movement). The origin can be one of the following:
+
+\begin{itemize}
+	\item {\tt SEEK_SET}: Beginning of file
+	\item {\tt SEEK_CUR}: Current position of file pointer
+	\item {\tt SEEK_END}: End of file
+\end{itemize}
+
+For example, to move the file pointer to the beginning of the file, we would use:
+
+\begin{verbatim}
+	fseek(file_pointer, 0, SEEK_SET);
+\end{verbatim}
+
+The {\tt rewind()} function is a simpler way to move the file pointer to the
+beginning of the file. It takes the file pointer as an argument and moves the
+pointer to the beginning of the file, equivalent to using {\tt fseek()} with
+an offset of 0 and {\tt SEEK_SET} as the origin.
+
+When working with files, it is important to be aware of common errors that can
+occur. One common error is failing to check if a file was opened successfully
+before attempting to read or write to it. This can lead to unexpected behavior
+or even crashes. Another common error is not properly closing a file when we
+are finished using it. This can lead to resource leaks and cause issues if we
+attempt to open the file again later.
+
+\section{Finding the Size of a File}
+
+Determining the size of a file can be useful in many scenarios, such as when reading or writing binary data to a file. In C, we can use the {\tt ftell()} and {\tt fseek()} functions to determine the size of a file.
+
+The {\tt ftell()} function returns the current position of the file pointer within a file. We can use this function to determine the size of a file by first moving the file pointer to the end of the file using {\tt fseek()}, and then calling {\tt ftell()} to get the position of the file pointer.
+
+Here is an example of how to use {\tt ftell()} and {\tt fseek()} to determine the size of a file:
+
+\begin{verbatim}
+	FILE *file = fopen("example.txt", "rb");
+	if (file != NULL)
+	{
+		fseek(file, 0L, SEEK_END);
+		long int size = ftell(file);
+		printf("The size of the file is %ld bytes.\n", size);
+		fclose(file);
+	}
+\end{verbatim}
+
+In this example, we first open the file "example.txt" in binary mode using {\tt fopen()}. We then use {\tt fseek()} to move the file pointer to the end of the file by passing the constant {\tt SEEK_END} as the second argument. The first argument to {\tt fseek()} is the file pointer, and the third argument specifies the offset from the current position, which is 0 in this case.
+
+After moving the file pointer to the end of the file, we call {\tt ftell()} to get the current position of the file pointer, which is the size of the file in bytes. We then print the size of the file using {\tt printf()}, and close the file using {\tt fclose()}.
+
+It is important to note that when using {\tt ftell()} to determine the size of a file, we must first move the file pointer to the end of the file using {\tt fseek()}. If we attempt to call {\tt ftell()} without first moving the file pointer, we may get an incorrect result.
+
+\section{Common File Handling Errors}
+
+Working with files can lead to a variety of errors, such as file not found errors, permission errors, or errors related to file input/output. It is important to handle these errors properly in our code to prevent our program from crashing or producing unexpected results.
+
+One common error that can occur when working with files is attempting to open a file that does not exist. When opening a file using {\tt fopen()}, if the specified file does not exist and the mode is set to "r" (read), {\tt fopen()} will return {\tt NULL}. We can check for this error by checking if the file pointer returned by {\tt fopen()} is {\tt NULL}.
+
+Here is an example of how to check for a file not found error:
+
+\begin{verbatim}
+	FILE *file = fopen("nonexistent.txt", "r");
+	if (file == NULL)
+	{
+		printf("Error: File not found.\n");
+	}
+\end{verbatim}
+
+In this example, we attempt to open a file called "nonexistent.txt" in read mode. If the file does not exist, {\tt fopen()} will return {\tt NULL}, indicating that an error has occurred. We can check for this error by comparing the file pointer returned by {\tt fopen()} to {\tt NULL}. If the file pointer is {\tt NULL}, we print an error message indicating that the file was not found.
 
 \section{Glossary}
 
