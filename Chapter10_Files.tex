@@ -9,9 +9,7 @@
 
 \section{Opening and Closing Files}
 
-Imagine you are writing a program to track a library's books. You would need to 
-read the data from a file containing a list of books and their information. In C, 
-we open the file using the fopen() function, as shown in the following example:
+Imagine you are writing a program to track a library's books. You would need to read the data from a file containing a list of books and their information. In C, we open the file using the {\tt fopen()} function, as shown in the following example:
 
 \begin{verbatim}
 	FILE *file = fopen("books.txt", "r");
@@ -25,20 +23,95 @@ we open the file using the fopen() function, as shown in the following example:
 	fclose(file);
 \end{verbatim}
 
+In this example, we open a text file called "books.txt" in read mode ("r"). We then check if the file was opened successfully. If the file pointer is NULL, it indicates an error. After performing the necessary operations, we close the file using the {\tt fclose()} function.
+
+\section{Reading from Text Files}
+
+Suppose we have a text file called "library$_$books.txt" containing a list of books and their authors, separated by a comma. We want to read the data from this file and display it on the screen. The following example demonstrates how to read data from a text file using {\tt fgets()}:
+
+\begin{verbatim}
+	FILE *file = fopen("library_books.txt", "r");
+	if (file != NULL) {
+		char line[256];
+		printf("List of Books:\n");
+		while (fgets(line, sizeof(line), file) != NULL) {
+			printf("%s", line);
+		}
+		fclose(file);
+	}
+\end{verbatim}
+
+\section{Writing to Text Files}
+
+Now, let's assume we want to create a new text file called "borrowed$_$books.txt" to store the list of borrowed books and their due dates. We have an array of structs called "BorrowedBook" containing the book title and the due date. The following example demonstrates how to write data to a text file using {\tt fprintf()}:
+
+\begin{verbatim}
+	typedef struct {
+		char title[100];
+		char due_date[11];
+	} BorrowedBook;
+	
+	BorrowedBook borrowed_books[] = {
+		{"The Catcher in the Rye", "2023-04-15"},
+		{"To Kill a Mockingbird", "2023-04-20"},
+		{"1984", "2023-04-25"}
+	};
+	
+	FILE *file = fopen("borrowed_books.txt", "w");
+	if (file != NULL) {
+		for (int i = 0; i < 3; i++) {
+			fprintf(file, "Title: %s, Due Date: %s\n",
+			borrowed_books[i].title, borrowed_books[i].due_date);
+		}
+		fclose(file);
+	}
+\end{verbatim}
 
 
-In this example, we open a text file called {\tt books.txt} in read mode ({\tt r}). We then 
-check if the file was opened successfully. If the file pointer is NULL, it indicates 
-an error. After performing the necessary operations, we close the file using the 
-{\tt fclose()} function.
+\section{Reading from Binary Files}
 
-\section{Reading from text files}
+Suppose we have a binary file called "library$_$inventory.dat" that stores information about the books in a library. The data is stored as a series of binary records representing the book's title, author, and publication year. We want to read the data from this file and display it on the screen. The following example demonstrates how to read data from a binary file using {\tt fread()}:
 
-Suppose we have a text file called {\tt library$\_$books.txt} 
-containing a list of books 
-and their authors, separated by a comma. We want to read the data from this file 
-and display it on the screen. The following example demonstrates how to read data 
-from a text file using {\tt fgets()}:
+\begin{verbatim}
+	typedef struct {
+		char title[100];
+		char author[100];
+		int publication_year;
+	} Book;
+	
+	FILE *file = fopen("library_inventory.dat", "rb");
+	if (file != NULL) {
+		Book book;
+		printf("Library Inventory:\n");
+		while (fread(&book, sizeof(Book), 1, file) == 1) {
+			printf("Title: %s, Author: %s, Year: %d\n",
+			book.title, book.author, book.publication_year);
+		}
+		fclose(file);
+	}
+\end{verbatim}
+
+\section{Writing to Binary Files}
+
+Now, let's assume we want to create a new binary file called "new$_$inventory.dat" to store the updated inventory of the library. We have an array of structs called "Book" containing the book title, author, and publication year. The following example demonstrates how to write data to a binary file using {\tt fwrite()}:
+
+\begin{verbatim}
+	Book library_books[] = {
+		{"The Catcher in the Rye", "J.D. Salinger", 1951},
+		{"To Kill a Mockingbird", "Harper Lee", 1960},
+		{"1984", "George Orwell", 1949}
+	};
+	
+	FILE *file = fopen("new_inventory.dat", "wb");
+	if (file != NULL) {
+		for (int i = 0; i < 3; i++) {
+			fwrite(&library_books[i], sizeof(Book), 1, file);
+		}
+		fclose(file);
+	}
+\end{verbatim}
+
+
 
 
 \section{Compound values}
