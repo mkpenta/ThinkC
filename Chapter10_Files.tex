@@ -27,7 +27,7 @@ In this example, we open a text file called "books.txt" in read mode ("r"). We t
 
 \section{Reading from Text Files}
 
-Suppose we have a text file called "library$_$books.txt" containing a list of books and their authors, separated by a comma. We want to read the data from this file and display it on the screen. The following example demonstrates how to read data from a text file using {\tt fgets()}:
+Suppose we have a text file called "library$\_$books.txt" containing a list of books and their authors, separated by a comma. We want to read the data from this file and display it on the screen. The following example demonstrates how to read data from a text file using {\tt fgets()}:
 
 \begin{verbatim}
 	FILE *file = fopen("library_books.txt", "r");
@@ -43,7 +43,7 @@ Suppose we have a text file called "library$_$books.txt" containing a list of bo
 
 \section{Writing to Text Files}
 
-Now, let's assume we want to create a new text file called "borrowed$_$books.txt" to store the list of borrowed books and their due dates. We have an array of structs called "BorrowedBook" containing the book title and the due date. The following example demonstrates how to write data to a text file using {\tt fprintf()}:
+Now, let's assume we want to create a new text file called "borrowed$\_$books.txt" to store the list of borrowed books and their due dates. We have an array of structs called "BorrowedBook" containing the book title and the due date. The following example demonstrates how to write data to a text file using {\tt fprintf()}:
 
 \begin{verbatim}
 	typedef struct {
