@@ -40,13 +40,14 @@
   \indexspace
 
   \item call, \hyperpage{39}
-  \item call by reference, \hyperpage{96}
-  \item call by value, \hyperpage{96}
+  \item call by reference, \hyperpage{96}, \hyperpage{118}, 
+		\hyperpage{122}
+  \item call by value, \hyperpage{96}, \hyperpage{118}
   \item casting, \hyperpage{28}, \hyperpage{39}
   \item chain, \hyperpage{49}
   \item character operator, \hyperpage{20}
   \item Chianti, \hyperpage{92}
-  \item coding style, \hyperpage{115}
+  \item coding style, \hyperpage{133}
   \item comment, \hyperpage{7}, \hyperpage{9}
   \item comparison
     \subitem operator, \hyperpage{43}
@@ -55,7 +56,7 @@
   \item compile, \hyperpage{2}, \hyperpage{9}
   \item compile-time error, \hyperpage{4}, \hyperpage{61, 62}
   \item composition, \hyperpage{21}, \hyperpage{24}, \hyperpage{31}, 
-		\hyperpage{64}
+		\hyperpage{64}, \hyperpage{121}
   \item concatenate, \hyperpage{113}
   \item condition, \hyperpage{43}
   \item conditional, \hyperpage{56}
@@ -75,7 +76,7 @@
 
   \item dead code, \hyperpage{61}, \hyperpage{69}
   \item debugging, \hyperpage{3}, \hyperpage{9}, \hyperpage{62}
-  \item declaration, \hyperpage{15}
+  \item declaration, \hyperpage{15}, \hyperpage{116}
   \item decrement, \hyperpage{113}
   \item deterministic, \hyperpage{45}, \hyperpage{101}
   \item diagram
@@ -104,6 +105,7 @@
   \indexspace
 
   \item fava beans, \hyperpage{92}
+  \item files, \hyperpage{125}
   \item flag, \hyperpage{66}
   \item floating-point, \hyperpage{39}
   \item floating-point number, \hyperpage{27}
@@ -202,13 +204,15 @@
     \subitem fabs(), \hyperpage{62}
     \subitem sin(), \hyperpage{59}
   \item mean, \hyperpage{95}
+  \item member variable, \hyperpage{123}
   \item modulus, \hyperpage{44}, \hyperpage{56}
   \item multiple assignment, \hyperpage{73}
 
   \indexspace
 
   \item natural language, \hyperpage{5}, \hyperpage{9}
-  \item nested structure, \hyperpage{50}, \hyperpage{66}
+  \item nested structure, \hyperpage{50}, \hyperpage{66}, 
+		\hyperpage{121}
   \item newline, \hyperpage{13}, \hyperpage{54}
   \item nondeterministic, \hyperpage{45}
 
@@ -229,13 +233,17 @@
 
   \indexspace
 
-  \item parameter, \hyperpage{36}, \hyperpage{39}
+  \item parameter, \hyperpage{36}, \hyperpage{39}, \hyperpage{117}
     \subitem multiple, \hyperpage{38}
+  \item parameter passing, \hyperpage{118}, \hyperpage{122}
   \item parse, \hyperpage{6}, \hyperpage{9}
+  \item pass by reference, \hyperpage{123}
+  \item pass by value, \hyperpage{123}
   \item pattern
     \subitem counter, \hyperpage{97}
   \item pi, \hyperpage{59}
   \item poetry, \hyperpage{6}
+  \item Point, \hyperpage{115}
   \item pointer, \hyperpage{107}, \hyperpage{113}
   \item portable, \hyperpage{1}
   \item precedence, \hyperpage{19}
@@ -255,11 +263,14 @@
   \item random, \hyperpage{46}, \hyperpage{56}
     \subitem seed, \hyperpage{56}
   \item random number, \hyperpage{45}
+  \item Rectangle, \hyperpage{120}
   \item recursion, \hyperpage{52}, \hyperpage{56}
     \subitem infinite, \hyperpage{54}, \hyperpage{56}
   \item recursive, \hyperpage{54}
   \item redundancy, \hyperpage{6}
-  \item return, \hyperpage{51}, \hyperpage{59}
+  \item reference, \hyperpage{116}, \hyperpage{118}, 
+		\hyperpage{122, 123}
+  \item return, \hyperpage{51}, \hyperpage{59}, \hyperpage{121}
   \item return type, \hyperpage{69}
   \item return value, \hyperpage{59}, \hyperpage{69}
   \item rounding, \hyperpage{29}
@@ -283,24 +294,34 @@
   \item sizeof, \hyperpage{94}
   \item stack, \hyperpage{55}
   \item stack diagram, \hyperpage{55}, \hyperpage{85}
+  \item state, \hyperpage{116}
+  \item state diagram, \hyperpage{116}
   \item statement, \hyperpage{3}, \hyperpage{9}, \hyperpage{24}
     \subitem assignment, \hyperpage{16}, \hyperpage{73}
     \subitem comment, \hyperpage{7}
     \subitem conditional, \hyperpage{44}
-    \subitem declaration, \hyperpage{15}
+    \subitem declaration, \hyperpage{15}, \hyperpage{116}
     \subitem for, \hyperpage{93}
     \subitem initialization, \hyperpage{66}
     \subitem output, \hyperpage{13}
     \subitem printf, \hyperpage{7}
-    \subitem return, \hyperpage{51}, \hyperpage{59}
+    \subitem return, \hyperpage{51}, \hyperpage{59}, \hyperpage{121}
     \subitem while, \hyperpage{75}
   \item statistics, \hyperpage{95}
   \item String, \hyperpage{13}
   \item string, \hyperpage{108, 109}
     \subitem length, \hyperpage{105}
+  \item struct, \hyperpage{115}
+    \subitem as parameter, \hyperpage{117}
+    \subitem as return type, \hyperpage{121}
+    \subitem member variable, \hyperpage{116}
+    \subitem operations, \hyperpage{117}
+    \subitem Point, \hyperpage{115}
+    \subitem Rectangle, \hyperpage{120}
+  \item structure, \hyperpage{123}
   \item structures
     \subitem selection, \hyperpage{44}, \hyperpage{48}
-  \item style, \hyperpage{115}
+  \item style, \hyperpage{133}
   \item switch, \hyperpage{50}
   \item syntax, \hyperpage{4}, \hyperpage{9}
 
@@ -319,7 +340,7 @@
     \subitem double, \hyperpage{27}
     \subitem int, \hyperpage{19}
     \subitem String, \hyperpage{13}
-  \item typecasting, \hyperpage{29}, \hyperpage{39}
+  \item typecasting, \hyperpage{29}, \hyperpage{39}, \hyperpage{117}
 
   \indexspace
 
