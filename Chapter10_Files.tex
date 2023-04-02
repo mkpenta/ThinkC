@@ -7,14 +7,13 @@
 \label{files}
 \index{files}
 
+\section{Opening and Closing Files}
 	
-	\section{Opening and Closing Files}
+Imagine you are writing a program to track a library's books. You would need to 
+read the data from a file containing a list of books and their information. In C, 
+we open the file using the fopen() function, as shown in the following example:
 	
-	Imagine you are writing a program to track a library's books. You would need to 
-	read the data from a file containing a list of books and their information. In C, 
-	we open the file using the fopen() function, as shown in the following example:
-	
-	\begin{verbatim}
+\begin{verbatim}
 		FILE *file = fopen("books.txt", "r");
 		if (file == NULL) {
 			printf("Error: Unable to open file.\n");
@@ -26,12 +25,10 @@
 		fclose(file);
 	\end{verbatim}
 	
-	In this example, we open a text file called "books.txt" in read mode ("r"). We then 
+	In this example, we open a text file called books.txt in read mode (r). We then 
 	check if the file was opened successfully. If the file pointer is NULL, it indicates 
 	an error. After performing the necessary operations, we close the file using the 
 	fclose() function.
-	
-	\section{Reading and Writing to Files}
 	
 	\section{Reading from Text Files}
 	
