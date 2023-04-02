@@ -7,6 +7,23 @@
 \label{files}
 \index{files}
 
+\section{Opening and Closing Files}
+
+Imagine you are writing a program to track a library's books. You would need to 
+read the data from a file containing a list of books and their information. In C, 
+we open the file using the fopen() function, as shown in the following example:
+
+\begin{verbatim}
+	FILE *file = fopen("books.txt", "r");
+	if (file == NULL) {
+		printf("Error: Unable to open file.\n");
+		return 1;
+	}
+	
+	// Perform operations on the file, such as reading the list of books
+	
+	fclose(file);
+\end{verbatim}
 
 
 
