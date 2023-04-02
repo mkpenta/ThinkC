@@ -202,6 +202,43 @@ Determining the size of a file can be useful in many scenarios, such as when rea
 
 The {\tt ftell()} function returns the current position of the file pointer within a file. We can use this function to determine the size of a file by first moving the file pointer to the end of the file using {\tt fseek()}, and then calling {\tt ftell()} to get the position of the file pointer.
 
+Here is an example of how to use {\tt ftell()} and {\tt fseek()} to determine the size of a file:
+
+\begin{verbatim}
+	FILE *file = fopen("example.txt", "rb");
+	if (file != NULL)
+	{
+		fseek(file, 0L, SEEK_END);
+		long int size = ftell(file);
+		printf("The size of the file is %ld bytes.\n", size);
+		fclose(file);
+	}
+\end{verbatim}
+
+In this example, we first open the file "example.txt" in binary mode using {\tt fopen()}. We then use {\tt fseek()} to move the file pointer to the end of the file by passing the constant {\tt SEEK_END} as the second argument. The first argument to {\tt fseek()} is the file pointer, and the third argument specifies the offset from the current position, which is 0 in this case.
+
+After moving the file pointer to the end of the file, we call {\tt ftell()} to get the current position of the file pointer, which is the size of the file in bytes. We then print the size of the file using {\tt printf()}, and close the file using {\tt fclose()}.
+
+It is important to note that when using {\tt ftell()} to determine the size of a file, we must first move the file pointer to the end of the file using {\tt fseek()}. If we attempt to call {\tt ftell()} without first moving the file pointer, we may get an incorrect result.
+
+\section{Common File Handling Errors}
+
+Working with files can lead to a variety of errors, such as file not found errors, permission errors, or errors related to file input/output. It is important to handle these errors properly in our code to prevent our program from crashing or producing unexpected results.
+
+One common error that can occur when working with files is attempting to open a file that does not exist. When opening a file using {\tt fopen()}, if the specified file does not exist and the mode is set to "r" (read), {\tt fopen()} will return {\tt NULL}. We can check for this error by checking if the file pointer returned by {\tt fopen()} is {\tt NULL}.
+
+Here is an example of how to check for a file not found error:
+
+\begin{verbatim}
+	FILE *file = fopen("nonexistent.txt", "r");
+	if (file == NULL)
+	{
+		printf("Error: File not found.\n");
+	}
+\end{verbatim}
+
+In this example, we attempt to open a file called "nonexistent.txt" in read mode. If the file does not exist, {\tt fopen()} will return {\tt NULL}, indicating that an error has occurred. We can check for this error by comparing the file pointer returned by {\tt fopen()} to {\tt NULL}. If the file pointer is {\tt NULL}, we print an error message indicating that the file was not found.
+
 \section{Glossary}
 
 \begin{description}
