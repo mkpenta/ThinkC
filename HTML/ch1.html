@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Think C - Chapter 1 </title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+<body>
+<h1>Chapter 1 - The way of the program</h1>
+<p>The goal of this book, and this class, is to teach you to think like a computer scientist. I like the way computer scientists think because they combine some of the best features of Mathematics, Engineering, and Natural Science. Like mathematicians, computer scientists use formal languages to denote ideas (specifically computations). Like engineers, they design things, assembling components into systems and evaluating tradeoffs among alternatives. Like scientists, they observe the behavior of complex systems, form hypotheses, and test predictions.</p>
+
+<p>The single most important skill for a computer scientist is <strong>problem-solving</strong>. By that I mean the ability to formulate problems, think creatively about solutions, and express a solution clearly and accurately. As it turns out, the process of learning to program is an excellent opportunity to practice problem-solving skills. That's why this chapter is called "The way of the program."</p>
+
+<h2>What is a programming language?</h2>
+<p>The programming language you will be learning is C, which was developed in the early 1970s by Dennis M. Ritchie at the Bell Laboratories. C is an example of a <strong>high-level language</strong>; other high-level languages you might have heard of are Pascal, C++ and Java.</p>
+
+<p>As you might infer from the name "high-level language," there are also <strong>low-level languages</strong>, sometimes referred to as machine language or assembly language. Loosely-speaking, computers can only execute programs written in low-level languages. Thus, programs written in a high-level language have to be translated before they can run. This translation takes some time, which is a small disadvantage of high-level languages.</p>
+
+<p>But the advantages are enormous. First, it is <em>much</em> easier to program in a high-level language; by "easier" I mean that the program takes less time to write, it's shorter and easier to read, and it's more likely to be correct. Secondly, high-level languages are <strong>portable</strong>, meaning that they can run on different kinds of computers with few or no modifications. Low-level programs can only run on one kind of computer, and have to be rewritten to run on another.</p>
+
+<p>There are two ways to translate a program; <strong>interpreting</strong> or <strong>compiling</strong>. An interpreter is a program that reads a high-level program and does what it says. In effect, it translates the program line-by-line, alternately reading lines and carrying out commands.</p>
+
+<p><img src="figs/Interpreter" alt="Interpreter" height="300"></p>
+
+<p>A compiler is a program that reads a high-level program and translates it all at once, before executing any of the commands. Often you compile the program as a separate step, and then execute the compiled code later. In this case, the high-level program is called the <strong>source code</strong>, and the translated program is called the <strong>object code</strong> or the <strong>executable</strong>.</p>
+
+<p>As an example, suppose you write a program in C. You might use a text editor to write the program (a text editor is a simple word processor). When the program is finished, you might save it in a file named <strong>program.c</strong>, where "program" is an arbitrary name you make up, and the suffix <strong>.c</strong> is a convention that indicates that the file contains C source code.</p>
+<h2>What is a program?</h2>
+<p>A program is a sequence of instructions that specifies how to perform a computation. The computation might be something mathematical, like solving a system of equations or finding the roots of a polynomial, but it can also be a symbolic computation, like searching and replacing text in a document or (strangely enough) compiling a program.</p>
+
+<p>The instructions, which we will call <strong>statements</strong>, look different in different programming languages, but there are a few basic operations most languages can perform:</p>
+
+<ul>
+  <li><strong>input:</strong> Get data from the keyboard, or a file, or some other device.</li>
+  <li><strong>output:</strong> Display data on the screen or send data to a file or other device.</li>
+  <li><strong>math:</strong> Perform basic mathematical operations like addition and multiplication.</li>
+  <li><strong>testing:</strong> Check for certain conditions and execute the appropriate sequence of statements.</li>
+  <li><strong>repetition:</strong> Perform some action repeatedly, usually with some variation.</li>
+</ul>
+
+<p>That's pretty much all there is to it. Every program you've ever used, no matter how complicated, is made up of statements that perform these operations. Thus, one way to describe programming is the process of breaking a large, complex task up into smaller and smaller subtasks until eventually the subtasks are simple enough to be performed with one of these basic operations.</p>
+<h2>What is debugging?</h2>
+<p>Programming is a complex process, and since it is done by human beings, it often leads to errors. For whimsical reasons, programming errors are called <strong>bugs</strong> and the process of tracking them down and correcting them is called <strong>debugging</strong>.</p>
+
+<p>There are a few different kinds of errors that can occur in a program, and it is useful to distinguish between them in order to track them down more quickly.</p>
+
+<h2>Compile-time errors</h2>
+<p>The compiler can only translate a program if the program is syntactically correct; otherwise, the compilation fails and you will not be able to run your program. For most readers, a few syntax errors are not a significant problem, but compilers are not so forgiving. If there is a single syntax error anywhere in your program, the compiler will print an error message and quit, and you will not be able to run your program.</p>
+
+<h2>Run-time errors</h2>
+<p>The second type of error is a run-time error, so-called because the error does not appear until you run the program. Programming in C allows you to get very close to the actual computing hardware. Most run-time errors C occur because the language provides no protection against the accessing or overwriting of data in memory. For the simple sorts of programs we will be writing for the next few weeks, run-time errors are rare, so it might be a little while before you encounter one.</p>
+
+<h2>Logic errors and semantics</h2>
+<p>The third type of error is the logical or semantic error. If there is a logical error in your program, it will compile and run successfully, but it will not do the right thing. Identifying logical errors can be tricky, since it requires you to work backwards by looking at the output of the program and trying to figure out what it is doing.</p>
+
+<h2>Experimental debugging</h2>
+<p>One of the most important skills you will acquire in this class is debugging. Debugging is one of the most intellectually rich, challenging, and interesting parts of programming.</p>
+
+<p>Debugging is like detective work, where you are confronted with clues and you have to infer the processes and events that lead to the results you see. Debugging is also like an experimental science. Once you have an idea what is going wrong, you modify your program and try again. If your hypothesis was correct, then you can predict the result of the modification, and you take a step closer to a working program. If your hypothesis was wrong, you have to come up with a new one.</p>
+
+<p>For some people, programming and debugging are the same thing. That is, programming is the process of gradually debugging a program until it does what you want. The idea is that you should always start with a working program that does something, and make small modifications, debugging them as you go, so that you always have a working program.</p>
+
+<p>In later chapters, more suggestions about debugging and other programming practices will be made.</p>
+
+<h2>Formal and natural languages</h2>
+<p><strong>Natural languages</strong> are the languages that people speak,
+like English, Spanish, and French.  They were not designed
+by people (although people try to impose some order on them);
+they evolved naturally.</p>
+<p><strong>Formal languages</strong> are languages that are designed by people for
+specific applications.  For example, the notation that mathematicians
+use is a formal language that is particularly good at denoting
+relationships among numbers and symbols.  Chemists use a formal
+language to represent the chemical structure of molecules.  And
+most importantly:</p>
+<blockquote>
+  <p><strong>Programming languages are formal languages that have been
+designed to express computations.</strong></p>
+</blockquote>
+<p>As I mentioned before, formal languages tend to have strict rules
+about syntax.  For example, $3+3=6$ is a syntactically correct
+mathematical statement, but $3=+6\$$ is not.  Also, $H_2O$ is a
+syntactically correct chemical name, but $_2Zz$ is not.</p>
+<p>Syntax rules come in two flavors, pertaining to tokens and structure.
+Tokens are the basic elements of the language, like words and numbers
+and chemical elements.  One of the problems with <code>3=+6$</code> is that
+<code>$</code> is not a legal token in mathematics (at least as far as I
+know).  Similarly, <code>_2Zz</code> is not legal because there is no element with
+the abbreviation <code>Zz</code>.</p>
+<p>The second type of syntax rule pertains to the structure of a
+statement; that is, the way the tokens are arranged.  The statement
+<code>3=+6$</code> is structurally illegal, because you can't have a plus
+sign immediately after an equals sign.  Similarly, molecular formulas
+have to have subscripts after the element name, not before.</p>
+<p>When you read a sentence in English or a statement in a formal
+language, you have to figure out what the structure of the sentence is
+(although in a natural language you do this unconsciously).  This
+process is called <strong>parsing</strong>.</p>
+<p>For example, when you hear the sentence, "The other shoe fell," you
+understand that "the other shoe" is the subject and "fell" is the
+verb.  Once you have parsed a sentence, you can figure out what it
+means, that is, the semantics of the sentence.  Assuming that you know
+what a shoe is, and what it means to fall, you will understand the
+general implication of this sentence.</p>
+<p>Although formal and natural languages have many features in
+common---tokens, structure, syntax and semantics---there are many
+differences.</p>
+
+<dl>
+  <dt>ambiguity:</dt>
+  <dd>Natural languages are full of ambiguity, which people deal with by using contextual clues and other information. Formal languages are designed to be nearly or completely unambiguous, which means that any statement has exactly one meaning, regardless of context.</dd>
+  
+  <dt>redundancy:</dt>
+  <dd>In order to make up for ambiguity and reduce misunderstandings, natural languages employ lots of redundancy. As a result, they are often verbose. Formal languages are less redundant and more concise.</dd>
+  
+  <dt>literalness:</dt>
+  <dd>Natural languages are full of idiom and metaphor. If I say, "The other shoe fell," there is probably no shoe and nothing falling. Formal languages mean exactly what they say.</dd>
+</dl>
+
+<p>People who grow up speaking a natural language (everyone) often have a hard time adjusting to formal languages. In some ways the difference between formal and natural language is like the difference between poetry and prose, but more so:</p>
+
+<dl>
+  <dt>Poetry:</dt>
+  <dd>Words are used for their sounds as well as for their meaning, and the whole poem together creates an effect or emotional response. Ambiguity is not only common but often deliberate.</dd>
+  
+  <dt>Prose:</dt>
+  <dd>The literal meaning of words is more important and the structure contributes more meaning. Prose is more amenable to analysis than poetry, but still often ambiguous.</dd>
+  
+  <dt>Programs:</dt>
+  <dd>The meaning of a computer program is unambiguous and literal, and can be understood entirely by analysis of the tokens and structure.</dd>
+</dl>
+
+<p>Here are some suggestions for reading programs (and other formal languages). First, remember that formal languages are much more dense than natural languages, so it takes longer to read them. Also, the structure is very important, so it is usually not a good idea to read from top to bottom, left to right. Instead, learn to parse the program in your head, identifying the tokens and interpreting the structure. Finally, remember that the details matter. Little things like spelling errors and bad punctuation, which you can get away with in natural languages, can make a big difference in a formal language.</p>
+
+<h2>The first program</h2>
+<p><strong>Traditionally</strong> the first program people write in a new language is called "Hello, World." because all it does is display the words "Hello, World."  In C, this program looks like this:</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/* main: generate some simple output */
+
+int main(void)
+{
+    printf("Hello, World.\n");
+    return(EXIT_SUCCESS);
+}
+</code></pre>
+
+<p>Some people judge the quality of a programming language by the simplicity of the "Hello, World." program. By this standard, C does reasonably well. Even so, this simple program contains several features that are hard to explain to beginning programmers. For now, we will ignore some of them, like the first two lines.</p>
+
+<h2 id="comment">Comment</h2>
+<p>The third line begins with <code>/*</code> and ends with <code>*/</code>, which indicates that it is a <strong>comment</strong>. A comment is a bit of English text that you can put in the middle of a program, usually to explain what the program does. When the compiler sees a <code>/*</code>, it ignores everything from there until it finds the corresponding <code>*/</code>.</p>
+
+<h2 id="main">Main Function</h2>
+<p>In the forth line, you notice the word <code>main</code>. <code>main</code> is a special name that indicates the place in the program where execution begins. When the program runs, it starts by executing the first <strong>statement</strong> in <code>main()</code> and it continues, in order, until it gets to the last statement, and then it quits.</p>
+
+<h2 id="output-statement">Output Statement</h2>
+<p>There is no limit to the number of statements that can be in <code>main()</code>, but the example contains only two. The first  is an <strong>output</strong> statement, meaning that it displays or prints a message on the screen. The statement that prints things on the screen is <code>printf()</code>, and the characters between the quotation marks will get printed. Notice the <code>\n</code> after the last character. This is a special character called <em>newline</em> that is appended at the end of a line of text and causes the cursor to move to the next line of the display. The next time you output something, the new text appears on the next line. At the end of the statement there is a semicolon (<code>;</code>), which is required at the end of every statement.</p>
+
+<h2 id="syntax">Syntax</h2>
+<p>There are a few other things you should notice about the syntax of this program. First, C uses curly-brackets (<code>{</code> and <code>}</code>) to group things together. In this case, the output statement is enclosed in curly-brackets, indicating that it is <em>inside</em> the definition of <code>main()</code>. Also, notice that the statement is indented, which helps to show visually which lines are inside the definition.</p>
+
+<p>At this point it would be a good idea to sit down in front of a computer and compile and run this program. The details of how to do that depend on your programming environment, this book assumes that you know how to do it.</p>
+
+<p>As I mentioned, the C compiler is very pedantic with syntax. If you make any errors when you type in the program, chances are that it will not compile successfully. For example, if you misspell <code>stdio.h</code>, you might get an error message like the following:</p>
+
+<pre><code>hello_world.c:1:19: error: sdtio.h: No such file or directory
+</code></pre>
+
+<p>There is a lot of information on this line, but it is presented in a dense format that is not easy to interpret. A more friendly compiler might say something like:</p>
+
+<blockquote>
+  <p>“On line 1 of the source code file named hello_world.c, you tried to include a header file named sdtio.h. I didn't find anything with that name, but I did find something named stdio.h. Is that what you meant, by any chance?”</p>
+</blockquote>
+
+<p>Unfortunately, few compilers are so accommodating. The compiler is not really very smart, and in most cases the error message you get will be only a hint about what is wrong. It will take some time for you to learn to interpret different compiler messages.</p>
+
+<p>Nevertheless, the compiler can be a useful tool for learning the syntax rules of a language. Starting with a working program (like hello_world.c), modify it in various ways and see what happens. If you get an error message, try to remember what the message says and what caused it, so if you see it again in the future you will know what it means.</p>
+
+<h2> Glossary</h2>
+
+<dl>
+  <dt>problem-solving:</dt>
+  <dd>The process of formulating a problem, finding a solution, and expressing the solution.</dd>
+  
+  <dt>high-level language:</dt>
+  <dd>A programming language like C that is designed to be easy for humans to read and write.</dd>
+  
+  <dt>low-level language:</dt>
+  <dd>A programming language that is designed to be easy for a computer to execute. Also called "machine language" or "assembly language."</dd>
+  
+  <dt>formal language:</dt>
+  <dd>Any of the languages people have designed for specific purposes, like representing mathematical ideas or computer programs. All programming languages are formal languages.</dd>
+  
+  <dt>natural language:</dt>
+  <dd>Any of the languages people speak that have evolved naturally.</dd>
+  
+  <dt>portability:</dt>
+  <dd>A property of a program that can run on more than one kind of computer.</dd>
+  
+  <dt>interpret:</dt>
+  <dd>To execute a program in a high-level language by translating it one line at a time.</dd>
+  
+  <dt>compile:</dt>
+  <dd>To translate a program in a high-level language into a low-level language, all at once, in preparation for later execution.</dd>
+  
+  <dt>source code:</dt>
+  <dd>A program in a high-level language, before being compiled.</dd>
+  
+  <dt>object code:</dt>
+  <dd>The output of the compiler, after translating the program.</dd>
+  
+  <dt>executable:</dt>
+  <dd>Another name for object code that is ready to be executed.</dd>
+  
+  <dt>statement:</dt>
+  <dd>A part of a program that specifies an action that will be performed when the program runs. A print statement causes output to be displayed on the screen.</dd>
+  
+  <dt>comment:</dt>
+  <dd>A part of a program that contains information about the program, but that has no effect when the program runs.</dd>
+  
+  <dt>algorithm:</dt>
+  <dd>A general process for solving a category of problems.</dd>
+  
+  <dt>bug:</dt>
+  <dd>An error in a program.</dd>
+  
+  <dt>syntax:</dt>
+  <dd>The structure of a program.</dd>
+  
+  <dt>semantics:</dt>
+  <dd>The meaning of a program.</dd>
+  
+  <dt>parse:</dt>
+  <dd>To examine a program and analyze the syntactic structure.</dd>
+  
+  <dt>syntax error:</dt>
+  <dd>An error in a program that makes it impossible to parse (and therefore impossible to compile).</dd>
+  
+  <dt>logical error:</dt>
+  <dd>An error in a program that makes it do something other than what the programmer intended.</dd>
+  
+  <dt>debugging:</dt>
+  <dd>The process of finding and removing any of the three kinds of errors.</dd>
+</dl>
+   <a href="ch2.html">next</a> 
+</body>

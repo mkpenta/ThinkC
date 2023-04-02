@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Think C - Chapter 2</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+<body>
+<h1> Chapter 2  - Variables and types</h1>
+    <h2>More output</h2>
+    <p>As I mentioned in the last chapter, you can put as many statements as you want in main(). For example, to output more than one line:</p>
+    <pre>
+      <code>
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+
+        /* main: generate some simple output */
+
+        int main (void)
+        {
+              printf ("Hello World.\n");    /* output one line */
+              printf ("How are you?\n");    /* output another line */       
+              return (EXIT_SUCCESS);
+        }
+      </code>
+    </pre>
+    <p>As you can see, it is legal to put comments at the end of a line, as well as on a line by themselves.</p>
+    <h2>Values</h2>
+    <p>Computer programs operate on values stored in computer memory. A value is one of the fundamental things that a program manipulates. The only values we have manipulated so far are the strings we have been outputting, like "Hello, world." You (and the compiler) can identify these string values because they are enclosed in quotation marks.</p>
+    <p>There are different kinds of values, including integers and characters. It is important for the program to know exactly what kind of value is manipulated because not all manipulations will make sense on all values. We therefore distinguish between different types of values.</p>
+    <h2>Variables</h2>
+    <p>One of the most powerful features of a programming language is the ability to manipulate values through the use of variables. So far the values that we have used in our statements where fixed to what was written in the statement. Now we will use a variable as a named location that stores a value.</p>
+    <p>Just as there are different types of values (integer, character, etc.), there are different types of variables. When you create a new variable, you have to declare what type it is. For example, the character type in C is called char. The following statement creates a new variable named fred that has type char:</p>
+    <pre>
+      <code>
+        char fred;
+      </code>
+    </pre>
+    <p>This kind of statement is called a declaration.</p>
+    <h2>Assignment</h2>
+    <p>Now that we have created some variables, we would like to store values in them. We do that with an assignment statement.</p>
+    <pre>
+      <code>
+        first_letter = 'a';   /* give first_letter the value 'a' */
+        hour = 11;            /* assign the value 11 to hour */
+        minute = 59;          /* set minute to 59 */
+      </code>
+    </pre>
+    <p>This example shows three assignments, and the comments show three different ways people sometimes talk about assignment statements. The vocabulary can be confusing here, but the idea is straightforward:</p>
+    <ul>
+      <li>When you declare a variable, you create a named storage location.</li>
+      <li>When you make an assignment to a variable, you give it a value.</li>
+    </ul>
+  <h2>Outputting variables</h2>
+<p>You can output the value of a variable using the same commands
+we used to output simple values.</p>
+
+<pre><code>
+    int hour, minute;
+    char colon;
+
+    hour = 11;
+    minute = 59;
+    colon = ':';
+
+    printf ("The current time is ");
+    printf ("%i", hour);
+    printf ("%c", colon);
+    printf ("%i", minute);
+    printf ("\n"); 
+</code></pre>
+
+<p>This program creates two integer variables named <code>hour</code> and <code>minute</code>, and a character variable named <code>colon</code>.  It assigns
+appropriate values to each of the variables and then uses a series
+of output statements to generate the following:</p>
+
+<pre><code>The current time is 11:59
+</code></pre>
+
+<p>When we talk about "outputting a variable," we mean outputting the
+<em>value</em> of the variable.  The name of a variable only has significance for
+the programmer. The compiled program no longer contains a human readable
+reference to the variable name in your program. </p>
+
+<p>The <code> printf()</code> command is capable of outputting several variables
+in a single statement. To do this, we need to put placeholders
+in the so called <em>format string</em>, that indicate the position where the variable value will
+be put. The variables will be inserted in the order of their appearance in 
+the statement. It is important to observe the right order and type for the variables.</p>
+
+<p>By using a single output statement, we can make the previous program more
+concise:</p>
+
+<pre><code>    
+    int hour, minute;
+    char colon;
+
+    hour = 11;
+    minute = 59;
+    colon = ':';
+
+    printf ("The current time is %i%c%i\n", hour, colon, minute);
+</code></pre>
+
+<p>On one line, this program outputs a string, two integers and a character.  Very impressive!</p>
+
+<h2>Keywords</h2>
+<p>A few sections ago, I said that you can make up any name you
+want for your variables, but that's not quite true.  There
+are certain words that are reserved in C because they are
+used by the compiler to parse the structure of your program,
+and if you use them as variable names, it will get confused.
+These words, called <strong>keywords</strong>, include <code>int</code>,
+<code>char</code>, <code>void</code> and many more.</p>
+
+<div class="center">
+<div class="boxed">
+<div class="center">
+<div class="multicols">
+<div class="column">
+<ul>
+<li>auto</li>
+<li>break</li>
+<li>case</li>
+<li>char</li>
+<li>const</li>
+<li>continue</li>
+<li>default</li>
+<li>do</li>
+<li>double</li>
+<li>else</li>
+<li>enum</li>
+<li>extern</li>
+<li>float</li>
+<li>for</li>
+<li>goto</li>
+</ul>
+</div>
+<div class="column">
+<ul>
+<li>if</li>
+<li>inline</li>
+<li>int</li>
+<li>long</li>
+<li>register</li>
+<li>restrict</li>
+<li>return</li>
+<li>short</li>
+<li>signed</li>
+<li>sizeof</li>
+<li>static</li>
+<li>struct</li>
+<li>switch</li>
+<li>typedef</li>
+<li>union</li>
+</ul>
+</div>
+<div class="column">
+<ul>
+<li>unsigned</li>
+<li>void</li>
+<li>volatile</li>
+<li>while</li>
+<li>_Bool</li>
+<li>_Complex</li>
+<li>_Imaginary</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<p>The complete list of keywords is included in the C Standard, which
+is the official language definition adopted by the the International
+Organization for Standardization (ISO) on September 1, 1998.  </p>
+
+<!--<p>You can download a copy electronically from</p>-->
+
+<!--<pre><code>-->
+
+<!--<a href="http://www.ansi.org/">-->
+<!--    http://www.ansi.org/-->
+<!--</a>-->
+
+<!--<p></p>-->
+
+<p>Rather than memorize the list, I would suggest that you
+take advantage of a feature provided in many development
+environments: code highlighting.  As you type, different
+parts of your program should appear in different colors.  For
+example, keywords might be blue, strings red, and other code
+black.  If you type a variable name and it turns blue, watch
+out!  You might get some strange behavior from the compiler.</p>
+
+<h2>Operators</h2>
+<p><strong>Operators</strong> are special symbols that are used to represent
+simple computations like addition and multiplication.  Most
+of the operators in C do exactly what you would expect them
+to do, because they are common mathematical symbols.  For
+example, the operator for adding two integers is <code>+</code>.</p>
+
+<p>The following are all legal C expressions whose meaning is
+more or less obvious:</p>
+
+<pre>
+1+1        hour-1       hour*60+minute     minute/60
+</pre>
+
+<p><strong>Expressions</strong> can contain both variables
+names and values.  In each case the name of the variable is
+replaced with its value before the computation is performed.</p>
+
+<h2>Division and Integer Division</h2>
+
+<p>Addition, subtraction and multiplication all do what you
+expect, but you might be surprised by division.  For example,
+the following program:</p>
+
+<pre>
+int hour, minute;
+hour = 11;
+minute = 59;
+printf ("Number of minutes since midnight: %i\n", hour*60 + minute);
+printf ("Fraction of the hour that has passed: %i\n", minute/60);
+</pre>
+
+<p>would generate the following output:</p>
+
+<pre>
+Number of minutes since midnight: 719
+Fraction of the hour that has passed: 0
+</pre>
+
+<p>The first line is what we expected, but the second line is
+odd.  The value of the variable <code>minute</code> is 59, and
+59 divided by 60 is 0.98333, not 0.  The reason for the
+discrepancy is that C is performing <strong>integer division</strong>.</p>
+
+<p>When both of the <strong>operands</strong> are integers (operands are the things
+operators operate on), the result must also be an integer,
+and by definition integer division always rounds <em>down</em>,
+even in cases like this where the next integer is so close.</p>
+
+<p>A possible alternative in this case is to calculate a percentage
+rather than a fraction:</p>
+
+<pre>
+printf ("Percentage of the hour that has passed: ");
+printf ("%i\n", minute*100/60);
+</pre>
+
+<p>The result is:</p>
+
+<pre>
+Percentage of the hour that has passed: 98
+</pre>
+
+<p>Again the result is rounded down, but at least now the answer
+is approximately correct.  In order to get an even more accurate
+answer, we could use a different type of variable, called
+floating-point, that is capable of storing fractional values.
+We'll get to that in the next chapter.</p>
+
+
+<h2>Order of operations</h2>
+<p>When more than one operator appears in an expression the order of evaluation depends on the rules of <b>precedence</b>. A complete explanation of precedence can get complicated, but just to get you started:</p>
+<ul>
+  <li>Multiplication and division happen before addition and subtraction. So <code>2*3-1</code> yields 5, not 4, and <code>2/3-1</code> yields -1, not 1.</li>
+  <li>If the operators have the same precedence they are evaluated from left to right. So in the expression <code>minute*100/60</code>, the multiplication happens first, yielding <code>5900/60</code>, which in turn yields <code>98</code>. If the operations had gone from right to left, the result would be <code>59*1</code> which is <code>59</code>, which is wrong.</li>
+  <li>Any time you want to override the rules of precedence (or you are not sure what they are) you can use parentheses. Expressions in parentheses are evaluated first, so <code>2*(3-1)</code> is 4. You can also use parentheses to make an expression easier to read, as in <code>(minute*100)/60</code>, even though it doesn't change the result.</li>
+</ul>
+<h2>Operators for characters</h2>
+<p>Interestingly, the same mathematical operations that work on integers also work on characters. For example,</p>
+<pre><code>char letter;
+letter = 'a' + 1;
+printf ("%c\n", letter);</code></pre>
+<p>outputs the letter <code>b</code>. Although it is syntactically legal to multiply characters, it is almost never useful to do it.</p>
+<p>Earlier I said that you can only assign integer values to integer variables and character values to character variables, but that is not completely true. In some cases, C converts automatically between types. For example, the following is legal.</p>
+<pre><code>int number;
+number = 'a';
+printf ("%i\n", number);</code></pre>
+<p>The result is 97, which is the number that is used internally by C to represent the letter 'a'. However, it is generally a good idea to treat characters as characters, and integers as integers, and only convert from one to the other if there is a good reason.</p>
+<p>Automatic type conversion is an example of a common problem in designing a programming language, which is that there is a conflict between <b>formalism</b>, which is the requirement that formal languages should have simple rules with few exceptions, and <b>convenience</b>, which is the requirement that programming languages be easy to use in practice.</p>
+<p>More often than not, convenience wins, which is usually good for expert programmers, who are spared from rigorous but unwieldy formalism, but bad for beginning programmers, who are often baffled by the complexity of the rules and the number of exceptions. In this book I have tried to simplify things by emphasizing the rules and omitting many of the exceptions.</p>
+
+<h2>Composition</h2>
+      <p>So far we have looked at the elements of a programming
+      language---variables, expressions, and statements---in
+      isolation, without talking about how to combine them.</p>
+      <p>One of the most useful features of programming languages
+      is their ability to take small building blocks and
+      <b>compose</b> them.  For example, we know how to multiply
+      integers and we know how to output values; it turns out we can
+      do both at the same time:</p>
+      <pre><code>printf ("%i\n", 17 * 3);</code></pre>
+      <p>Actually, I shouldn't say "at the same time," since in reality
+      the multiplication has to happen before the output, but
+      the point is that any expression, involving numbers, characters,
+      and variables, can be used inside an output statement.  We've
+      already seen one example:</p>
+      <pre><code>printf ("%i\n", hour * 60 + minute);</code></pre>
+      <p>You can also put arbitrary expressions on the right-hand
+      side of an assignment statement:</p>
+      <pre><code>int percentage;
+percentage = (minute * 100) / 60;</code></pre>
+      <p>This ability may not seem so impressive now, but we will see
+      other examples where composition makes it possible
+      to express complex computations neatly and concisely.</p>
+      <p><b>WARNING:</b> There are limits on where you can use certain
+      expressions; most notably, the left-hand side of an assignment
+      statement has to be a <em>variable</em> name, not an expression.
+      That's because the left side indicates the storage location
+      where the result will go.  Expressions
+      do not represent storage locations, only values.  So the
+      following is illegal:  <code>minute + 1 = hour;</code>.</p>
+
+<h2>Scanning User Input</h2>
+  <p>In all of the examples so far we have assigned variable values before we run our program. 
+    We can also ask the user to input values when the program is running. 
+    <code>scanf()</code> is a function in the C programming language that is used to read input from the user.
+    It can be used to read various types of data, such as integers, characters, and strings (we will get back to strings in a later chapter)</p>
+  
+  <p>To read a single character from the user, you can use the  <code>%c</code> 
+    format specifier. The <code>%c</code> format specifier tells <code>scanf()</code> to read a 
+    character and store it in the variable. For example:</p>
+  <pre><code>char c;
+scanf("%c", &amp;c);</code></pre>
+
+  <p>In this example, <code>scanf()</code> will read a character from the user's input and store it in the variable c. Note that the <code>&amp;</code> operator is used when we refer to the variable name. This will be explained in a later chapter, but it is important not to forget it here.</p>
+
+  <p>To read an integer, you can use the  <code>%d</code> or  <code>%i</code>  format specifier. These specifiers tells <code>scanf()</code> to read an integer and store it in the variable.  For example:</p>
+  <pre><code>int x;
+scanf("%d", &amp;x);</code></pre>
+
+  <p>In this example, <code>scanf()</code> will read an integer from the user's input and store it in the variable x.</p>
+
+  <p><code>scanf()</code> can also be used to scan strings, but we will get back to strings in a later chapter.</p>
+ <h2>Prompting for User Input</h2>
+
+  <p>Prompting for input is a way to gather information from the user and store it in variables for use in the program. 
+    When using  <code>scanf()</code>, you first need to print a prompt to let the user know what to enter. This can be done using <code>printf()</code>.</p>
+
+  <p>For example, to prompt the user for an integer, you can use:</p>
+  <pre><code>int x;
+printf("%s", "Enter an integer: \n");
+scanf("%d", &amp;x);</code></pre>
+
+  <p>In this example, the <code>printf()</code> function is used to print the message "Enter an integer: "  
+    with a new line at the end. The user can enter an integer and the <code>scanf()</code>  
+    function is used to read the integer from the user and store it in the variable x.</p>
+
+  <p><strong>Caution</strong> It is considered insecure to use<code>printf()</code> to print a string without the string format specifier.</p>
+
+  <pre><code>printf( "Enter an integer: \n");  //works but is considered insecure
+printf("%s", "Enter an integer: \n");  // this is considered a secure use</code></pre>
+
+  <p>As an alternative to printing strings with <code>printf()</code>,  you can use the <code>puts()</code> function to print a string. 
+    Unlike <code>printf()</code>, <code>puts()</code> automatically appends a newline character after the string, 
+    which can be useful if you want to print multiple strings on separate lines.</p>
+
+  <p>For example:</p>
+  <pre><code>puts("Welcome to the program");
+puts("Enter an integer:");</code></pre>
+
+  <h2>Mixing Calls to Scan Integers and Character</h2>
+
+  <p>It is important to note that when mixing calls to <code>scanf()</code> to read different types, newline characters can cause problems. 
+    For example, if the user enters an integer followed by a newline character, the newline character will be 
+    left in the input buffer and can cause issues when trying to read the next input using scanf().</p>
+
+  <p>One way to manage this is to include a space in the quotes before the format specifier - like this <code>" \%d"</code>. 
+    The space indicates to ignore whitespace characters.</p>
+
+  <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main (void)
+{
+    int age;
+    char initial;
+    puts("enter your age");
+    scanf("%d", &amp;age);
+    puts("enter your first intial");
+    scanf(" %c", &amp;initial); //note the space after " and before %
+}</code></pre>
+
+  <p>Another way to manage this is to insert a second call to scan the newline.</p>
+
+  <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main (void)
+{
+    int age;
+    char initial;
+    char newline;
+    puts("enter your age");
+    scanf("%d", &amp;age);
+    scanf("%c", &amp;newline); //this will scan the extra new line
+    puts("enter your first intial");
+    scanf("%c", &amp;initial);
+}</code></pre>
+<h2>Glossary</h2>
+
+  <dl>
+    <dt>variable:</dt>
+    <dd>A named storage location for values.  All variables have a type, which determines which values it can store.</dd>
+
+    <dt>value:</dt>
+    <dd>A letter, or number, or other thing that can be stored in a variable.</dd>
+
+    <dt>type:</dt>
+    <dd>The meaning of values.  The types we have seen so far are integers (<code>int</code> in C) and characters (<code>char</code> in C).</dd>
+
+    <dt>keyword:</dt>
+    <dd>A reserved word that is used by the compiler to parse programs.  Examples we have seen include <code>int</code>, <code>void</code>, and <code>char</code>.</dd>
+
+    <dt>statement:</dt>
+    <dd>A line of code that represents a command or action.  So far, the statements we have seen are declarations, assignments, and output statements.</dd>
+
+    <dt>declaration:</dt>
+    <dd>A statement that creates a new variable and determines its type.</dd>
+
+    <dt>assignment:</dt>
+    <dd>A statement that assigns a value to a variable.</dd>
+
+    <dt>expression:</dt>
+    <dd>A combination of variables, operators and values that represents a single result value.  Expressions also have types, as determined by their operators and operands.</dd>
+
+    <dt>format specifier:</dt>
+    <dd>A special character or sequence of characters that tells the printing and scanning functions how to format and interpret data.</dd>
+
+    <dt>operator:</dt>
+    <dd>A special symbol that represents a simple computation like addition or multiplication.</dd>
+
+    <dt>operand:</dt>
+    <dd>One of the values on which an operator operates.</dd>
+
+    <dt>precedence:</dt>
+    <dd>The order in which operations are evaluated.</dd>
+
+    <dt>composition:</dt>
+    <dd>The ability to combine simple expressions and statements into compound statements and expressions in order to represent complex computations concisely.</dd>
+  </dl>
+  <a href="ch2.html">prev</a> <a href="ch3.html">next</a> 
+  
